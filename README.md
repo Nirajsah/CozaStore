@@ -1,6 +1,6 @@
 ## Getting Started
 
-This is a E-commerce site build with Next.js 13.4+ and tailwind CSS
+This is an E-commerce site build with Next.js 13.4+ and tailwind CSS
 All the commits will be done only on main branch.
 I will be updating the readme file as the site progresses.
 

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "fgsa2142fa",
+    "name": "Keyboard",
+    "description": "Buy different keyboard from any brand available",
+    "image": "https://m.media-amazon.com/images/I/711oEWUIxzL.jpg"
+  },
+  {
+    "id": "xasgy42fa",
+    "name": "Headphone",
+    "description": "Find best-fit for your ears",
+    "image": "https://m.media-amazon.com/images/I/61rEoEQqn0L.jpg"
+  },
+  {
+    "id": "fsa21442fg",
+    "name": "MacBook",
+    "image": "https://m.media-amazon.com/images/I/61L5QgPvgqL.jpg",
+    "description": "Buy Latest MacBooks"
+  }
+]

@@ -1,6 +1,5 @@
 import CartProvider from "./context/CartProvider";
 import "./globals.css";
-import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
 
@@ -12,9 +11,6 @@ export const metadata: Metadata = {
   },
 };
 
-const DynamicNavbar = dynamic(() => import("./components/Navbar"), {
-  ssr: false, // This ensures the component is not server-side rendered
-});
 export default function RootLayout({
   children,
 }: {
@@ -25,7 +21,6 @@ export default function RootLayout({
       <body className="bg-[#f6f6f6]">
         <CartProvider>
           <Navbar />
-          {/* <DynamicNavbar /> */}
           {children}
         </CartProvider>
       </body>

@@ -1,18 +1,10 @@
-"use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { useCart } from "../context/CartProvider";
+import React from "react";
 
 const CartProductCart: React.FC<any> = ({ item }) => {
   return (
-    <div className="flex-col md:flex-row w-full gap-4 p-4 flex items-center justify-between rounded-xl">
+    <div className="flex-col md:flex-row w-full gap-8 flex items-center justify-between rounded-xl">
       <div className="flex flex-col w-full">
-        <div className="md:flex hidden justify-between w-full">
-          <div className="text-sm font-semibold">Product</div>
-          <div className="text-sm font-semibold">Quantity</div>
-          <div className="text-sm font-semibold">Total</div>
-        </div>
-
         <div className="w-full mt-4 flex rounded-xl">
           <div className="flex justify-between items-center w-full">
             <div className="flex items-center gap-4">
@@ -25,12 +17,13 @@ const CartProductCart: React.FC<any> = ({ item }) => {
                   alt=""
                 />
               </div>
+
               <div className="flex flex-col">
-                <div className="truncate w-[300px] font-semibold text-sm capitalize">
+                <div className="h-[40px] text-ellipsis overflow-hidden w-[200px] md:w-[300px] font-semibold text-sm capitalize">
                   {item.name}
                 </div>
                 <div className="lg:hidden flex mt-4">
-                  <div className="border mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
+                  <div className="border self-center mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                     <button
                       type="button"
                       className="flex w-[36px] justify-center items-center"
@@ -230,27 +223,29 @@ const DATA = [
 ];
 export default function Page() {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="w-full flex justify-center items-center flex-col max-w-[1320px]">
+    <div className="flex flex-col mt-6 items-center justify-center">
+      <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
         <div className="text-5xl mb-9 font-bold w-full">Your Cart</div>
-        <div className="flex flex-col md:flex-row w-full">
-          <div className="md:flex hidden justify-between w-full">
-            <div className="text-sm font-semibold">Product</div>
-            <div className="text-sm font-semibold">Quantity</div>
-            <div className="text-sm font-semibold">Total</div>
-          </div>
-          {DATA ? (
-            <div className="w-full">
-              {DATA.map((item: any, index: number) => (
-                <div className="w-full" key={index}>
-                  <CartProductCart item={item} />
-                </div>
-              ))}
+        <div className="flex w-full gap-4 flex-col md:flex-row">
+          <div className="flex flex-col gap-3 w-full">
+            <div className="xl:flex hidden justify-between w-full">
+              <div className="text-sm font-semibold">Product</div>
+              <div className="text-sm font-semibold">Quantity</div>
+              <div className="text-sm font-semibold">Total</div>
             </div>
-          ) : (
-            <div>No Product in Cart</div>
-          )}
-          <div className="flex flex-col self-start bg-white p-4 rounded-xl w-full md:max-w-[420px]">
+            {DATA ? (
+              <div className="w-full max-h-520px overflow-scroll">
+                {DATA.map((item: any, index: number) => (
+                  <div className="w-full py-2" key={index}>
+                    <CartProductCart item={item} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>No Product in Cart</div>
+            )}
+          </div>
+          <div className="flex flex-col self-start bg-white p-4 rounded-xl w-full md:max-w-[400px]">
             <div className="w-full flex justify-between">
               <div className="text-m font-semibold">Totol</div>
               <div className="text-m font-semibold">INR</div>

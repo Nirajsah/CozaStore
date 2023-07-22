@@ -4,6 +4,7 @@ import React from "react";
 import { motion, easeIn, easeOut } from "framer-motion";
 import { useCart } from "../context/CartProvider";
 import Stars from "react-stars";
+import Link from "next/link";
 interface ProductTypes {
   categoryId: string;
   name: string;
@@ -205,9 +206,14 @@ export default function Cart({ setShowCart, showCart }: any) {
               <div className="text-m font-semibold">INR</div>
             </div>
             <div className="flex mt-6 justify-between gap-3 w-full">
-              <button className="border py-2 font-semibold uppercase rounded-[10px] w-full text-sm">
-                View Cart
-              </button>
+              <Link className="w-full" href="/cart">
+                <button
+                  onClick={() => setShowCart(!showCart)}
+                  className="border py-2 font-semibold uppercase rounded-[10px] w-full text-sm"
+                >
+                  View Cart
+                </button>
+              </Link>
               <button className="w-full bg-black text-white py-2 border rounded-[10px] uppercase font-semibold text-sm">
                 Check Out
               </button>

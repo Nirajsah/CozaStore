@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useCart } from "../context/CartProvider";
-import Image from "next/image";
+import React from "react";
 import { motion } from "framer-motion";
 
 interface ProductTypes {
@@ -16,13 +14,10 @@ interface ProductTypes {
 }
 
 export default function Body() {
-  const { cart, addToCart, incrementQuantity, decrementQuantity, removeItem } =
-    useCart();
-
   const TEXT: string = "Buy Now Pay Never!";
   return (
     <div className="flex justify-center">
-      <div className="w-full h-[600px]">
+      <div className="md:w-full w-full h-[600px]">
         <div className="flex justify-center items-center w-full h-full">
           <div className="text-[72px] flex font-bold">
             {TEXT.split(" ").map((character: string, index: number) => (

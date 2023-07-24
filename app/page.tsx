@@ -26,7 +26,6 @@ export default function Home() {
           )}
         </AnimatePresence>
       </div> */}
-      {showSearch && <Search />}
       <div className="lg:w-[1320px] relative">
         <div className="w-full h-full">
           <Body />

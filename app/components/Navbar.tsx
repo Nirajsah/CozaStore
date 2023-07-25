@@ -20,25 +20,37 @@ export default function Navbar() {
             <div className="flex items-center justify-between lg:w-[320px]">
               <div className="text-xl font-bold font-fira">CozaStore</div>
               <div className="lg:flex hidden justify-between md:w-[150px]">
-                <Link href="/">Home</Link>
-                <Link href="/category">Category</Link>
+                <Link type="link" href="/">
+                  Home
+                </Link>
+                <Link type="link" href="/category">
+                  Category
+                </Link>
               </div>
             </div>
 
             <div className="flex justify-between items-center md:w-[180px] w-[80px]">
-              <button onClick={() => setShowSearch(!showSearch)}>
+              <button
+                type="button"
+                name="search"
+                onClick={() => setShowSearch(!showSearch)}
+              >
                 <BsSearch />
               </button>
               <div className="hidden md:flex">
                 <GoPerson size={20} />
               </div>
               <button
+                type="button"
+                name="show menu"
                 className="lg:hidden"
                 onClick={() => setShowMenu(!showMenu)}
               >
                 <AiOutlineMenu />
               </button>
               <button
+                type="button"
+                name="show cart"
                 onClick={() => setShowCart(!showCart)}
                 className="hover:scale-110 lg:flex hidden ease-in-out duration-100"
               >
@@ -53,6 +65,7 @@ export default function Navbar() {
         {showCart && (
           <div className="w-full h-full">
             <div
+              role="button"
               onClick={() => setShowCart(!showCart)}
               className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
             ></div>
@@ -65,6 +78,7 @@ export default function Navbar() {
       {showSearch && (
         <div>
           <div
+            role="button"
             onClick={() => setShowSearch(!showSearch)}
             className="w-full h-full z-[50] top-0 left-0 fixed bg-black opacity-60"
           ></div>
@@ -77,6 +91,7 @@ export default function Navbar() {
         {showMenu && (
           <div className="lg:hidden absolute p-4 flex z-[50] justify-center h-full w-full">
             <div
+              role="button"
               onClick={() => setShowMenu(!showMenu)}
               className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
             ></div>
@@ -114,11 +129,19 @@ export default function Navbar() {
                   </button>
                 </div>
                 <div className="mt-[3rem] gap-5 flex h-full flex-col">
-                  <Link onClick={() => setShowMenu(!showMenu)} href="/">
+                  <Link
+                    role="button"
+                    onClick={() => setShowMenu(!showMenu)}
+                    href="/"
+                  >
                     <span className="font-medium font-sans text-2xl">Home</span>
                   </Link>
 
-                  <Link onClick={() => setShowMenu(!showMenu)} href="/category">
+                  <Link
+                    role="button"
+                    onClick={() => setShowMenu(!showMenu)}
+                    href="/category"
+                  >
                     <span className="font-medium font-sans text-2xl">
                       Category
                     </span>
@@ -127,7 +150,11 @@ export default function Navbar() {
                     Profile
                   </span>
 
-                  <Link onClick={() => setShowMenu(!showMenu)} href="/cart">
+                  <Link
+                    role="button"
+                    onClick={() => setShowMenu(!showMenu)}
+                    href="/cart"
+                  >
                     <span className="font-medium font-sans text-2xl">Cart</span>
                   </Link>
                 </div>

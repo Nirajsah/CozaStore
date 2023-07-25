@@ -1,7 +1,37 @@
+"use client";
 import Image from "next/image";
 import React from "react";
+import { useCart } from "../context/CartProvider";
 
-const CartProductCart: React.FC<any> = ({ item }) => {
+interface ProductTypes {
+  categoryId: string;
+  name: string;
+  image: string;
+  stars: number;
+  productId: string;
+  price_string: string;
+  price_symbol: string;
+  price: number;
+  quantity: number;
+}
+
+type Props = {
+  product: ProductTypes;
+  incrementQuantity: ({}) => void;
+  decrementQuantity: ({}) => void;
+  removeItem: ({}) => void;
+};
+const CartProduct: React.FC<Props> = ({
+  product,
+  incrementQuantity,
+  decrementQuantity,
+  removeItem,
+}: {
+  product: ProductTypes;
+  incrementQuantity: ({}) => void;
+  decrementQuantity: ({}) => void;
+  removeItem: ({}) => void;
+}) => {
   return (
     <div className="flex-col md:flex-row w-full gap-8 flex items-center justify-between rounded-xl">
       <div className="flex flex-col w-full">
@@ -12,7 +42,7 @@ const CartProductCart: React.FC<any> = ({ item }) => {
                 <Image
                   width={80}
                   height={80}
-                  src={item.image}
+                  src={product.image}
                   className="w-full rounded-xl h-full object-cover"
                   alt=""
                 />
@@ -20,13 +50,15 @@ const CartProductCart: React.FC<any> = ({ item }) => {
 
               <div className="flex flex-col">
                 <div className="h-[40px] text-ellipsis overflow-hidden w-[200px] md:w-[300px] font-semibold text-sm capitalize">
-                  {item.name}
+                  {product.name}
                 </div>
                 <div className="lg:hidden flex mt-4">
                   <div className="border self-center mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                     <button
+                      onClick={() => decrementQuantity(product)}
+                      name="decrement"
                       type="button"
-                      className="flex w-[36px] justify-center items-center"
+                      className="flex w-[36px] h-full justify-center items-center"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -44,11 +76,16 @@ const CartProductCart: React.FC<any> = ({ item }) => {
                     </button>
                     <input
                       type="number"
+                      readOnly
+                      value={product.quantity}
                       className="text-center bg-inherit focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[36px]"
                     />
+
                     <button
+                      onClick={() => incrementQuantity(product)}
                       type="button"
-                      className="flex w-[36px] justify-center items-center"
+                      name="increment"
+                      className="flex w-[36px] h-full justify-center items-center"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +101,7 @@ const CartProductCart: React.FC<any> = ({ item }) => {
                       </svg>
                     </button>
                   </div>
-                  <button>
+                  <button name="removeItem" onClick={() => removeItem(product)}>
                     <svg
                       width="20"
                       height="20"
@@ -105,6 +142,8 @@ const CartProductCart: React.FC<any> = ({ item }) => {
               <div className="lg:flex hidden mt-4">
                 <div className="border mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                   <button
+                    onClick={() => decrementQuantity(product)}
+                    name="decrement"
                     type="button"
                     className="flex w-[36px] justify-center items-center"
                   >
@@ -124,9 +163,12 @@ const CartProductCart: React.FC<any> = ({ item }) => {
                   </button>
                   <input
                     type="number"
+                    value={product.quantity}
                     className="text-center bg-inherit focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[36px]"
                   />
                   <button
+                    onClick={() => incrementQuantity(product)}
+                    name="increment"
                     type="button"
                     className="flex w-[36px] justify-center items-center"
                   >
@@ -144,7 +186,7 @@ const CartProductCart: React.FC<any> = ({ item }) => {
                     </svg>
                   </button>
                 </div>
-                <button>
+                <button onClick={() => removeItem(product)}>
                   <svg
                     width="20"
                     height="20"
@@ -182,46 +224,19 @@ const CartProductCart: React.FC<any> = ({ item }) => {
                 </button>
               </div>
             </div>
-            <div className="font-semibold text-sm">INR</div>
+            <div className="font-semibold text-sm">
+              {product.price_string} INR
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 };
-const DATA = [
-  {
-    categoryId: "keyboard",
-    name: "Redgear Shadow Blade Mechanical Keyboard with Drive Customization, Spectrum LED Lights, Media Control Knob and Wrist Support (Black)",
-    image: "https://m.media-amazon.com/images/I/61NKGdlO36L.jpg",
-    stars: 4.5,
-    productId: "B08T28HSDN",
-    price_string: "₹2,499",
-    price_symbol: "₹",
-    price: 2499,
-  },
-  {
-    categoryId: "keyboard",
-    name: "Redragon K617 Fizz 60% Wired RGB Gaming Keyboard, 61 Keys Compact Mechanical Keyboard w/White and Grey Color Keycaps, Linear Red Switch, Pro Driver/Software Supported",
-    image: "https://m.media-amazon.com/images/I/6124OpB-LRL.jpg",
-    stars: 4.6,
-    productId: "B09BVCVTBC",
-    price_string: "₹2,899",
-    price_symbol: "₹",
-    price: 2899,
-  },
-  {
-    categoryId: "keyboard",
-    name: "Quantum QHM9850 Rapid Strike Mechanical Gaming Multimedia Wired Keyboard with 6-Colour RGB LED, 12 Adjustable Lighting Modes, Lasting Durability and Rupee (₹) Key (Black)",
-    image: "https://m.media-amazon.com/images/I/711oEWUIxzL.jpg",
-    stars: 4.2,
-    productId: "B0B1MRNF93",
-    price_string: "₹1,599",
-    price_symbol: "₹",
-    price: 1599,
-  },
-];
+
 export default function Page() {
+  const { cart, incrementQuantity, decrementQuantity, removeItem } = useCart();
+  console.log(cart);
   return (
     <div className="flex flex-col mt-6 items-center justify-center">
       <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
@@ -233,11 +248,16 @@ export default function Page() {
               <div className="text-sm font-semibold">Quantity</div>
               <div className="text-sm font-semibold">Total</div>
             </div>
-            {DATA ? (
+            {cart ? (
               <div className="w-full max-h-520px overflow-scroll">
-                {DATA.map((item: any, index: number) => (
+                {cart.map((products: ProductTypes, index: number) => (
                   <div className="w-full py-2" key={index}>
-                    <CartProductCart item={item} />
+                    <CartProduct
+                      incrementQuantity={incrementQuantity}
+                      decrementQuantity={decrementQuantity}
+                      removeItem={removeItem}
+                      product={products}
+                    />
                   </div>
                 ))}
               </div>

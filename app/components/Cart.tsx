@@ -38,14 +38,14 @@ export default function Cart({ setShowCart, showCart }: any) {
                 <div className="truncate w-[185px] font-semibold text-sm capitalize">
                   {item.name}
                 </div>
-                <Stars
+                {/* <Stars
                   count={5} // Total number of stars
                   value={item.stars} // Current rating value
                   size={15} // Size of the stars in pixels
                   edit={false}
                   color1="#cccccc" // Inactive star color
                   color2="#ffd700" // Active star color (gold in this example)
-                />
+                /> */}
                 <div className="flex mt-2">
                   <div className="border mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                     <button
@@ -69,6 +69,7 @@ export default function Cart({ setShowCart, showCart }: any) {
                     </button>
                     <input
                       type="number"
+                      readOnly
                       value={item.quantity}
                       className="text-center focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[36px]"
                     />

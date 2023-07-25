@@ -11,21 +11,6 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center justify-center">
-      {/* <div className="lg:w-[1280px] relative">
-        <Navbar
-          showSearch={showSearch}
-          setShowSearch={setShowSearch}
-          setShowCart={setShowCart}
-          showCart={showCart}
-        />
-        <AnimatePresence>
-          {showCart && (
-            <div className="fixed right-0 p-4 z-10 top-20 w-full h-full">
-              <Cart setShowCart={setShowCart} showCart={showCart} />
-            </div>
-          )}
-        </AnimatePresence>
-      </div> */}
       <div className="lg:w-[1320px] relative">
         <div className="w-full h-full">
           <Body />

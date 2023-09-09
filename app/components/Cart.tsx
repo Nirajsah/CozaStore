@@ -3,7 +3,6 @@ import Image from "next/image";
 import React from "react";
 import { motion, easeIn, easeOut } from "framer-motion";
 import { useCart } from "../context/CartProvider";
-import Stars from "react-stars";
 import Link from "next/link";
 interface ProductTypes {
   categoryId: string;

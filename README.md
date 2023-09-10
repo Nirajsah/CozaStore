@@ -4,6 +4,8 @@ This is an E-commerce site built with Next.js 13.4+ and Tailwind CSS. The projec
 
 will be updating the data source with postgresql very soon.
 
+I need more products with different categories, with product rating and reviews before i can intergrate a database, maybe i'll have to do some web scraping.
+
 ## Project Status (As of July 21, 2023):
 
 most of the work is done, For animation, I am using framer motion(learning).

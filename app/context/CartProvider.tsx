@@ -15,7 +15,7 @@ interface ProductTypes {
 }
 export default function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<ProductTypes[]>([]);
-
+  
   const addToCart = (product: ProductTypes) => {
     const itemInCart = cart.find(
       (item: ProductTypes) => item.productId === product.productId

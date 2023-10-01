@@ -1,9 +1,9 @@
 [
   {
     "id": "keyboard",
-    "name": "Keyboard",
-    "description": "Buy different keyboard from any brand available",
-    "image": "https://m.media-amazon.com/images/I/711oEWUIxzL.jpg"
+    "name": "keyboard",
+    "description": "buy different keyboard from any brand available",
+    "image": "https://m.media-amazon.com/images/i/711oewuixzl.jpg"
   },
   {
     "id": "headphone",

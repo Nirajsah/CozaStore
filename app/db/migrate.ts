@@ -1,3 +1,2 @@
-import { MigrateDB } from './database'
-
+import { MigrateDB } from "./database.ts"
 MigrateDB()

@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1695964181063,
+      "tag": "0000_hot_rogue",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1697284817358,
+      "tag": "0001_new_alex_wilder",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1697286032165,
+      "tag": "0002_grey_captain_stacy",
+      "breakpoints": true
+    }
+  ]
+}

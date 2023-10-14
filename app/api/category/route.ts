@@ -1,13 +1,8 @@
 import { db } from "@/app/db/database";
-import { category } from "@/app/db/schema/schema";
+import { category, Category } from "@/app/db/schema/schema";
 import { NextResponse } from "next/server";
 
-type Category = {
-  categoryId: string;
-  name: string;
-  description: string;
-  image: string;
-};
+
 export async function GET() {
   try {
     const result: Category[] = await db.select().from(category);

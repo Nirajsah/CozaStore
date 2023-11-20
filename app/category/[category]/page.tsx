@@ -1,21 +1,22 @@
-"use client";
-import Image from "next/image";
-import Stars from "react-stars";
-import React, { useEffect, useState } from "react";
-import { useCart } from "@/app/context/CartProvider";
-import Link from "next/link";
-import { Product } from "@/app/db/schema/schema";
+'use client'
+import Image from 'next/image'
+import Stars from 'react-stars'
+import React, { useEffect, useState } from 'react'
+import { useCart } from '@/app/context/CartProvider'
+import Link from 'next/link'
+import { Product } from '@/app/db/schema/schema'
+import Products from '@/app/db/products.json'
 
 type Params = {
-  id: string;
-  category: string;
-};
+  id: string
+  category: string
+}
 
 type ProductCardProps = {
-  data: Product;
-};
+  data: Product
+}
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
-  const { addToCart } = useCart();
+  const { addToCart } = useCart()
   return (
     <div className="w-full sm:w-[320px]">
       <div className="w-[300px] relative h-[300px]">
@@ -41,7 +42,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
               color1="#cccccc"
               color2="black"
             />
-          } {data.stars}
+          }{' '}
+          {data.stars}
         </div>
         <button
           onClick={() => addToCart(data)}
@@ -51,30 +53,34 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 export default function Page({ params }: { params: Params }) {
-  const [data, setData] = useState<Product[]>([]);
+  const [data, setData] = useState<Product[]>([])
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("/api/category/product", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({ categoryId: params.category }),
-        });
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
+  // Make a request to the server to get the data, if docker is running
 
-    fetchData();
-  }, [params.category]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch('/api/category/product', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ categoryId: params.category }),
+  //       })
+  //       const jsonData = await response.json()
+  //       setData(jsonData)
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error)
+  //     }
+  //   }
+
+  //   fetchData()
+  // }, [params.category])
+
+  const Items = Products.filter((item) => item.categoryId === params.category)
 
   return (
     <div className="flex justify-center">
@@ -84,18 +90,30 @@ export default function Page({ params }: { params: Params }) {
             {params.category}
           </h1>
           <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2">
-            {data && data?.map((items: Product) => (
-              <Link
-                href={`/category/${params.category}/${items.productId}`}
-                as={`/category/${params.category}/${items.productId}`}
-                key={items.productId}
-              >
-                <ProductCard data={items} />
-              </Link>
-            ))}
+            {/* only if docker is running */}
+            {/* {data &&
+              data?.map((items: Product) => (
+                <Link
+                  href={`/category/${params.category}/${items.productId}`}
+                  as={`/category/${params.category}/${items.productId}`}
+                  key={items.productId}
+                >
+                  <ProductCard data={items} />
+                </Link>
+              ))} */}
+            {Items &&
+              Items?.map((items: Product) => (
+                <Link
+                  href={`/category/${params.category}/${items.productId}`}
+                  as={`/category/${params.category}/${items.productId}`}
+                  key={items.productId}
+                >
+                  <ProductCard data={items} />
+                </Link>
+              ))}
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

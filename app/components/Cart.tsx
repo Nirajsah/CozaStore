@@ -1,22 +1,28 @@
-"use client";
-import Image from "next/image";
-import React from "react";
-import { motion, easeIn, easeOut } from "framer-motion";
-import { useCart } from "../context/CartProvider";
-import Link from "next/link";
+'use client'
+import Image from 'next/image'
+import React from 'react'
+import { motion, easeIn, easeOut } from 'framer-motion'
+import { useCart } from '../context/CartProvider'
+import Link from 'next/link'
 interface ProductTypes {
-  categoryId: string;
-  name: string;
-  image: string;
-  stars: number;
-  productId: string;
-  price_string: string;
-  price_symbol: string;
-  price: number;
-  quantity: number;
+  categoryId: string
+  name: string
+  image: string
+  stars: number
+  productId: string
+  price_string: string
+  price_symbol: string
+  price: number
+  quantity: number
 }
 export default function Cart({ setShowCart, showCart }: any) {
-  const { cart, incrementQuantity, decrementQuantity, removeItem } = useCart();
+  const {
+    cart,
+    incrementQuantity,
+    decrementQuantity,
+    removeItem,
+    totalCartPrice,
+  } = useCart()
 
   const Product = ({ item }: { item: ProductTypes }) => {
     return (
@@ -136,8 +142,8 @@ export default function Cart({ setShowCart, showCart }: any) {
           </div>
         </div>
       </>
-    );
-  };
+    )
+  }
 
   return (
     <div className="w-full h-full flex justify-end">
@@ -203,7 +209,9 @@ export default function Cart({ setShowCart, showCart }: any) {
           <div className="flex bg-white rounded-b-xl p-4 flex-col justify-self-end w-full">
             <div className="w-full flex justify-between">
               <div className="text-m font-semibold">Totol</div>
-              <div className="text-m font-semibold">INR</div>
+              <div className="text-m font-semibold">
+                INR {totalCartPrice() ? '₹' + totalCartPrice() : ''}
+              </div>
             </div>
             <div className="flex mt-6 justify-between gap-3 w-full">
               <Link className="w-full" href="/cart">
@@ -222,5 +230,5 @@ export default function Cart({ setShowCart, showCart }: any) {
         </motion.div>
       </motion.div>
     </div>
-  );
+  )
 }

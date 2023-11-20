@@ -1,11 +1,11 @@
 import { db } from "@/app/db/database";
 import { Product, product } from "@/app/db/schema/schema";
 import { eq } from "drizzle-orm";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest, _: NextApiResponse) {
-  const { categoryId } = req.body;
+export async function POST(request: Request) {
+  const res = await request.json();
+  const { categoryId } = res;
   try {
     const result: Product[] = await db.select().from(product).where(
       eq(product.categoryId, categoryId),

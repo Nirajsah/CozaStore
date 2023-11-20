@@ -1,15 +1,41 @@
-'use client'
+"use client";
 
-import React from 'react'
-import Products from '@/app/db/products.json'
-import ReactStars from 'react-stars'
-import { useCart } from '@/app/context/CartProvider'
+import React, { useEffect, useState } from "react";
+import Products from "@/app/db/products.json";
+import ReactStars from "react-stars";
+import { useCart } from "@/app/context/CartProvider";
 type Params = {
-  product: string
-}
+  product: string;
+};
+type Product = {
+  categoryId: string;
+  name: string;
+  image: string;
+  stars: number;
+  productId: string;
+  price_string: string;
+  price_symbol: string;
+  price: number;
+};
+
 export default function page({ params }: { params: Params }) {
-  const { product } = params
-  const item = Products.filter((Item) => Item.productId === product)
+  const { product } = params;
+  // const [item, setItem] = useState<Product>()
+  // useEffect(() => {
+  //   async function fetchItem() {
+  //     try {
+  //       const response = await fetch("/api/product");
+  //       const jsonData = await response.json();
+  //       setItem(jsonData);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   }
+  //
+  //   fetchData();
+  // }, []);
+
+  const item = Products.filter((Item) => Item.productId === product);
   // const getProduct = async () => {
   //   try {
   //   } catch (error) {
@@ -17,8 +43,8 @@ export default function page({ params }: { params: Params }) {
   //   }
   // }
 
-  const { image, name, stars, price, price_symbol } = item[0]
-  const { addToCart } = useCart()
+  const { image, name, stars, price, price_symbol } = item[0];
+  const { addToCart } = useCart();
   return (
     <div className="flex justify-center p-3 mx-3 h-screen relative items-center">
       <div className="w-full max-w-[1320px] md:p-12 h-[800px] absolute top-[100px] bg-white rounded-xl ">
@@ -57,5 +83,5 @@ export default function page({ params }: { params: Params }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

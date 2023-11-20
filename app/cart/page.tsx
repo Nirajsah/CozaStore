@@ -1,36 +1,36 @@
-"use client";
-import Image from "next/image";
-import React from "react";
-import { useCart } from "../context/CartProvider";
+'use client'
+import Image from 'next/image'
+import React from 'react'
+import { useCart } from '../context/CartProvider'
 
 interface ProductTypes {
-  categoryId: string;
-  name: string;
-  image: string;
-  stars: number;
-  productId: string;
-  price_string: string;
-  price_symbol: string;
-  price: number;
-  quantity: number;
+  categoryId: string
+  name: string
+  image: string
+  stars: number
+  productId: string
+  price_string: string
+  price_symbol: string
+  price: number
+  quantity: number
 }
 
 type Props = {
-  product: ProductTypes;
-  incrementQuantity: ({}) => void;
-  decrementQuantity: ({}) => void;
-  removeItem: ({}) => void;
-};
+  product: ProductTypes
+  incrementQuantity: ({}) => void
+  decrementQuantity: ({}) => void
+  removeItem: ({}) => void
+}
 const CartProduct: React.FC<Props> = ({
   product,
   incrementQuantity,
   decrementQuantity,
   removeItem,
 }: {
-  product: ProductTypes;
-  incrementQuantity: ({}) => void;
-  decrementQuantity: ({}) => void;
-  removeItem: ({}) => void;
+  product: ProductTypes
+  incrementQuantity: ({}) => void
+  decrementQuantity: ({}) => void
+  removeItem: ({}) => void
 }) => {
   return (
     <div className="flex-col md:flex-row w-full gap-8 flex items-center justify-between rounded-xl">
@@ -224,19 +224,23 @@ const CartProduct: React.FC<Props> = ({
                 </button>
               </div>
             </div>
-            <div className="font-semibold text-sm">
-              {product.price_string} INR
-            </div>
+            <div className="font-semibold text-sm"> ₹ {product.price} INR</div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default function Page() {
-  const { cart, incrementQuantity, decrementQuantity, removeItem } = useCart();
-  console.log(cart);
+  const {
+    cart,
+    incrementQuantity,
+    decrementQuantity,
+    removeItem,
+    totalCartPrice,
+  } = useCart()
+  console.log(cart)
   return (
     <div className="flex flex-col mt-6 items-center justify-center">
       <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
@@ -267,7 +271,9 @@ export default function Page() {
           </div>
           <div className="flex flex-col self-start bg-white p-4 rounded-xl w-full md:max-w-[400px]">
             <div className="w-full flex justify-between">
-              <div className="text-m font-semibold">Totol</div>
+              <div className="text-m font-semibold">
+                Totol ₹{totalCartPrice()}
+              </div>
               <div className="text-m font-semibold">INR</div>
             </div>
             <div className="flex mt-6 justify-between gap-3 w-full">
@@ -279,5 +285,5 @@ export default function Page() {
         </div>
       </div>
     </div>
-  );
+  )
 }

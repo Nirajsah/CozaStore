@@ -2,12 +2,12 @@
 import { BsSearch } from "react-icons/bs";
 import { GoPerson } from "react-icons/go";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { PiBagSimpleLight } from "react-icons/pi";
 import Cart from "./Cart";
 import { useState } from "react";
 import Search from "./Search";
 import { AnimatePresence, delay, motion } from "framer-motion";
 import Link from "next/link";
+import { CartIcon } from "../cart/icon";
 export default function Navbar() {
   const [showCart, setShowCart] = useState<boolean>(false);
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -48,14 +48,7 @@ export default function Navbar() {
               >
                 <AiOutlineMenu />
               </button>
-              <button
-                type="button"
-                name="show cart"
-                onClick={() => setShowCart(!showCart)}
-                className="hover:scale-110 lg:flex hidden ease-in-out duration-100"
-              >
-                <PiBagSimpleLight size={20} />
-              </button>
+              <CartIcon setShowCart={setShowCart} showCart={showCart}/>
             </div>
           </div>
         </div>
@@ -68,7 +61,8 @@ export default function Navbar() {
               role="button"
               onClick={() => setShowCart(!showCart)}
               className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
-            ></div>
+            >
+            </div>
             <div className="fixed right-0 z-[200] p-4 top-10 h-full">
               <Cart setShowCart={setShowCart} showCart={showCart} />
             </div>
@@ -81,7 +75,8 @@ export default function Navbar() {
             role="button"
             onClick={() => setShowSearch(!showSearch)}
             className="w-full h-full z-[50] top-0 left-0 fixed bg-black opacity-60"
-          ></div>
+          >
+          </div>
           <div className="w-full z-[100] fixed justify-center flex">
             <Search />
           </div>
@@ -94,7 +89,8 @@ export default function Navbar() {
               role="button"
               onClick={() => setShowMenu(!showMenu)}
               className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
-            ></div>
+            >
+            </div>
             <motion.div
               initial={{ height: 0 }}
               animate={{ height: "100%" }}

@@ -10,7 +10,6 @@ export const category = pgTable("category", {
 export const product = pgTable("product", {
   productId: text("product_id").primaryKey(),
   name: text("name"),
-  description: text("description"),
   image: text("image"),
   price: integer("price"),
   categoryId: text("category_id").references(() => category.categoryId),

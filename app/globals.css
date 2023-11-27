@@ -6,3 +6,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+@font-face {
+  font-family: 'ppneuemontreal';
+  src: url('/public/fonts/ppneuemontreal-bold.woff') format('woff'); /* Import your font */
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

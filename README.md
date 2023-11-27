@@ -24,6 +24,16 @@ most of the work is done, For animation, I am using framer motion(learning).
 - Home page: not responsive
 - Cart page: looks good
 
+## Project Status (As of November 28, 2023)
+
+- Category page: responsive
+- Product page: responsive
+- Navbar: responsive
+- Home page: responsive
+- Cart page: looks good
+
+**Everything is responsive now, maybe requires some fixes**
+
 ## Features
 
 - **Responsive Design:** The project includes responsive design for various pages, ensuring a consistent and user-friendly experience on different devices and screen sizes.

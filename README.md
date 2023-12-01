@@ -1,5 +1,6 @@
 ## Getting Started
 
+![HomePage](app/assets/HomePage.png)
 This is an E-commerce site built with Next.js 13.4+ and Tailwind CSS. The project is still in development, and this README will be updated as the site progresses.
 
 will be updating the data source with postgresql very soon.

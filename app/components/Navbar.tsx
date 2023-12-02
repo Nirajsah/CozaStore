@@ -1,24 +1,24 @@
-"use client";
-import { BsSearch } from "react-icons/bs";
-import { GoPerson } from "react-icons/go";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import Cart from "./Cart";
-import { useState } from "react";
-import Search from "./Search";
-import { AnimatePresence, delay, motion } from "framer-motion";
-import Link from "next/link";
-import { CartIcon } from "../cart/icon";
+'use client'
+import { BsSearch } from 'react-icons/bs'
+import { GoPerson } from 'react-icons/go'
+import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
+import Cart from './Cart'
+import { useState } from 'react'
+import Search from './Search'
+import { AnimatePresence, motion } from 'framer-motion'
+import Link from 'next/link'
+import { CartIcon } from '../cart/icon'
 export default function Navbar() {
-  const [showCart, setShowCart] = useState<boolean>(false);
-  const [showMenu, setShowMenu] = useState<boolean>(false);
-  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [showCart, setShowCart] = useState<boolean>(false)
+  const [showMenu, setShowMenu] = useState<boolean>(false)
+  const [showSearch, setShowSearch] = useState<boolean>(false)
   return (
     <div>
-      <nav className="flex bg-[#f6f6f6] bg-opacity-90 backdrop-blur border bg-transparent-xl fixed top-0 left-0 z-20 w-full justify-center">
+      <nav className="flex top-0 left-0 z-20 w-full justify-center">
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-xl font-bold font-fira">CozaStore</div>
+              <div className="text-xl font-bold">CozaStore</div>
               <div className="lg:flex hidden justify-between md:w-[150px]">
                 <Link type="link" href="/">
                   Home
@@ -29,7 +29,7 @@ export default function Navbar() {
               </div>
             </div>
 
-            <div className="flex justify-between items-center md:w-[180px] w-[80px]">
+            <div className="flex justify-between items-center md:w-[180px] content-center w-[90px]">
               <button
                 type="button"
                 name="search"
@@ -48,7 +48,7 @@ export default function Navbar() {
               >
                 <AiOutlineMenu />
               </button>
-              <CartIcon setShowCart={setShowCart} showCart={showCart}/>
+              <CartIcon setShowCart={setShowCart} showCart={showCart} />
             </div>
           </div>
         </div>
@@ -61,9 +61,8 @@ export default function Navbar() {
               role="button"
               onClick={() => setShowCart(!showCart)}
               className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
-            >
-            </div>
-            <div className="fixed right-0 z-[200] p-4 top-10 h-full">
+            ></div>
+            <div className="fixed right-0 z-[200] w-full max-w-[420px] p-4 top-10 h-full">
               <Cart setShowCart={setShowCart} showCart={showCart} />
             </div>
           </div>
@@ -75,8 +74,7 @@ export default function Navbar() {
             role="button"
             onClick={() => setShowSearch(!showSearch)}
             className="w-full h-full z-[50] top-0 left-0 fixed bg-black opacity-60"
-          >
-          </div>
+          ></div>
           <div className="w-full z-[100] fixed justify-center flex">
             <Search />
           </div>
@@ -89,11 +87,10 @@ export default function Navbar() {
               role="button"
               onClick={() => setShowMenu(!showMenu)}
               className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
-            >
-            </div>
+            ></div>
             <motion.div
               initial={{ height: 0 }}
-              animate={{ height: "100%" }}
+              animate={{ height: '100%' }}
               transition={{
                 duration: 0.4,
               }}
@@ -103,7 +100,7 @@ export default function Navbar() {
                   duration: 0.2,
                 },
               }}
-              className="w-[90%] h-full fixed z-[100] max-h-[480px] max-w-[420px] rounded-2xl bg-white"
+              className="w-[90%] h-full fixed z-[100] max-h-[480px] p-3 max-w-[420px] rounded-2xl bg-white"
             >
               <motion.div
                 initial={{ opacity: 0 }}
@@ -116,7 +113,7 @@ export default function Navbar() {
                 className="flex flex-col w-full p-4 justify-between"
               >
                 <div className="w-full flex items-center justify-between">
-                  <div className="text-2xl font-bold font-fira">CozaStore</div>
+                  <div className="text-2xl font-bold">CozaStore</div>
                   <button
                     className="lg:hidden"
                     onClick={() => setShowMenu(!showMenu)}
@@ -130,7 +127,7 @@ export default function Navbar() {
                     onClick={() => setShowMenu(!showMenu)}
                     href="/"
                   >
-                    <span className="font-medium font-sans text-2xl">Home</span>
+                    <span className="font-medium text-2xl">Home</span>
                   </Link>
 
                   <Link
@@ -138,11 +135,9 @@ export default function Navbar() {
                     onClick={() => setShowMenu(!showMenu)}
                     href="/category"
                   >
-                    <span className="font-medium font-sans text-2xl">
-                      Category
-                    </span>
+                    <span className="font-medium text-2xl">Category</span>
                   </Link>
-                  <span className="font-medium md:hidden font-sans text-2xl">
+                  <span className="font-medium md:hidden text-2xl">
                     Profile
                   </span>
 
@@ -151,7 +146,7 @@ export default function Navbar() {
                     onClick={() => setShowMenu(!showMenu)}
                     href="/cart"
                   >
-                    <span className="font-medium font-sans text-2xl">Cart</span>
+                    <span className="font-medium text-2xl">Cart</span>
                   </Link>
                 </div>
               </motion.div>
@@ -160,5 +155,5 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </div>
-  );
+  )
 }

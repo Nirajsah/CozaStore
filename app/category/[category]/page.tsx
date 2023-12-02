@@ -1,11 +1,12 @@
 'use client'
 import Image from 'next/image'
+import 'react-intersection-observer'
 import Stars from 'react-stars'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useCart } from '@/app/context/CartProvider'
 import Link from 'next/link'
-import { Product } from '@/app/db/schema/schema'
 import Products from '@/app/db/products.json'
+import Products2 from '@/app/db/output.json'
 
 type Params = {
   id: string
@@ -15,23 +16,38 @@ type Params = {
 type ProductCardProps = {
   data: Product
 }
+
+type Product = {
+  categoryId: string
+  name: string
+  description?: string
+  image: string | string[]
+  stars: number
+  brand?: string
+  productId: string
+  price: number
+}
+
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const { addToCart } = useCart()
+  const { image } = data
   return (
     <div className="w-full sm:w-[320px]">
       <div className="w-[300px] relative h-[300px]">
         <Image
           width={300}
-          priority
           height={300}
-          src={data.image as string}
+          src={image as string}
           className="w-full rounded-xl h-full absolute object-contain"
-          alt=""
+          alt={data.name}
         />
       </div>
       <div className="mt-3">
         <h5 className="truncate w-[300px] mb-1 font-semibold">{data.name}</h5>
-        <div className="mb-1 text-sm font-bold">{data.price}</div>
+        <div className="mb-1 text-sm font-bold">₹{data.price}</div>
+        {/* {data.brand && (
+          <div className="mb-1 text-sm uppercase font-bold">{data.brand}</div>
+        )} */}
         <div className="flex">
           {
             <Stars
@@ -42,12 +58,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
               color1="#cccccc"
               color2="black"
             />
-          }{' '}
+          }
           {data.stars}
         </div>
+
         <button
           onClick={() => addToCart(data)}
-          className="duration-100 underline uppercase font-semibold text-xs mt-3 hover:scale-105 transition-all"
+          className="duration-100 bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
         >
           Add to Cart
         </button>

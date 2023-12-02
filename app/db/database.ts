@@ -380,9 +380,9 @@ const Products: NewProduct[] = [
 ]
 
 export const db = drizzle(client)
-;(async () => {
-  await client.connect()
-})()
+// ;(async () => {
+//   await client.connect()
+// })() // connect to the database if docker is running
 
 export const MigrateDB = async () => {
   try {

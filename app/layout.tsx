@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
-      <body className="bg-[#f6f6f6]">
+      <body className="bg-[#f6f6f6] font-ppneue">
         <CartProvider>
           <Navbar />
           {children}

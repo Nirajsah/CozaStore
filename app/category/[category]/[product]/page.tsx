@@ -1,25 +1,27 @@
-"use client";
+'use client'
 
-import React, { useEffect, useState } from "react";
-import Products from "@/app/db/products.json";
-import ReactStars from "react-stars";
-import { useCart } from "@/app/context/CartProvider";
+import React, { useEffect, useState } from 'react'
+import Products from '@/app/db/products.json'
+import ReactStars from 'react-stars'
+import { useCart } from '@/app/context/CartProvider'
+import Products2 from '@/app/db/output.json'
+
 type Params = {
-  product: string;
-};
+  product: string
+}
 type Product = {
-  categoryId: string;
-  name: string;
-  image: string;
-  stars: number;
-  productId: string;
-  price_string: string;
-  price_symbol: string;
-  price: number;
-};
+  categoryId: string
+  name: string
+  image: string
+  stars: number
+  productId: string
+  price_string: string
+  price_symbol: string
+  price: number
+}
 
 export default function page({ params }: { params: Params }) {
-  const { product } = params;
+  const { product } = params
   // const [item, setItem] = useState<Product>()
   // useEffect(() => {
   //   async function fetchItem() {
@@ -35,22 +37,25 @@ export default function page({ params }: { params: Params }) {
   //   fetchData();
   // }, []);
 
-  const item = Products.filter((Item) => Item.productId === product);
+  const item = Products.filter((Item) => Item.productId === product)
   // const getProduct = async () => {
   //   try {
   //   } catch (error) {
   //
   //   }
   // }
-
-  const { image, name, stars, price, price_symbol } = item[0];
-  const { addToCart } = useCart();
+  const { image, name, stars, price, price_symbol } = item[0]
+  const { addToCart } = useCart()
   return (
     <div className="flex justify-center p-3 mx-3 h-screen relative items-center">
       <div className="w-full max-w-[1320px] md:p-12 h-[800px] absolute top-[100px] bg-white rounded-xl ">
         <div className="w-full h-full flex gap-4 flex-col md:flex-row items-center md:items-start">
-          <div className="w-full max-w-[420px] h-fit drop-shadow-md rounded-xl">
-            <img className="object-contain rounded-xl" src={image} />
+          <div className="w-full max-w-[420px] h-fit rounded-xl">
+            <img
+              loading="lazy"
+              className="object-contain rounded-xl"
+              src={image as string}
+            />
           </div>
           <div className="p-4 w-full space-y-4">
             <h1 className="font-semibold text-xl w-fit font-sans">{name}</h1>
@@ -83,5 +88,5 @@ export default function page({ params }: { params: Params }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

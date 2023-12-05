@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Products from '@/app/db/products.json'
+import Products from '../../../db/products.json'
 import ReactStars from 'react-stars'
-import { useCart } from '@/app/context/CartProvider'
-import Products2 from '@/app/db/output.json'
+import { useCart } from '../../../context/CartProvider'
 
 type Params = {
   product: string

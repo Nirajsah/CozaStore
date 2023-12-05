@@ -1,14 +1,21 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import { PiBagSimpleLight } from 'react-icons/pi'
 import { useCart } from '../context/CartProvider'
+
 interface CartIconProps {
   setShowCart: React.Dispatch<React.SetStateAction<boolean>>
   showCart: boolean
 }
 
-export const CartIcon = ({ setShowCart, showCart }: CartIconProps) => {
-  const { totalItems } = useCart()
+const CartIcon = ({ setShowCart, showCart }: CartIconProps) => {
+  const { cart } = useCart()
+
+  const totalItems = () => {
+    let uniqueItems = new Set(cart.map((item: any) => item.productId))
+    return uniqueItems.size
+  }
+
   return (
     <div className="relative flex items-center">
       <button
@@ -19,9 +26,11 @@ export const CartIcon = ({ setShowCart, showCart }: CartIconProps) => {
       >
         <PiBagSimpleLight size={20} />
         <div className="absolute top-[-2px] right-[-7px] border px-1 bg-red-400 rounded-full text-center text-[10px]">
-          {totalItems()}
+          {cart ? totalItems() : 0}
         </div>
       </button>
     </div>
   )
 }
+
+export default CartIcon

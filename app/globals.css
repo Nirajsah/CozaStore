@@ -7,10 +7,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 
-@font-face {
-  font-family: 'ppneuemontreal';
-  src: url('/public/fonts/ppneuemontreal-bold.woff') format('woff'); /* Import your font */
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+@layer components {
+  @layer responsive {
+    /* Hide scrollbar for Chrome, Safari, and Opera */
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge, and Firefox */
+    .hide-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    .background-color {
+      background: linear-gradient(180deg, #f4f1ed 20%, #fe975e 100%);
+    }
+    .webkit-font-smoothing {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  }
 }

@@ -11,7 +11,7 @@ module.exports = {
       josefin: ['Josefin Sans', 'sens-serif'],
       serif: ['Merriweather', 'serif'],
       oswald: ['Oswald', 'serif'],
-      ppneue: ['ppneuemontreal', 'sans-serif'],
+      ppneue: ['var(--font-ppneuemontreal)', 'sans-serif'],
     },
     extend: {
       backgroundImage: {
@@ -24,6 +24,4 @@ module.exports = {
       },
     },
   },
-
-  plugins: [require('tailwindcss-filters')],
 }

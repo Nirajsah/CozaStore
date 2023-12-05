@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
-import products from '@/app/db/products.json'
+import products from '../db/products.json'
 
 export default function Search() {
   const [searchResults, setSearchResults] = useState([])

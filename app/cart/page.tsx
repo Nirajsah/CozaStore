@@ -224,7 +224,10 @@ const CartProduct: React.FC<Props> = ({
                 </button>
               </div>
             </div>
-            <div className="font-semibold text-sm"> ₹ {product.price} INR</div>
+            <div className="font-semibold text-sm">
+              {' '}
+              ₹ {product.price.toLocaleString('en-IN')} INR
+            </div>
           </div>
         </div>
       </div>
@@ -240,7 +243,6 @@ export default function Page() {
     removeItem,
     totalCartPrice,
   } = useCart()
-  console.log(cart)
   return (
     <div className="flex flex-col mt-6 items-center justify-center">
       <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
@@ -272,7 +274,7 @@ export default function Page() {
           <div className="flex flex-col self-start bg-white p-4 rounded-xl w-full md:max-w-[400px]">
             <div className="w-full flex justify-between">
               <div className="text-m font-semibold">
-                Totol ₹{totalCartPrice()}
+                Totol ₹{totalCartPrice().toLocaleString('en-IN')}
               </div>
               <div className="text-m font-semibold">INR</div>
             </div>

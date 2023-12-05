@@ -137,7 +137,7 @@ const Product = ({
             </div>
           </div>
           <div className="self-start font-semibold text-sm">
-            {item.price_string} INR
+            ₹ {item.price.toLocaleString('en-IN')} INR
           </div>
         </div>
       </div>
@@ -223,7 +223,10 @@ export default function Cart({ setShowCart, showCart }: any) {
             <div className="w-full flex justify-between">
               <div className="text-m font-semibold">Totol</div>
               <div className="text-m font-semibold">
-                INR {totalCartPrice() ? '₹' + totalCartPrice() : ''}
+                INR{' '}
+                {totalCartPrice()
+                  ? '₹' + totalCartPrice().toLocaleString('en-IN')
+                  : ''}
               </div>
             </div>
             <div className="flex mt-6 justify-between gap-3 w-full">

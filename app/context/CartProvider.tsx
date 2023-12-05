@@ -1,7 +1,7 @@
 'use client'
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, { ReactNode, useContext, useState } from 'react'
 
-export const CartContext = createContext<any>(null)
+export const CartContext = React.createContext<any | null>(null)
 interface ProductTypes {
   categoryId: string
   name: string
@@ -85,5 +85,15 @@ export default function CartProvider({ children }: { children: ReactNode }) {
 }
 
 export const useCart = () => {
-  return useContext(CartContext)
+  const cartContext = useContext(CartContext)
+
+  if (!cartContext) {
+    return {
+      addItem: () => {},
+      removeItem: () => {},
+      totalCartPrice: 0,
+      totalItems: () => 0,
+    }
+  }
+  return cartContext
 }

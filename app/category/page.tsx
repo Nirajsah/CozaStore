@@ -1,22 +1,27 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Category from '../db/categories.json'
+// import Category from '../db/categories.json'
 import Image from 'next/image'
 import Link from 'next/link'
-// import { Category } from '../db/schema/schema'  if docker is running
+import { Category } from '../db/schema/schema' // if docker is running
+import React from 'react'
 
 type CategoryCardProps = {
   data: Category
 }
+
 const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
   return (
-    <Link as={`/category/${data.id}`} href={`/category/${data.id}`}>
+    <Link
+      as={`/category/${data.categoryId}`}
+      href={`/category/${data.categoryId}`}
+    >
       <div className="w-full sm:w-[280px] duration-100 hover:scale-105 transition-all">
         <div className="w-[280px] h-[280px]">
           <Image
             width={280}
             height={280}
-            src={data.image}
+            src={data.image as string}
             priority
             className="w-full rounded-xl h-full object-cover"
             alt=""
@@ -30,12 +35,12 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
     </Link>
   )
 }
-interface Category {
-  id: string
-  name: string
-  description: string
-  image: string
-}
+// interface Category {
+//   id: string
+//   name: string
+//   description: string
+//   image: string
+// }
 
 export default function Page() {
   const [data, setData] = useState<Category[]>([])
@@ -45,6 +50,7 @@ export default function Page() {
       try {
         const response = await fetch('/api/category')
         const jsonData = await response.json()
+        console.log(jsonData)
         setData(jsonData)
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -60,13 +66,14 @@ export default function Page() {
         <div className="flex mt-16 p-4 justify-center flex-col">
           <h1 className="text-5xl mb-9 font-bold">Category Page</h1>
           <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2">
-            {/* {data?.map((category: Category) => (
-              <CategoryCard key={category.categoryId} data={category} />
-            ))} */}
+            {data &&
+              data?.map((category: Category) => (
+                <CategoryCard key={category.categoryId} data={category} />
+              ))}
 
-            {Category?.map((category: Category) => (
+            {/* {Category?.map((category: Category) => (
               <CategoryCard key={category.id} data={category} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

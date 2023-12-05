@@ -7,24 +7,34 @@ import { useState } from 'react'
 import Search from './Search'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
-import { CartIcon } from '../cart/icon'
+import CartIcon from '../cart/CartIcon'
+import { usePathname } from 'next/navigation'
+
 export default function Navbar() {
   const [showCart, setShowCart] = useState<boolean>(false)
   const [showMenu, setShowMenu] = useState<boolean>(false)
   const [showSearch, setShowSearch] = useState<boolean>(false)
+
+  const router = usePathname()
+  const isHome = router === '/'
   return (
     <div>
-      <nav className="flex top-0 left-0 z-20 w-full justify-center">
+      <nav
+        style={{ backgroundColor: isHome ? '#f4f1ed' : '#f8f8f8' }}
+        className="flex top-0 left-0 z-20 w-full justify-center"
+      >
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-xl font-bold">CozaStore</div>
+              <div className="text-lg font-bold uppercase font-fira">
+                QuickStore
+              </div>
               <div className="lg:flex hidden justify-between md:w-[150px]">
                 <Link type="link" href="/">
-                  Home
+                  <span className="text-md">Home</span>
                 </Link>
                 <Link type="link" href="/category">
-                  Category
+                  <span className="text-md">Category</span>
                 </Link>
               </div>
             </div>

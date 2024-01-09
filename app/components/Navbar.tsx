@@ -26,7 +26,7 @@ export default function Navbar() {
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-lg font-bold uppercase font-fira">
+              <div className="text-lg font-bold capitalize font-fira">
                 <Link href="/"> Coza Store</Link>
               </div>
               <div className="lg:flex hidden justify-between md:w-[150px]">

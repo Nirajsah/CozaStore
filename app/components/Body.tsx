@@ -125,9 +125,9 @@ export default function Body() {
 
   return (
     <div className="flex flex-col items-center justify-center ">
-      <div className="md:mt-[30px] h-[400px]">
+      <div className="md:mt-[20px] h-[400px]">
         <div className="flex justify-center items-center text-wrap h-full">
-          <div className="text-[45px] leading-[60px] transition-all duration-300 ease-out md:text-[65px] md:leading-[80px] lg:text-[85px] lg:leading-[120px] flex font-bold w-full items-center md:font-[550px] flex-wrap justify-center font-ppneue">
+          <div className="text-[50px] leading-[60px] md:text-[65px] md:leading-[80px] lg:text-[85px] lg:leading-[120px] flex font-bold w-full items-center md:font-[550px] flex-wrap justify-center">
             {TEXT.split(' ').map((character: string, index: number) => (
               <motion.span
                 className={`mx-2 ${

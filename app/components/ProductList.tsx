@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '../context/CartProvider'
 import Stars from 'react-stars'
+import { PiBagSimpleLight } from 'react-icons/pi'
 
 interface Product {
   categoryId: string
@@ -30,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const { addToCart } = useCart()
   const { image } = data
   return (
-    <div className="w-full sm:w-[320px]">
+    <div className="w-full flex flex-col items-center sm:w-[320px]">
       <div className="w-[300px] relative h-[300px]">
         <Image
           width={300}
@@ -59,13 +60,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
           }
           {data.stars}
         </div>
-
         <button
           onClick={() => addToCart(data)}
-          className="duration-100 bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
+          className="duration-100 bg-black flex items-center gap-4 justify-center text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
         >
+          <PiBagSimpleLight size={20} />
           Add to Cart
-        </button>
+        </button>{' '}
       </div>
     </div>
   )
@@ -81,13 +82,14 @@ const ProductList: React.FC<ProductListProps> = ({
   const endIndex = startIndex + productsPerPage
   const currentProducts = products.slice(startIndex, endIndex)
   return (
-    <div className="lg:w-[1320px] grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-4 my-8">
+    <div className="grid lg:grid-cols-4 grid-flow-row-dense flex-wrap w-full justify-center gap-y-6">
       {currentProducts &&
         currentProducts?.map((items: Product) => (
           <Link
             href={`/category/${params.category}/${items.productId}`}
             as={`/category/${params.category}/${items.productId}`}
             key={items.productId}
+            className="justify-items-start"
           >
             <ProductCard data={items} />
           </Link>

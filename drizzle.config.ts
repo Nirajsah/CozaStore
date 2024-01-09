@@ -1,12 +1,11 @@
+import { defineConfig } from 'drizzle-kit'
 import type { Config } from 'drizzle-kit'
 
-export default {
+export default defineConfig({
   driver: 'pg',
   schema: './app/db/schema/schema.ts',
   out: 'drizzle',
   dbCredentials: {
-    connectionString: 'postgres://postgres:postgres@0.0.0.0:5432/shop',
+    connectionString: process.env.DATABASE_URL as string,
   },
-} satisfies Config
-
-// connectionString: 'cozastore://coza:cozastore@localhost:5432/shop',
+}) satisfies Config

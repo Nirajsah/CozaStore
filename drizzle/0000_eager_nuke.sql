@@ -6,13 +6,12 @@ CREATE TABLE IF NOT EXISTS "category" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "product" (
-	"product_id" serial PRIMARY KEY NOT NULL,
+	"product_id" text PRIMARY KEY NOT NULL,
 	"name" text,
-	"description" text,
 	"image" text,
 	"price" integer,
 	"category_id" text,
-	"stars" numeric
+	"stars" real
 );
 --> statement-breakpoint
 DO $$ BEGIN

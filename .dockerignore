@@ -1,0 +1,15 @@
+# Ignore node_modules
+node_modules
+
+# Ignore .git directory
+.git
+
+# Ignore .env file
+.env
+drizzle
+# Ignore log files
+*.log
+
+# Ignore Dockerfile and docker-compose.yml
+Dockerfile
+docker-compose.yml

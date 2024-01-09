@@ -1,18 +1,13 @@
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { migrate } from 'drizzle-orm/node-postgres/migrator'
-import pkg from 'pg'
-const { Client } = pkg
-import { NewCategory, NewProduct, category, product } from './schema/schema'
+import { drizzle } from 'drizzle-orm/postgres-js'
+import { migrate } from 'drizzle-orm/postgres-js/migrator'
+import postgres from 'postgres'
+import * as schema from './schema/schema'
 
-const client = new Client({
-  host: '0.0.0.0',
-  port: 5432,
-  user: 'postgres',
-  password: 'postgres',
-  database: 'shop',
-})
+const queryClient = postgres(process.env.DATABASE_URL as string)
+export const db = drizzle(queryClient, { schema })
+const migrationClient = postgres(process.env.DATABASE_URL as string, { max: 1 })
 
-const Category: NewCategory[] = [
+const Category: schema.NewCategory[] = [
   {
     categoryId: 'keyboard',
     name: 'keyboard',
@@ -32,7 +27,7 @@ const Category: NewCategory[] = [
     description: 'Buy Latest MacBooks',
   },
 ]
-const Products: NewProduct[] = [
+const Products: schema.NewProduct[] = [
   {
     categoryId: 'keyboard',
     name: 'Redgear Shadow Blade Mechanical Keyboard with Drive Customization, Spectrum LED Lights, Media Control Knob and Wrist Support (Black)',
@@ -403,20 +398,11 @@ const Products: NewProduct[] = [
   },
 ]
 
-export const db = drizzle(client)
-;(async () => {
-  try {
-    await client.connect()
-  } catch (error) {
-    console.log('Error connecting to database:', error)
-  }
-})()
-
 export const MigrateDB = async () => {
   try {
-    await db.insert(category).values(Category)
-    await db.insert(product).values(Products)
-    await migrate(db, { migrationsFolder: 'drizzle' })
+    await db.insert(schema.category).values(Category)
+    await db.insert(schema.product).values(Products)
+    await migrate(drizzle(migrationClient), { migrationsFolder: 'drizzle' })
     console.log('Migrations completed successfully.')
     process.exit(0)
   } catch (error) {

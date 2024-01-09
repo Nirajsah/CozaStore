@@ -1,1 +1,0 @@
-ALTER TABLE "product" ALTER COLUMN "stars" SET DATA TYPE real;

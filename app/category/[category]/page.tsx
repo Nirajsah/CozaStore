@@ -58,7 +58,7 @@ export default function Page({ params }: { params: Params }) {
   return (
     <div className="flex justify-center">
       <div className="lg:w-[1320px] mx-4 my-8">
-        <div className="flex mt-10 justify-center flex-col">
+        <div className="flex mt-6 justify-center flex-col">
           <h1 className="text-5xl mb-9 capitalize font-bold">
             {params.category}
           </h1>

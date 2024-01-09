@@ -223,7 +223,7 @@ export default function Cart({ setShowCart, showCart }: any) {
             <div className="w-full flex justify-between">
               <div className="text-m font-semibold">Totol</div>
               <div className="text-m font-semibold">
-                INR{' '}
+                INR
                 {totalCartPrice()
                   ? '₹' + totalCartPrice().toLocaleString('en-IN')
                   : ''}

@@ -50,14 +50,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
         )} */}
         <div className="flex">
           {
-            <Stars
-              count={5}
-              value={data.stars as number}
-              size={15}
-              edit={false}
-              color1="#cccccc"
-              color2="black"
-            />
+            // <Stars
+            //   count={5}
+            //   value={data.stars as number}
+            //   size={15}
+            //   edit={false}
+            //   color1="#cccccc"
+            //   color2="black"
+            // />
           }
           {data.stars}
         </div>
@@ -93,7 +93,7 @@ const ProductList: React.FC<ProductListProps> = ({
             {/* extracted button element to prevent the page from navigating to product page  */}
             <button
               onClick={() => addToCart(items)}
-              className="duration-100 bg-black flex items-center gap-4 justify-center text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
+              className="duration-300 transform transition-all bg-black ease-out flex items-center gap-4 justify-center text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
             >
               <PiBagSimpleLight size={20} />
               Add to Cart

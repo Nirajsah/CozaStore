@@ -27,7 +27,6 @@ export default function CartProvider({ children }: { children: ReactNode }) {
       const newItem = { ...product, quantity: 1 }
       setCart([...cart, newItem])
     }
-    console.log(cart)
   }
   const decrementQuantity = (product: ProductTypes) => {
     const item = cart.find(

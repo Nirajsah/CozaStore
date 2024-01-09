@@ -1,23 +1,15 @@
 'use client'
-import Image from 'next/image'
 import 'react-intersection-observer'
-import Stars from 'react-stars'
 import React, { useEffect, useState } from 'react'
 import { useCart } from '../../context/CartProvider'
-import Link from 'next/link'
 import Products from '../../db/products.json'
 // import Products2 from '@/app/db/output.json'
-import Previous from '../../assets/previous.png'
 import ProductList from '../../components/ProductList'
 import Pagination from '@/app/components/Pagination'
 
 type Params = {
   id: string
   category: string
-}
-
-type ProductCardProps = {
-  data: Product
 }
 
 type Product = {
@@ -31,50 +23,6 @@ type Product = {
   price: number
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
-  const { addToCart } = useCart()
-  const { image } = data
-  return (
-    <div className="w-[320px] sm:w-[320px]">
-      <div className="w-[300px] relative h-[300px]">
-        <Image
-          width={300}
-          height={300}
-          src={image as string}
-          className="w-full rounded-xl h-full absolute object-contain"
-          alt={data.name}
-        />
-      </div>
-      <div className="mt-3">
-        <h5 className="truncate w-[300px] mb-1 font-semibold">{data.name}</h5>
-        <div className="mb-1 text-xl font-bold">₹{data.price}</div>
-        {/* {data.brand && (
-          <div className="mb-1 text-sm uppercase font-bold">{data.brand}</div>
-        )} */}
-        <div className="flex">
-          {
-            <Stars
-              count={5}
-              value={data.stars as number}
-              size={15}
-              edit={false}
-              color1="#cccccc"
-              color2="black"
-            />
-          }
-          {data.stars}
-        </div>
-
-        <button
-          onClick={() => addToCart(data)}
-          className="duration-100 bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
-        >
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  )
-}
 export default function Page({ params }: { params: Params }) {
   // const [data, setData] = useState<Product[]>([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -110,11 +58,10 @@ export default function Page({ params }: { params: Params }) {
   return (
     <div className="flex justify-center">
       <div className="lg:w-[1320px] mx-4 my-8">
-        <div className="flex mt-16 justify-center flex-col">
+        <div className="flex mt-10 justify-center flex-col">
           <h1 className="text-5xl mb-9 capitalize font-bold">
             {params.category}
           </h1>
-          {/* <div className="grid grid-cols-1 justify-center lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2"> */}
           {/* only if docker is running */}
           {/* {data &&
             data?.map((items: Product) => (
@@ -135,16 +82,6 @@ export default function Page({ params }: { params: Params }) {
               totalProducts={totalProducts}
             />
           </div>
-          {/* Items &&
-              Items?.map((items: Product) => (
-                <Link
-                  href={`/category/${params.category}/${items.productId}`}
-                  as={`/category/${params.category}/${items.productId}`}
-                  key={items.productId}
-                >
-                  <ProductCard data={items} />
-                </Link>
-              ))} */}
           <Pagination
             currentPage={currentPage}
             Items={Items}
@@ -152,7 +89,6 @@ export default function Page({ params }: { params: Params }) {
           />
         </div>
       </div>
-      {/* </div> */}
     </div>
   )
 }

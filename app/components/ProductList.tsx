@@ -30,6 +30,7 @@ interface ProductListProps {
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const { addToCart } = useCart()
   const { image } = data
+
   return (
     <div className="w-full flex flex-col items-center sm:w-[320px]">
       <div className="w-[300px] relative h-[300px]">
@@ -60,13 +61,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
           }
           {data.stars}
         </div>
-        <button
-          onClick={() => addToCart(data)}
-          className="duration-100 bg-black flex items-center gap-4 justify-center text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
-        >
-          <PiBagSimpleLight size={20} />
-          Add to Cart
-        </button>{' '}
       </div>
     </div>
   )
@@ -81,22 +75,31 @@ const ProductList: React.FC<ProductListProps> = ({
   const startIndex = (currentPage - 1) * productsPerPage
   const endIndex = startIndex + productsPerPage
   const currentProducts = products.slice(startIndex, endIndex)
+  const { addToCart } = useCart()
+
   return (
-    <div className="grid lg:grid-cols-4 grid-flow-row-dense flex-wrap w-full justify-center gap-y-6">
+    <div className="grid lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 grid-flow-row-dense flex-wrap w-full justify-center gap-y-6">
       {currentProducts &&
         currentProducts?.map((items: Product) => (
-          <Link
-            href={`/category/${params.category}/${items.productId}`}
-            as={`/category/${params.category}/${items.productId}`}
-            key={items.productId}
-            className="justify-items-start"
-          >
-            <ProductCard data={items} />
-          </Link>
+          <div key={items.productId}>
+            <Link
+              href={`/category/${params.category}/${items.productId}`}
+              as={`/category/${params.category}/${items.productId}`}
+              className="justify-items-start"
+            >
+              <ProductCard data={items} />
+            </Link>
+
+            {/* extracted button element to prevent the page from navigating to product page  */}
+            <button
+              onClick={() => addToCart(items)}
+              className="duration-100 bg-black flex items-center gap-4 justify-center text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
+            >
+              <PiBagSimpleLight size={20} />
+              Add to Cart
+            </button>
+          </div>
         ))}
-      {/* {currentProducts.map((product: Product) => (
-          <li key={product.productId}>{product.name}</li>
-        ))} */}
     </div>
   )
 }

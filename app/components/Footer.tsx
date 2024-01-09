@@ -309,8 +309,8 @@ const Footer = () => {
                 </a>
               </div>
               <div className="flex-1 text-sm font-medium leading-6 text-white">
-                © 2023 Quick Store Inc. All rights reserved. “Quick Store” is a
-                trademark of QuickStore Inc.
+                © 2023 Coza Store Inc. All rights reserved. “Coza Store” is a
+                trademark of CozaStore Inc.
               </div>
             </div>
           </div>

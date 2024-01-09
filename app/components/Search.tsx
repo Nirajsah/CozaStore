@@ -33,6 +33,9 @@ export default function Search() {
               <h2 className="truncate py-2">{product.name}</h2>
             </div>
           ))}
+        <div className="text-center mt-5 text-[#9ca3af] text-xl font-bold">
+          Just a ProtoType
+        </div>
       </div>
     </div>
   )

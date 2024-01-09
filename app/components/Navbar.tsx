@@ -26,16 +26,16 @@ export default function Navbar() {
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-lg font-bold capitalize font-fira">
-                <Link href="/"> Coza Store</Link>
-              </div>
+              <a href="/" className="text-2xl font-bold capitalize font-fira">
+                CozaStore
+              </a>
               <div className="lg:flex hidden justify-between md:w-[150px]">
-                <Link type="link" href="/">
-                  <span className="text-md">Home</span>
-                </Link>
-                <Link type="link" href="/category">
-                  <span className="text-md">Category</span>
-                </Link>
+                <a type="link" href="/" className="text-md">
+                  Home
+                </a>
+                <a type="link" href="/category" className="text-md">
+                  Category
+                </a>
               </div>
             </div>
 

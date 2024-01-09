@@ -12,7 +12,7 @@ const OurPartners = () => {
       <div className="font-ppneue mx-auto max-w-[937px] text-center text-[40px] font-semibold leading-[48px] tracking-[0.8px] text-black text-darkscale-500 md:mt-[50px] md:text-[72px] md:leading-[100px] md:tracking-[-0.25px]">
         Our Partners
       </div>
-      <div className="w-full flex-wrap max-w-[1280px] h-full justify-between flex bg-[#fafafa] p-7 sm:p-12 drop-shadow-md rounded-[42px] flex-col gap-14 mt-10 items-center">
+      <div className="w-full flex-wrap max-w-[1280px] h-full justify-around flex bg-[#fafafa] p-7 sm:p-12 drop-shadow-md rounded-[42px] flex-col gap-14 mt-10 items-center">
         <div className="opacity-80 flex justify-between flex-wrap gap-14">
           <div className="">
             <svg

@@ -11,7 +11,6 @@ module.exports = {
       josefin: ['Josefin Sans', 'sens-serif'],
       serif: ['Merriweather', 'serif'],
       oswald: ['Oswald', 'serif'],
-      ppneue: ['var(--font-ppneuemontreal)', 'sans-serif'],
     },
     extend: {
       backgroundImage: {

@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
-      <body className="bg-[#ececec5a]">
+      <body className="bg-[#ececec5a] overscroll-none">
         <CartProvider>
           <Navbar />
           {children}

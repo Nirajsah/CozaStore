@@ -174,7 +174,7 @@ export default function Body() {
           Testimonials
         </div>
         <div className="grid bg-[#f4f1ed] drop-shadow-sm gap-[24px] rounded-[24px] px-4 py-[64px] md:gap-[48px] md:rounded-[48px] md:py-[120px] lg:px-16">
-          <div className="relative hide-scrollbar mx-4 h-[490px] flex transform-gpu snap-x snap-mandatory overflow-x-scroll scroll-smooth px-[calc(16px/2)] md:px-[calc(40px/2)] lg:-mx-16">
+          <div className="relative hide-scrollbar h-[490px] flex transform-gpu snap-x snap-mandatory overflow-x-scroll scroll-smooth px-[calc(16px/2)] md:px-[calc(40px/2)] lg:-mx-16">
             {testimonials.map((testimonial: Testimonial, index: number) => (
               <Testimonials key={index} testimonial={testimonial} />
             ))}

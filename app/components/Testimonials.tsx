@@ -31,7 +31,7 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonial }) => {
               alt=""
             />
           </div>
-          <p className="font-medium leading-4 tracking-[0.32px] md:text-[20px] md:leading-[20px] md:tracking-[0.4px] text-[18px]">
+          <p className="font-medium leading-4 tracking-[0.32px] md:text-[20px] md:leading-[20px] md:tracking-[0.4px] text-[15px]">
             {name}
           </p>
         </div>

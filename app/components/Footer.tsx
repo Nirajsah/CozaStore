@@ -34,23 +34,23 @@ const Footer = () => {
                   strokeLinejoin="round"
                 ></path>
               </svg>
-            </div>{' '}
+            </div>
             <div
               className="grid flex-1 justify-items-start gap-1 sm:gap-2"
               data-svelte-h="svelte-zalp29"
             >
-              <div className="leading-6 sm:text-xl text-white sm:font-medium">
+              <div className="leading-6 text-md text-white sm:font-medium">
                 Free Shipping, Try it for 60 days
-              </div>{' '}
+              </div>
               <a
                 className="font-medium text-white/70 underline"
                 href="https://checkout.getbia.com/policies/shipping-policy"
               >
-                <span>Learn more</span>{' '}
+                <span>Learn more</span>
                 <span className="sr-only">about Bía</span>
               </a>
             </div>
-          </div>{' '}
+          </div>
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-[20px] border-2 border-white/30">
               <svg
@@ -90,14 +90,14 @@ const Footer = () => {
                   strokeLinejoin="round"
                 ></path>
               </svg>
-            </div>{' '}
+            </div>
             <div className="grid flex-1 justify-items-start gap-1 sm:gap-2">
               <div
-                className="leading-6 text-white sm:text-xl sm:font-medium"
+                className="leading-6 text-white sm:text-md sm:font-medium"
                 data-svelte-h="svelte-atew63"
               >
                 Need help? We’re here for you
-              </div>{' '}
+              </div>
               <a
                 className="font-medium text-white/70 underline"
                 href="https://m.me/bianeuroscience"
@@ -210,7 +210,7 @@ const Footer = () => {
                   <div className="text-xl font-medium leading-6">
                     Quick links
                   </div>
-                  <div className="grid items-start justify-items-start leading-10">
+                  <div className="grid text-sm items-start justify-items-start leading-10">
                     <a
                       className="font-medium opacity-60 hover:underline focus:underline active:underline"
                       href="/"
@@ -239,7 +239,7 @@ const Footer = () => {
                 </div>
                 <div className="flex flex-col items-start gap-8">
                   <div className="text-xl font-medium leading-6">Social</div>
-                  <div className="grid items-start justify-items-start leading-10">
+                  <div className="grid text-sm items-start justify-items-start leading-10">
                     <a
                       className="font-medium opacity-60 hover:underline focus:underline active:underline"
                       href="https://www.instagram.com/bianeuroscience/"
@@ -274,7 +274,7 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-            <div className="max-w-[600px] pb-16 font-medium leading-7">
+            <div className="max-w-[600px] text-sm pb-16 font-medium leading-7">
               <span className="opacity-60">
                 Step into a world of cutting-edge electronics and timeless
                 fashion with our carefully curated collection. Complement your
@@ -288,7 +288,7 @@ const Footer = () => {
             </div>
             <hr className="border-white/10" />
             <div className="flex gap-5 pb-12 pt-6 lg:flex-row-reverse">
-              <div className="flex flex-col md:flex-row max-w-full flex-shrink-0 flex-wrap gap-2 sm:gap-9">
+              <div className="flex text-sm flex-col md:flex-row max-w-full flex-shrink-0 flex-wrap gap-2 sm:gap-9">
                 <a
                   className="font-medium tracking-[3%] text-white/80 hover:underline focus:underline active:underline"
                   href="#"
@@ -309,7 +309,7 @@ const Footer = () => {
                 </a>
               </div>
               <div className="flex-1 text-sm font-medium leading-6 text-white">
-                © 2023 Coza Store Inc. All rights reserved. “Coza Store” is a
+                © 2023 Coza Store Inc. All rights reserved. “CozaStore” is a
                 trademark of CozaStore Inc.
               </div>
             </div>

@@ -103,7 +103,7 @@ const testimonials: Testimonial[] = [
   },
 ]
 
-export default function Body() {
+const Body: React.FC = () => {
   const TEXT: string = 'Shop Your Favorite Products with Ease'
 
   const [translateY, setTranslateY] = useState(0)
@@ -187,3 +187,4 @@ export default function Body() {
     </div>
   )
 }
+export default Body

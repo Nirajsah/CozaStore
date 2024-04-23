@@ -26,9 +26,7 @@ export default function Navbar() {
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-lg font-bold uppercase font-fira">
-                QuickStore
-              </div>
+              <div className="text-2xl font-bold font-fira">CozaStore</div>
               <div className="lg:flex hidden justify-between md:w-[150px]">
                 <Link type="link" href="/">
                   <span className="text-md">Home</span>
@@ -38,8 +36,7 @@ export default function Navbar() {
                 </Link>
               </div>
             </div>
-
-            <div className="flex justify-between items-center md:w-[180px] content-center w-[90px]">
+            <div className="flex gap-4 justify-between items-center md:w-fit content-center w-[90px]">
               <button
                 type="button"
                 name="search"
@@ -47,9 +44,14 @@ export default function Navbar() {
               >
                 <BsSearch />
               </button>
-              <div className="hidden md:flex">
+              <Link
+                href="/login"
+                className="hidden bg-gradient-to-tr from-[#FFB777] to-[#F16C6A] px-4 py-2 rounded-full md:flex md:items-center gap-2"
+              >
                 <GoPerson size={20} />
-              </div>
+                {/* <span className="text-md">Niraj Sah</span> */}
+                <span className="text-md">Get Started</span>
+              </Link>
               <button
                 type="button"
                 name="show menu"
@@ -158,6 +160,11 @@ export default function Navbar() {
                   >
                     <span className="font-medium text-2xl">Cart</span>
                   </Link>
+                  <button className="bg-gradient-to-tr w-fit from-[#FFB777] to-[#F16C6A] px-4 py-2 rounded-full flex items-center gap-2">
+                    <GoPerson size={20} />
+                    {/* <span className="text-md">Niraj Sah</span> */}
+                    <span className="text-lg">Get Started</span>
+                  </button>
                 </div>
               </motion.div>
             </motion.div>

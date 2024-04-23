@@ -398,10 +398,20 @@ const Products: schema.NewProduct[] = [
   },
 ]
 
+const Cart: schema.NewCart[] = [
+  {
+    cartId: 2,
+    userId: 28,
+    productId: 'B08T28HSDN',
+    quantity: 2,
+    createdAt: 'now()',
+  },
+]
 export const MigrateDB = async () => {
   try {
-    await db.insert(schema.category).values(Category)
-    await db.insert(schema.product).values(Products)
+    //await db.insert(schema.category).values(Category)
+    //await db.insert(schema.product).values(Products)
+    // await db.insert(schema.cart).values(Cart)
     await migrate(drizzle(migrationClient), { migrationsFolder: 'drizzle' })
     console.log('Migrations completed successfully.')
     process.exit(0)

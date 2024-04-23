@@ -5,11 +5,8 @@ import Stars from 'react-stars'
 import React, { useEffect, useState } from 'react'
 import { useCart } from '../../context/CartProvider'
 import Link from 'next/link'
-import Products from '../../db/products.json'
-// import Products2 from '@/app/db/output.json'
-import Previous from '../../assets/previous.png'
-import ProductList from '../../components/ProductList'
 import Pagination from '@/app/components/Pagination'
+import Navbar from '@/app/components/Navbar'
 
 type Params = {
   id: string
@@ -76,57 +73,51 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   )
 }
 export default function Page({ params }: { params: Params }) {
-  // const [data, setData] = useState<Product[]>([])
+  const [data, setData] = useState<Product[]>([])
+  const [offset, setOffSet] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState(1)
 
-  // Make a request to the server to get the data, if docker is running
-  //
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const response = await fetch('/api/category/product', {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ categoryId: params.category }),
-  //       })
-  //       const jsonData = await response.json()
-  //       setData(jsonData)
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error)
-  //     }
-  //   }
-  //
-  //   fetchData()
-  // }, [params.category])
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/category/product', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({ categoryId: params.category, offset }),
+        })
+        const jsonData = await response.json()
+        setData(jsonData)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
 
-  const Items: Product[] = Products.filter(
-    (item) => item.categoryId === params.category
-  )
-  const productsPerPage = 9
-  const totalProducts = Items.length
+    fetchData()
+  }, [params.category, offset])
 
   return (
-    <div className="flex justify-center">
-      <div className="lg:w-[1320px] mx-4 my-8">
-        <div className="flex mt-16 justify-center flex-col">
-          <h1 className="text-5xl mb-9 capitalize font-bold">
-            {params.category}
-          </h1>
-          {/* <div className="grid grid-cols-1 justify-center lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2"> */}
-          {/* only if docker is running */}
-          {/* {data &&
-            data?.map((items: Product) => (
-              <Link
-                href={`/category/${params.category}/${items.productId}`}
-                as={`/category/${params.category}/${items.productId}`}
-                key={items.productId}
-              >
-                <ProductCard data={items} />
-              </Link>
-            ))} */}
-          <div className="w-full flex justify-between">
+    <>
+      <Navbar />
+      <div className="flex justify-center">
+        <div className="lg:w-[1320px] mx-4 my-8">
+          <div className="flex mt-16 justify-center flex-col">
+            <h1 className="text-5xl mb-9 capitalize font-bold">
+              {params.category}
+            </h1>
+            <div className="grid grid-cols-1 justify-center lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2">
+              {data &&
+                data?.map((items: Product) => (
+                  <Link
+                    href={`/category/${params.category}/${items.productId}`}
+                    as={`/category/${params.category}/${items.productId}`}
+                    key={items.productId}
+                  >
+                    <ProductCard data={items} />
+                  </Link>
+                ))}
+              {/* <div className="w-full flex justify-between">
             <ProductList
               params={params}
               products={Items}
@@ -134,8 +125,8 @@ export default function Page({ params }: { params: Params }) {
               productsPerPage={productsPerPage}
               totalProducts={totalProducts}
             />
-          </div>
-          {/* Items &&
+          </div> */}
+              {/* Items &&
               Items?.map((items: Product) => (
                 <Link
                   href={`/category/${params.category}/${items.productId}`}
@@ -145,14 +136,18 @@ export default function Page({ params }: { params: Params }) {
                   <ProductCard data={items} />
                 </Link>
               ))} */}
-          <Pagination
-            currentPage={currentPage}
-            Items={Items}
-            setCurrentPage={setCurrentPage}
-          />
+            </div>
+            <div className="w-full mt-10 p-10 flex items-center justify-center">
+              <Pagination
+                currentPage={currentPage}
+                offset={offset}
+                setOffSet={setOffSet}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
+          </div>
         </div>
       </div>
-      {/* </div> */}
-    </div>
+    </>
   )
 }

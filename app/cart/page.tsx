@@ -1,7 +1,8 @@
 'use client'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useCart } from '../context/CartProvider'
+import { UpdateQuantity } from '@/app/utils/util'
 
 interface ProductTypes {
   categoryId: string
@@ -16,21 +17,14 @@ interface ProductTypes {
 }
 
 type Props = {
-  product: ProductTypes
-  incrementQuantity: ({}) => void
-  decrementQuantity: ({}) => void
+  product: any
+  UpdateQuantity: any
   removeItem: ({}) => void
 }
 const CartProduct: React.FC<Props> = ({
   product,
-  incrementQuantity,
-  decrementQuantity,
+  UpdateQuantity,
   removeItem,
-}: {
-  product: ProductTypes
-  incrementQuantity: ({}) => void
-  decrementQuantity: ({}) => void
-  removeItem: ({}) => void
 }) => {
   return (
     <div className="flex-col md:flex-row w-full gap-8 flex items-center justify-between rounded-xl">
@@ -42,20 +36,24 @@ const CartProduct: React.FC<Props> = ({
                 <Image
                   width={80}
                   height={80}
-                  src={product.image}
+                  src={product.product.image}
                   className="w-full rounded-xl h-full object-cover"
                   alt=""
                 />
               </div>
-
               <div className="flex flex-col">
                 <div className="h-[40px] text-ellipsis overflow-hidden w-[200px] md:w-[300px] font-semibold text-sm capitalize">
-                  {product.name}
+                  {product.product.name}
                 </div>
-                <div className="lg:hidden flex mt-4">
+                <div className="lg:hidden flex mt-4 lg:mt-0">
                   <div className="border self-center mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                     <button
-                      onClick={() => decrementQuantity(product)}
+                      onClick={() =>
+                        UpdateQuantity(
+                          product.product.productId,
+                          product.cart.quantity - 1
+                        )
+                      }
                       name="decrement"
                       type="button"
                       className="flex w-[36px] h-full justify-center items-center"
@@ -65,11 +63,11 @@ const CartProduct: React.FC<Props> = ({
                         viewBox="0 0 24 24"
                         width="14px"
                         height="14px"
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                       >
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M21 13L3 13L3 11L21 11L21 13Z"
                         ></path>
                       </svg>
@@ -77,12 +75,17 @@ const CartProduct: React.FC<Props> = ({
                     <input
                       type="number"
                       readOnly
-                      value={product.quantity}
+                      disabled
+                      value={product.cart.quantity}
                       className="text-center bg-inherit focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[36px]"
                     />
-
                     <button
-                      onClick={() => incrementQuantity(product)}
+                      onClick={() =>
+                        UpdateQuantity(
+                          product.product.productId,
+                          product.cart.quantity + 1
+                        )
+                      }
                       type="button"
                       name="increment"
                       className="flex w-[36px] h-full justify-center items-center"
@@ -92,10 +95,10 @@ const CartProduct: React.FC<Props> = ({
                         viewBox="0 0 24 24"
                         width="14px"
                         height="14px"
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z"
                         />
                       </svg>
@@ -111,28 +114,28 @@ const CartProduct: React.FC<Props> = ({
                       focusable="false"
                     >
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M3.92012 7H20.0799L18.926 22H5.07397L3.92012 7ZM6.07987 9L6.92603 20H17.074L17.9201 9H6.07987Z"
                       ></path>
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M22 9H2V7H22V9Z"
                       ></path>
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M9 18L9 11L11 11L11 18L9 18Z"
                       ></path>
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M13 18L13 11L15 11L15 18L13 18Z"
                       ></path>
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M10 5C9.44772 5 9 5.44772 9 6V7H7V6C7 4.34315 8.34315 3 10 3H14C15.6569 3 17 4.34315 17 6V7H15V6C15 5.44772 14.5523 5 14 5H10Z"
                       ></path>
                     </svg>
@@ -142,7 +145,12 @@ const CartProduct: React.FC<Props> = ({
               <div className="lg:flex hidden mt-4">
                 <div className="border mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                   <button
-                    onClick={() => decrementQuantity(product)}
+                    onClick={() =>
+                      UpdateQuantity(
+                        product.product.productId,
+                        product.cart.quantity - 1
+                      )
+                    }
                     name="decrement"
                     type="button"
                     className="flex w-[36px] justify-center items-center"
@@ -163,11 +171,18 @@ const CartProduct: React.FC<Props> = ({
                   </button>
                   <input
                     type="number"
-                    value={product.quantity}
+                    readOnly
+                    disabled
+                    value={product.cart.quantity}
                     className="text-center bg-inherit focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[36px]"
                   />
                   <button
-                    onClick={() => incrementQuantity(product)}
+                    onClick={() =>
+                      UpdateQuantity(
+                        product.product.productId,
+                        product.cart.quantity + 1
+                      )
+                    }
                     name="increment"
                     type="button"
                     className="flex w-[36px] justify-center items-center"
@@ -226,7 +241,7 @@ const CartProduct: React.FC<Props> = ({
             </div>
             <div className="font-semibold text-sm">
               {' '}
-              ₹ {product.price.toLocaleString('en-IN')} INR
+              ₹ {product.product.price} INR
             </div>
           </div>
         </div>
@@ -236,13 +251,29 @@ const CartProduct: React.FC<Props> = ({
 }
 
 export default function Page() {
-  const {
-    cart,
-    incrementQuantity,
-    decrementQuantity,
-    removeItem,
-    totalCartPrice,
-  } = useCart()
+  const [cart, setCart] = React.useState([])
+  const { removeItem, totalCartPrice } = useCart()
+
+  useEffect(() => {
+    const getCart = async ({ userId }: { userId: number }) => {
+      try {
+        const response = await fetch('/api/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        })
+        const jsonData = await response.json()
+        console.log(jsonData.cart)
+        setCart(jsonData.cart)
+        return jsonData
+      } catch (error) {
+        return error
+      }
+    }
+    getCart({ userId: 28 })
+  }, [])
   return (
     <div className="flex flex-col mt-6 items-center justify-center">
       <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
@@ -256,11 +287,10 @@ export default function Page() {
             </div>
             {cart ? (
               <div className="w-full max-h-520px overflow-scroll">
-                {cart.map((products: ProductTypes, index: number) => (
+                {cart.map((products: any, index: number) => (
                   <div className="w-full py-2" key={index}>
                     <CartProduct
-                      incrementQuantity={incrementQuantity}
-                      decrementQuantity={decrementQuantity}
+                      UpdateQuantity={UpdateQuantity}
                       removeItem={removeItem}
                       product={products}
                     />

@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
       <body className="webkit-font-smoothing font-ppneue bg-[#ececec5a]">
         <CartProvider>
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
         </CartProvider>
       </body>

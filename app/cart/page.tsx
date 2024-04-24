@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { useCart } from '../context/CartProvider'
-import { UpdateQuantity } from '@/app/utils/util'
+import { UpdateQuantity } from '@/app/db/database'
 
 interface ProductTypes {
   categoryId: string
@@ -272,7 +272,7 @@ export default function Page() {
         return error
       }
     }
-    getCart({ userId: 28 })
+    getCart({ userId: 1 })
   }, [])
   return (
     <div className="flex flex-col mt-6 items-center justify-center">

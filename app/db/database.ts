@@ -1,11 +1,15 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schema/schema'
+import { migrate } from 'drizzle-orm/node-postgres/migrator'
+import { Pool } from 'pg'
+import { eq } from 'drizzle-orm'
 
-const queryClient = postgres(process.env.DATABASE_URL as string)
-export const db = drizzle(queryClient, { schema })
-const migrationClient = postgres(process.env.DATABASE_URL as string, { max: 1 })
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL as string,
+})
+// const queryClient = postgres(process.env.DATABASE_URL as string)
+// const migrationClient = postgres(process.env.DATABASE_URL as string, { max: 1 })
+export const db = drizzle(pool, { logger: false })
 
 const Category: schema.NewCategory[] = [
   {
@@ -398,24 +402,45 @@ const Products: schema.NewProduct[] = [
   },
 ]
 
-const Cart: schema.NewCart[] = [
+const Cart = [
   {
-    cartId: 2,
-    userId: 28,
-    productId: 'B08T28HSDN',
-    quantity: 2,
-    createdAt: 'now()',
+    cartId: 1,
+    userId: 1,
+    productId: 'B0856HY85J',
+    quantity: 1,
   },
 ]
 export const MigrateDB = async () => {
   try {
-    //await db.insert(schema.category).values(Category)
-    //await db.insert(schema.product).values(Products)
+    // await db.insert(schema.category).values(Category)
+    // await db.insert(schema.product).values(Products)
     // await db.insert(schema.cart).values(Cart)
-    await migrate(drizzle(migrationClient), { migrationsFolder: 'drizzle' })
+    // await db
+    //   .update(schema.cart)
+    //   .set({ productId: 'B09BVCVTBC' })
+    //   .where(eq(schema.cart.userId, 1))
+    await migrate(db, { migrationsFolder: 'drizzle' })
     console.log('Migrations completed successfully.')
     process.exit(0)
   } catch (error) {
     console.error('Error running migrations:', error)
+  }
+}
+
+export const UpdateQuantity = async ({
+  productId,
+  quantity,
+}: {
+  productId: string
+  quantity: number
+}) => {
+  try {
+    await db
+      .update(schema.cart)
+      .set({ quantity })
+      .where(eq(schema.cart.productId, productId))
+    console.log('called')
+  } catch (error) {
+    return error
   }
 }

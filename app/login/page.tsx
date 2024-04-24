@@ -1,15 +1,17 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import LoginImage from '@/app/assets/login.webp'
 import Image from 'next/image'
-import { json } from 'stream/consumers'
-import Spinner from '@/app/assets/image.png'
+import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 export default function Page() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [msg, setMsg] = React.useState({ msg: '' })
   const [spinner, setSpinner] = React.useState(false)
+
+  const router = useRouter()
 
   const handleEmailChange = (e: any) => {
     const newEmail = e.target.value
@@ -30,8 +32,12 @@ export default function Page() {
     setEmail('')
     setPassword('')
     setTimeout(async () => {
-      setMsg(await handleLogin({ email, password }))
       setSpinner(false)
+      const { message } = await handleLogin({ email, password })
+      setMsg({ msg: message })
+      if (message === 'success') {
+        router.push('/')
+      }
     }, 1000)
   }
 
@@ -51,33 +57,14 @@ export default function Page() {
         body: JSON.stringify({ email, password }),
       })
       const jsonData = await response.json()
-      return jsonData
+      if (jsonData.message === 'success') {
+        return jsonData
+      } else {
+        return { message: 'Login Failed' }
+      }
     } catch (error) {
       return error
     }
-  }
-  function validateEmail(email: string) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return re.test(email)
-  }
-
-  function validatePassword(password: string) {
-    if (password.length < 8) {
-      return 'Password length must be at least 8 characters'
-    }
-    if (!/[A-Z]/.test(password)) {
-      return 'Password must contain at least one uppercase letter'
-    }
-    if (!/[a-z]/.test(password)) {
-      return 'Password must contain at least one lowercase letter'
-    }
-    if (!/\d/.test(password)) {
-      return 'Password must contain at least one digit'
-    }
-    if (!/[^a-zA-Z0-9]/.test(password)) {
-      return 'Password must contain at least one special character'
-    }
-    return ''
   }
 
   return (
@@ -122,11 +109,16 @@ export default function Page() {
                   className="w-full rounded-xl border p-3 focus:outline-none"
                   placeholder="Enter password"
                   name="password"
+                  type="password"
                   value={password}
                   onChange={(e) => handlePasswordChange(e)}
                   id="password"
                 />
-                {msg && (
+                {msg.msg === 'success' ? (
+                  <span className="text-green-500 mt-[-10px] text-sm">
+                    {msg.msg}
+                  </span>
+                ) : (
                   <span className="text-red-500 mt-[-10px] text-sm">
                     {msg.msg}
                   </span>

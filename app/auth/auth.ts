@@ -44,15 +44,18 @@ export const verifyRefreshToken = <T extends string>(refreshToken: T) => {
   }
 }
 
-export const userValidation = async ({
+export const userExist = async ({
   email,
 }: {
   email: string
 }): Promise<boolean | Response> => {
   try {
     const [res] = await db.select().from(users).where(eq(users.email, email))
-    if (res.email === email) return true
-    else return false
+    if (res === undefined) {
+      return true
+    } else {
+      return false
+    }
   } catch (error) {
     return Response.json({ msg: error })
   }

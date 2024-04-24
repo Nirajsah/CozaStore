@@ -1,4 +1,4 @@
-import { generateJWT, userValidation } from '@/app/auth/jwt'
+import { generateJWT, userExist } from '@/app/auth/auth'
 import { db } from '@/app/db/database'
 import { users } from '@/app/db/schema/schema'
 import bcrypt from 'bcryptjs'
@@ -12,14 +12,15 @@ type User = {
 export async function POST(request: Request) {
   try {
     const { username, password, email } = await request.json()
-    const res = await userValidation({ email })
-    if (res) {
+    const res = await userExist({ email })
+    if (res === true) {
       const user = await createUser({ username, password, email })
-      return Response.json(user)
+      return Response.json({ data: user, message: 'success' })
+    } else {
+      return Response.json({ message: 'User already exist' })
     }
   } catch (error) {
-    console.error('Error inserting user:', error)
-    return new Response('Error inserting user', { status: 500 })
+    return Response.json({ message: 'Error inserting user' }, { status: 500 })
   }
 }
 

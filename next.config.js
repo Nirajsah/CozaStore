@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+module.exports = {
   staticPageGenerationTimeout: 120,
   images: {
     domains: [
@@ -9,6 +10,17 @@ const nextConfig = {
     ],
     formats: ['image/webp', 'image/avif'],
   },
+  async headers() {
+    return [
+      {
+        source: '/login',
+        headers: [
+          {
+            key: 'X-Middleware-Test',
+            value: 'middleware-test-header',
+          },
+        ],
+      },
+    ]
+  },
 }
-
-module.exports = nextConfig

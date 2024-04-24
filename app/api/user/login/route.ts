@@ -2,13 +2,13 @@ import { users } from '@/app/db/schema/schema'
 import { eq } from 'drizzle-orm'
 import { db } from '@/app/db/database'
 import bcrypt from 'bcryptjs'
-import { generateJWT, userValidation } from '@/app/auth/jwt'
+import { generateJWT, userExist } from '@/app/auth/auth'
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
   try {
     const { email, password } = await request.json()
-    const res = await userValidation({ email })
-    if (res === true) {
+    const res = await userExist({ email })
+    if (res === false) {
       const user = await passwordCheck({ email, password })
       if (user === true) {
         const [user] = await db
@@ -23,18 +23,18 @@ export async function POST(request: Request, response: Response) {
         const refreshTokenCookie = `Bearer ${refreshToken}; Path=/; HttpOnly; Secure;`
 
         const responseHeaders = new Headers()
-        responseHeaders.set('Set-Cookie', accessTokenCookie)
+        responseHeaders.set('Authorization', accessTokenCookie)
         responseHeaders.set('Set-Cookie', refreshTokenCookie)
 
-        return new Response(
-          JSON.stringify({ accessToken, refreshToken, userId }),
+        return Response.json(
+          { accessToken, refreshToken, userId, message: 'success' },
           {
             status: 200,
             headers: responseHeaders,
           }
         )
       } else {
-        return Response.json({ msg: 'Wrong Password!' }, { status: 404 })
+        return Response.json({ message: 'Wrong Password!' })
       }
     } else {
       return Response.json({ msg: 'User not found!' }, { status: 404 })

@@ -3,6 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import LoginImage from '@/app/assets/login.webp'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
   const [username, setUserName] = React.useState<string>('')
@@ -13,31 +14,34 @@ export default function Page() {
   const [spinner, setSpinner] = React.useState(false)
   const [msg, setMsg] = React.useState({ msg: '' })
 
-  type res = {
-    accessToken: string
-    refreshToken: string
-    userId: number
-  }
+  const router = useRouter()
   const handleSubmit = async (e: any) => {
     e.preventDefault()
+    if (!msg.msg) {
+      setSpinner(true)
+    }
     if (
       emailError.trim().length === 0 &&
-      !(passwordError.trim().length === 0) &&
+      passwordError.trim().length === 0 &&
       username &&
       email &&
       password
     ) {
-      const res: res = await handleRegister({ username, email, password })
-      console.log(res.accessToken)
-    } else {
+      const { data, message } = await handleRegister({
+        username,
+        email,
+        password,
+      })
+      console.log(data, message)
       setTimeout(() => {
-        setMsg({ msg: 'all fields are requried!' })
-      }, 1000)
+        setSpinner(false)
+        if (message === 'success') {
+          router.push('/')
+        } else {
+          setMsg({ msg: 'all fields are requried!' })
+        }
+      }, 2000)
     }
-    setSpinner(true)
-    setTimeout(() => {
-      setSpinner(false)
-    }, 1000)
     setUserName('')
     setEmail('')
     setPassword('')
@@ -97,6 +101,9 @@ export default function Page() {
         body: JSON.stringify({ username, email, password }),
       })
       const jsonData = await response.json()
+      if (jsonData.message === 'success') {
+        setMsg({ msg: jsonData.message })
+      }
       return jsonData
     } catch (error) {
       console.error('Error fetching data:', error)
@@ -170,6 +177,7 @@ export default function Page() {
                   placeholder="Enter password"
                   name="password"
                   required
+                  type="password"
                   value={password}
                   onChange={(e) => handlePasswordChange(e)}
                   id="password"

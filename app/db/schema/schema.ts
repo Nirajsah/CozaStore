@@ -30,6 +30,7 @@ export const cart = pgTable('cart', {
   productId: text('product_id').references(() => product.productId),
   quantity: integer('quantity'),
   createdAt: text('created_at').default('now()'),
+  updatedAt: text('updated_at').default('now()'),
 })
 
 export type Category = typeof category.$inferSelect

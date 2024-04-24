@@ -4,6 +4,7 @@ import Link from 'next/link'
 import LoginImage from '@/app/assets/login.webp'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useUser } from '../context/UserProvider'
 
 export default function Page() {
   const [username, setUserName] = React.useState<string>('')
@@ -14,6 +15,7 @@ export default function Page() {
   const [spinner, setSpinner] = React.useState(false)
   const [msg, setMsg] = React.useState({ msg: '' })
 
+  const { setUser } = useUser()
   const router = useRouter()
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -27,12 +29,12 @@ export default function Page() {
       email &&
       password
     ) {
-      const { data, message } = await handleRegister({
+      const { message, userId } = await handleRegister({
         username,
         email,
         password,
       })
-      console.log(data, message)
+      setUser(userId)
       setTimeout(() => {
         setSpinner(false)
         if (message === 'success') {

@@ -6,8 +6,8 @@ export async function POST(request: Request) {
   const { userId } = await request.json()
   try {
     const [res] = await db.select().from(users).where(eq(users.userId, userId))
-    if (res) {
-      return Response.json(res)
+    if (res.userId === userId) {
+      return Response.json({ result: res, message: 'success' })
     } else {
       throw Error('User Not Found!')
     }

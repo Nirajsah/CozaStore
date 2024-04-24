@@ -3,13 +3,15 @@ import React from 'react'
 import Link from 'next/link'
 import LoginImage from '@/app/assets/login.webp'
 import Image from 'next/image'
-import { useNavigate } from 'react-router-dom'
 import { useRouter } from 'next/navigation'
+import { useUser } from '@/app/context/UserProvider'
 export default function Page() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [msg, setMsg] = React.useState({ msg: '' })
   const [spinner, setSpinner] = React.useState(false)
+
+  const { setUserId } = useUser()
 
   const router = useRouter()
 
@@ -33,8 +35,9 @@ export default function Page() {
     setPassword('')
     setTimeout(async () => {
       setSpinner(false)
-      const { message } = await handleLogin({ email, password })
+      const { message, userId } = await handleLogin({ email, password })
       setMsg({ msg: message })
+      setUserId(userId)
       if (message === 'success') {
         router.push('/')
       }
@@ -58,6 +61,7 @@ export default function Page() {
       })
       const jsonData = await response.json()
       if (jsonData.message === 'success') {
+        console.log(jsonData)
         return jsonData
       } else {
         return { message: 'Login Failed' }
@@ -83,7 +87,7 @@ export default function Page() {
               >
                 <label
                   className="mb-[-10px] text-sm font-semibold"
-                  htmlFor="mobile number"
+                  htmlFor="Email"
                 >
                   Email
                 </label>

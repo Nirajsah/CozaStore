@@ -404,9 +404,9 @@ const Products: schema.NewProduct[] = [
 
 const Cart = [
   {
-    cartId: 1,
+    cartId: 2,
     userId: 1,
-    productId: 'B0856HY85J',
+    productId: 'B0B3BMKMGP',
     quantity: 1,
   },
 ]

@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import React from 'react'
+import UserProvider from './context/UserProvider'
 
 export const metadata: Metadata = {
   title: 'CozaStore',
@@ -32,10 +33,10 @@ export default function RootLayout({
   return (
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
       <body className="webkit-font-smoothing font-ppneue bg-[#ececec5a]">
-        <CartProvider>
+        <UserProvider>
           {/* <Navbar /> */}
           {children}
-        </CartProvider>
+        </UserProvider>
       </body>
     </html>
   )

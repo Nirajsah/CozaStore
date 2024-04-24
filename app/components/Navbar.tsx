@@ -9,12 +9,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import CartIcon from '../cart/CartIcon'
 import { usePathname } from 'next/navigation'
+import { useUser } from '../context/UserProvider'
 
 export default function Navbar() {
   const [showCart, setShowCart] = useState<boolean>(false)
   const [showMenu, setShowMenu] = useState<boolean>(false)
   const [showSearch, setShowSearch] = useState<boolean>(false)
-
+  const { user } = useUser()
   const router = usePathname()
   const isHome = router === '/'
   return (
@@ -45,12 +46,15 @@ export default function Navbar() {
                 <BsSearch />
               </button>
               <Link
-                href="/login"
+                href={user && user.username ? '/' : '/login'}
                 className="hidden bg-gradient-to-tr from-[#FFB777] to-[#F16C6A] px-4 py-2 rounded-full md:flex md:items-center gap-2"
               >
                 <GoPerson size={20} />
-                {/* <span className="text-md">Niraj Sah</span> */}
-                <span className="text-md">Get Started</span>
+                {user && user.username ? (
+                  <span className="text-md">{user.username}</span>
+                ) : (
+                  'Get Started'
+                )}
               </Link>
               <button
                 type="button"

@@ -10,7 +10,7 @@ type CategoryCardProps = {
   data: Category
 }
 
-const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
+export const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
   return (
     <Link
       as={`/category/${data.categoryId}`}
@@ -23,12 +23,12 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
             height={280}
             src={data.image as string}
             priority
-            className="w-full rounded-xl h-full object-cover"
+            className="w-full rounded-xl h-full object-scale-down"
             alt=""
           />
         </div>
         <div className="mt-3">
-          <div className="text-xl font-semibold">{data.name}</div>
+          <div className="text-xl font-semibold capitalize">{data.name}</div>
           <div className="truncate text-slate-500 ">{data.description}</div>
         </div>
       </div>

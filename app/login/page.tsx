@@ -4,14 +4,12 @@ import Link from 'next/link'
 import LoginImage from '@/app/assets/login.webp'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@/app/context/UserProvider'
+
 export default function Page() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [msg, setMsg] = React.useState({ msg: '' })
   const [spinner, setSpinner] = React.useState(false)
-
-  const { setUserId } = useUser()
 
   const router = useRouter()
 
@@ -37,7 +35,6 @@ export default function Page() {
       setSpinner(false)
       const { message, userId } = await handleLogin({ email, password })
       setMsg({ msg: message })
-      setUserId(userId)
       if (message === 'success') {
         router.push('/')
       }

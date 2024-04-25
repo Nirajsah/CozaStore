@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '@/app/db/database'
 import bcrypt from 'bcryptjs'
 import { generateJWT, userExist } from '@/app/auth/auth'
+import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
@@ -15,24 +16,26 @@ export async function POST(request: Request) {
           .select()
           .from(users)
           .where(eq(users.email, email))
-        const { accessToken, refreshToken, userId } = await generateJWT({
+        const { accessToken, refreshToken } = await generateJWT({
           userId: user.userId,
         })
 
-        const accessTokenCookie = `Bearer ${accessToken}; Path=/; HttpOnly; Secure;`
-        const refreshTokenCookie = `Bearer ${refreshToken}; Path=/; HttpOnly; Secure;`
-
-        const responseHeaders = new Headers()
-        responseHeaders.set('Authorization', accessTokenCookie)
-        responseHeaders.set('Set-Cookie', refreshTokenCookie)
-
-        return Response.json(
-          { accessToken, refreshToken, userId, message: 'success' },
-          {
-            status: 200,
-            headers: responseHeaders,
-          }
-        )
+        const response = NextResponse.json({
+          status: 200,
+          message: 'success',
+          headers: { 'content-type': 'application/json' },
+        })
+        response.cookies.set({
+          name: 'access_token',
+          value: accessToken,
+          path: '/',
+        })
+        response.cookies.set({
+          name: 'refresh_token',
+          value: refreshToken,
+          path: '/',
+        })
+        return response
       } else {
         return Response.json({ message: 'Wrong Password!' })
       }

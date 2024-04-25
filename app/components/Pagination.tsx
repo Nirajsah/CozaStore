@@ -8,13 +8,21 @@ const Pagination = ({
   currentPage,
   setCurrentPage,
 }: any) => {
+  const handlePageChange = (currentPage: number) => {
+    if (currentPage < 1) {
+      currentPage = 1
+    } else {
+      setCurrentPage(currentPage)
+    }
+  }
+
   return (
     <div className="flex items-center self-center justify-between w-[170px]">
       <button
         className="border-2 border-black flex justify-center rounded-full p-2"
         onClick={() => {
           setOffSet(offset - 10)
-          setCurrentPage(currentPage - 1)
+          handlePageChange(currentPage - 1)
         }}
       >
         <Image src={Previous} width={20} height={20} alt="" />
@@ -24,7 +32,7 @@ const Pagination = ({
         className="border-2 border-black flex justify-center rounded-full p-2"
         onClick={() => {
           setOffSet(offset + 10)
-          setCurrentPage(currentPage + 1)
+          handlePageChange(currentPage + 1)
         }}
       >
         <Image

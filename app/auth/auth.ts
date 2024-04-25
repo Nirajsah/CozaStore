@@ -19,7 +19,7 @@ export const generateJWT = ({
     }
     const accessTokenKey: Secret = process.env.ACCESS_TOKEN_KEY as Secret
     const refreshTokenKey: Secret = process.env.REFRESH_TOKEN_KEY as Secret
-    const accessToken = jwt.sign(payload, accessTokenKey, { expiresIn: '5m' })
+    const accessToken = jwt.sign(payload, accessTokenKey, { expiresIn: '15m' })
     const refreshToken = jwt.sign(payload, refreshTokenKey, {
       expiresIn: '15m',
     })

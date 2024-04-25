@@ -18,9 +18,10 @@ interface ProductTypes {
 
 type Props = {
   product: any
-  removeItem: ({}) => void
+  updateCart: ({ quantity, productId }: any) => void
+  removeItem: ({ cartId }: { cartId: number }) => void
 }
-const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
+const CartProduct: React.FC<Props> = ({ product, removeItem, updateCart }) => {
   return (
     <div className="flex-col md:flex-row w-full gap-8 flex items-center justify-between rounded-xl">
       <div className="flex flex-col w-full">
@@ -43,7 +44,12 @@ const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
                 <div className="lg:hidden flex mt-4 lg:mt-0">
                   <div className="border self-center mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                     <button
-                      onClick={() => 'decrement'}
+                      onClick={() => {
+                        updateCart({
+                          quantity: product.cart.quantity - 1,
+                          productId: product.product.productId,
+                        })
+                      }}
                       name="decrement"
                       type="button"
                       className="flex w-[36px] h-full justify-center items-center"
@@ -70,7 +76,12 @@ const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
                       className="text-center bg-inherit focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[36px]"
                     />
                     <button
-                      onClick={() => console.log('helo')}
+                      onClick={() => {
+                        updateCart({
+                          quantity: product.cart.quantity + 1,
+                          productId: product.product.productId,
+                        })
+                      }}
                       type="button"
                       name="increment"
                       className="flex w-[36px] h-full justify-center items-center"
@@ -89,7 +100,10 @@ const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
                       </svg>
                     </button>
                   </div>
-                  <button name="removeItem" onClick={() => removeItem(product)}>
+                  <button
+                    name="removeItem"
+                    onClick={() => removeItem(product.cart.cartId)}
+                  >
                     <svg
                       width="20"
                       height="20"
@@ -130,7 +144,12 @@ const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
               <div className="lg:flex hidden mt-4">
                 <div className="border mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                   <button
-                    onClick={() => console.log('hell')}
+                    onClick={() => {
+                      updateCart({
+                        quantity: product.cart.quantity - 1,
+                        productId: product.product.productId,
+                      })
+                    }}
                     name="decrement"
                     type="button"
                     className="flex w-[36px] justify-center items-center"
@@ -157,7 +176,12 @@ const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
                     className="text-center bg-inherit focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-[36px]"
                   />
                   <button
-                    onClick={() => console.log('hello')}
+                    onClick={() => {
+                      updateCart({
+                        quantity: product.cart.quantity + 1,
+                        productId: product.product.productId,
+                      })
+                    }}
                     name="increment"
                     type="button"
                     className="flex w-[36px] justify-center items-center"
@@ -176,7 +200,9 @@ const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
                     </svg>
                   </button>
                 </div>
-                <button onClick={() => removeItem(product)}>
+                <button
+                  onClick={() => removeItem({ cartId: product.cart.cartId })}
+                >
                   <svg
                     width="20"
                     height="20"
@@ -227,8 +253,38 @@ const CartProduct: React.FC<Props> = ({ product, removeItem }) => {
 
 export default function Page() {
   const [cart, setCart] = React.useState([])
-  const { removeItem, totalCartPrice } = useCart()
   const { userId } = useUser()
+
+  const removeItem = async ({ cartId }: any) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartId }),
+      })
+      const jsonData = await response.json()
+      return jsonData
+    } catch (error) {
+      return error
+    }
+  }
+  const updateCart = async ({ quantity, productId }: any) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity, productId }),
+      })
+      const jsonData = await response.json()
+      return jsonData
+    } catch (error) {
+      return error
+    }
+  }
   useEffect(() => {
     const getCart = async ({ userId }: { userId: number }) => {
       try {
@@ -247,12 +303,12 @@ export default function Page() {
       }
     }
     getCart({ userId })
-  }, [])
+  }, [userId])
 
   function calculateTotalPrice(carts: any) {
     let totalPrice = 0
 
-    carts.forEach((cart: any) => {
+    cart?.forEach((cart: any) => {
       const productPrice = cart.product.price
       const quantity = cart.cart.quantity
       totalPrice += productPrice * quantity
@@ -274,7 +330,11 @@ export default function Page() {
               <div className="w-full max-h-520px overflow-scroll">
                 {cart.map((products: any, index: number) => (
                   <div className="w-full py-2" key={index}>
-                    <CartProduct removeItem={removeItem} product={products} />
+                    <CartProduct
+                      updateCart={updateCart}
+                      removeItem={removeItem}
+                      product={products}
+                    />
                   </div>
                 ))}
               </div>

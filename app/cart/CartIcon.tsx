@@ -29,7 +29,7 @@ const CartIcon = ({ setShowCart, showCart }: CartIconProps) => {
       }
     }
     getCart({ userId })
-  }, [])
+  }, [userId])
 
   function getTotalItems(): number {
     let totalItems = 0

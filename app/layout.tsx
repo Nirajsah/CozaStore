@@ -1,8 +1,5 @@
-import CartProvider from './context/CartProvider'
 import './globals.css'
 import type { Metadata } from 'next'
-import Navbar from './components/Navbar'
-import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import React from 'react'
 import UserProvider from './context/UserProvider'
@@ -33,10 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
       <body className="webkit-font-smoothing font-ppneue bg-[#ececec5a]">
-        <UserProvider>
-          {/* <Navbar /> */}
-          {children}
-        </UserProvider>
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   )

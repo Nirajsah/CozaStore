@@ -5,30 +5,48 @@ import Navbar from './components/Navbar'
 import { useUser } from './context/UserProvider'
 
 export default function Home() {
-  const { userId, setUser } = useUser()
+  const { userId, setUserId, setUser } = useUser()
 
   useEffect(() => {
-    if (userId) {
-      const getUser = async ({ userId }: { userId: number }) => {
-        try {
-          const response = await fetch('/api/user', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId }),
-          })
-          const jsonData = await response.json()
-          return jsonData.result
-        } catch (error) {
-          console.error('Error fetching data:', error)
-        }
+    const getUser = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        })
+        const jsonData = await response.json()
+        return jsonData
+      } catch (error) {
+        console.error('Error fetching data:', error)
       }
-      getUser({ userId }).then((res) => {
-        setUser(res)
-      })
     }
+    getUser().then((data) => {
+      setUser(data.result)
+    })
   }, [userId])
+
+  useEffect(() => {
+    const getUserId = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const jsonData = await response.json()
+        return jsonData
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+    getUserId().then((data) => {
+      setUserId(data.data.userId)
+    })
+  }, [])
 
   return (
     <main className="flex flex-col background-color items-center justify-center">

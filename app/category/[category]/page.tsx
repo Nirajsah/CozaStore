@@ -7,14 +7,11 @@ import { useCart } from '../../context/CartProvider'
 import Link from 'next/link'
 import Pagination from '@/app/components/Pagination'
 import Navbar from '@/app/components/Navbar'
+import { useUser } from '@/app/context/UserProvider'
 
 type Params = {
   id: string
   category: string
-}
-
-type ProductCardProps = {
-  data: Product
 }
 
 type Product = {
@@ -28,17 +25,35 @@ type Product = {
   price: number
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
-  const { addToCart } = useCart()
-  const { image } = data
+const ProductCard = ({ data, userId }: { data: any; userId: any }) => {
+  const { image, productId } = data
+  const addToCartHandler = async () => {
+    try {
+      const response = await fetch('/api/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId,
+          quantity: 1,
+          userId,
+        }),
+      })
+      const jsonData = await response.json()
+      console.log(jsonData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
   return (
     <div className="w-[320px] sm:w-[320px]">
-      <div className="w-[300px] relative h-[300px]">
+      <div className="w-[300px] border h-[300px] rounded-xl bg-white">
         <Image
           width={300}
           height={300}
           src={image as string}
-          className="w-full rounded-xl h-full absolute object-contain"
+          className="w-full rounded-xl h-full object-contain"
           alt={data.name}
         />
       </div>
@@ -63,7 +78,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
         </div>
 
         <button
-          onClick={() => addToCart(data)}
+          onClick={() => addToCartHandler}
           className="duration-100 bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
         >
           Add to Cart
@@ -76,6 +91,7 @@ export default function Page({ params }: { params: Params }) {
   const [data, setData] = useState<Product[]>([])
   const [offset, setOffSet] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState(1)
+  const { userId } = useUser()
 
   useEffect(() => {
     async function fetchData() {
@@ -93,7 +109,6 @@ export default function Page({ params }: { params: Params }) {
         console.error('Error fetching data:', error)
       }
     }
-
     fetchData()
   }, [params.category, offset])
 
@@ -114,28 +129,9 @@ export default function Page({ params }: { params: Params }) {
                     as={`/category/${params.category}/${items.productId}`}
                     key={items.productId}
                   >
-                    <ProductCard data={items} />
+                    <ProductCard data={items} userId={userId} />
                   </Link>
                 ))}
-              {/* <div className="w-full flex justify-between">
-            <ProductList
-              params={params}
-              products={Items}
-              currentPage={currentPage}
-              productsPerPage={productsPerPage}
-              totalProducts={totalProducts}
-            />
-          </div> */}
-              {/* Items &&
-              Items?.map((items: Product) => (
-                <Link
-                  href={`/category/${params.category}/${items.productId}`}
-                  as={`/category/${params.category}/${items.productId}`}
-                  key={items.productId}
-                >
-                  <ProductCard data={items} />
-                </Link>
-              ))} */}
             </div>
             <div className="w-full mt-10 p-10 flex items-center justify-center">
               <Pagination

@@ -17,13 +17,13 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
       href={`/category/${data.categoryId}`}
     >
       <div className="w-full sm:w-[280px] duration-100 hover:scale-105 transition-all">
-        <div className="w-[280px] h-[280px]">
+        <div className="w-[280px] border rounded-lg h-[280px]">
           <Image
             width={280}
             height={280}
             src={data.image as string}
             priority
-            className="w-full rounded-xl h-full object-scale-down"
+            className="rounded-lg object-cover"
             alt=""
           />
         </div>

@@ -4,6 +4,8 @@ import React from 'react'
 import { motion, easeIn, easeOut } from 'framer-motion'
 import { useCart } from '../context/CartProvider'
 import Link from 'next/link'
+import { useUser } from '../context/UserProvider'
+import { cart } from '../db/schema/schema'
 interface ProductTypes {
   categoryId: string
   name: string
@@ -21,12 +23,7 @@ type CartProps = {
   removeItem: (product: ProductTypes) => void
 }
 
-const Product = ({
-  item,
-  incrementQuantity,
-  decrementQuantity,
-  removeItem,
-}: any): any => {
+const Product = ({ item, updateCart, removeItem }: any): any => {
   return (
     <div className="flex mt-4 flex-col">
       <div className="flex self-start items-center w-full">
@@ -55,7 +52,15 @@ const Product = ({
             <div className="flex mt-2">
               <div className="border mr-2 py-1 justify-between w-[100px] flex items-center rounded-lg">
                 <button
-                  onClick={() => decrementQuantity(item)}
+                  onClick={() => {
+                    if (item.cart.quantity === 1) {
+                      return
+                    }
+                    updateCart({
+                      quantity: item.cart.quantity - 1,
+                      productId: item.product.productId,
+                    })
+                  }}
                   type="button"
                   className="flex w-[36px] justify-center items-center"
                 >
@@ -81,7 +86,12 @@ const Product = ({
                 />
                 <button
                   type="button"
-                  onClick={() => incrementQuantity(item)}
+                  onClick={() =>
+                    updateCart({
+                      quantity: item.cart.quantity + 1,
+                      productId: item.product.productId,
+                    })
+                  }
                   className="flex w-[36px] justify-center items-center"
                 >
                   <svg
@@ -98,7 +108,11 @@ const Product = ({
                   </svg>
                 </button>
               </div>
-              <button onClick={() => removeItem(item)}>
+              <button
+                onClick={() => {
+                  removeItem({ cartId: item.cart.cartId })
+                }}
+              >
                 <svg
                   width="20"
                   height="20"
@@ -145,15 +159,41 @@ const Product = ({
   )
 }
 export default function Cart({ setShowCart, showCart }: any) {
-  const {
-    //cart,
-    incrementQuantity,
-    decrementQuantity,
-    removeItem,
-    totalCartPrice,
-  } = useCart()
-
   const [cart, setCart] = React.useState<any>([])
+  const { userId } = useUser()
+
+  const updateCart = async ({ quantity, productId }: any) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity, productId }),
+      })
+      const jsonData = await response.json()
+      return jsonData
+    } catch (error) {
+      return error
+    }
+  }
+
+  const removeItem = async ({ cartId }: any) => {
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartId }),
+      })
+      const jsonData = await response.json()
+      return jsonData
+    } catch (error) {
+      return error
+    }
+  }
+
   React.useEffect(() => {
     const getCart = async ({ userId }: { userId: number }) => {
       try {
@@ -171,13 +211,13 @@ export default function Cart({ setShowCart, showCart }: any) {
         return error
       }
     }
-    getCart({ userId: 1 })
-  }, [])
+    getCart({ userId })
+  }, [userId, cart])
 
-  function calculateTotalPrice(carts: any) {
+  function calculateTotalPrice(cart: any) {
     let totalPrice = 0
 
-    carts.forEach((cart: any) => {
+    cart?.forEach((cart: any) => {
       const productPrice = cart.product.price
       const quantity = cart.cart.quantity
       totalPrice += productPrice * quantity
@@ -240,8 +280,7 @@ export default function Cart({ setShowCart, showCart }: any) {
                 >
                   <Product
                     item={data}
-                    incrementQuantity={incrementQuantity}
-                    decrementQuantity={decrementQuantity}
+                    updateCart={updateCart}
                     removeItem={removeItem}
                   />
                 </motion.div>

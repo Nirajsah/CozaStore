@@ -1,255 +1,165 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import Link from 'next/link'
+import LoginImage from '@/app/assets/login.webp'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
-type Category = {
-  categoryId: string
-  name: string
-  description: string
-  image: string
-}
 export default function Page() {
-  const [data, setData] = useState<[]>([])
-  const [category, setCategory] = useState('')
-  const [msg, setMsg] = useState('')
-  const [showUpdateForm, setShowUpdateForm] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null
-  )
+  const [username, setUserName] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [msg, setMsg] = React.useState({ msg: '' })
+  const [spinner, setSpinner] = React.useState(false)
 
-  const [form, setForm] = useState({
-    categoryId: '',
-    name: '',
-    description: '',
-    image: '',
-  })
+  const router = useRouter()
 
-  const CategoryCard = ({ data }: any) => {
-    return (
-      <>
-        <div
-          onClick={() => {
-            setShowUpdateForm(true)
-            setSelectedCategory(data)
-          }}
-        >
-          <div className="w-[280px] h-[280px]">
-            <Image
-              width={280}
-              height={280}
-              src={data.image as string}
-              priority
-              className="w-full rounded-xl h-full object-scale-down"
-              alt=""
-            />
-          </div>
-          <div className="mt-3">
-            <div className="text-xl font-semibold capitalize">{data.name}</div>
-            <div className="truncate text-slate-500 ">{data.description}</div>
-          </div>
-        </div>
-      </>
-    )
+  const handleEmailChange = (e: any) => {
+    const newUserName = e.target.value
+    setUserName(newUserName)
+    setMsg({ msg: '' })
   }
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('/api/category')
-        const jsonData = await response.json()
-        console.log(jsonData)
-        setData(jsonData)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
+
+  const handlePasswordChange = (e: any) => {
+    const newPassword = e.target.value
+    setPassword(newPassword)
+  }
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
+    if (!msg.msg) {
+      setSpinner(true)
     }
+    setUserName('')
+    setPassword('')
+    setTimeout(async () => {
+      setSpinner(false)
+      const { message } = await handleLogin({ username, password })
+      setMsg({ msg: message })
+      if (message === 'Authenticated') {
+        router.push('/admin/category')
+      }
+    }, 1000)
+  }
 
-    fetchData()
-  }, [])
-
-  async function addCategory({
-    categoryId,
-    name,
-    description,
-    image,
-  }: Category) {
+  const handleLogin = async ({
+    username,
+    password,
+  }: {
+    username: string
+    password: string
+  }) => {
     try {
-      if (
-        categoryId === '' ||
-        name === '' ||
-        description === '' ||
-        image === ''
-      ) {
-        setMsg('Please fill all fields')
-        return
-      } else {
-        const response = await fetch('/api/category', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ categoryId, name, description, image }),
-        })
-        const jsonData = await response.json()
+      const response = await fetch('/api/admin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+      const jsonData = await response.json()
+      if (jsonData.message === 'Authenticated') {
         console.log(jsonData)
-        setData(jsonData)
+        return jsonData
+      } else {
+        return { message: 'Login Failed' }
       }
     } catch (error) {
-      console.error('Error inserting data:', error)
+      return error
     }
-  }
-
-  async function updateCategory({
-    categoryId,
-    name,
-    description,
-    image,
-  }: Category) {
-    try {
-      if (
-        categoryId === '' ||
-        name === '' ||
-        description === '' ||
-        image === ''
-      ) {
-        setMsg('Please fill all fields')
-        return
-      } else {
-        const response = await fetch('/api/category', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ categoryId, name, description, image }),
-        })
-        const jsonData = await response.json()
-        console.log(jsonData)
-        setData(jsonData)
-      }
-    } catch (error) {
-      console.error('Error updating data:', error)
-    }
-  }
-
-  const CategoryForm = () => {
-    const [category, setCategory] = React.useState({
-      categoryId: '',
-      name: '',
-      description: '',
-      image: '',
-    })
-
-    const handleCategoryChange = (e: any) => {
-      setCategory({ ...category, [e.target.name]: e.target.value })
-    }
-    return (
-      <div>
-        <form>
-          <label htmlFor="categoryId">categoryId</label>
-          <input
-            type="text"
-            name="categoryId"
-            id="categoryId"
-            value={category.categoryId}
-            onChange={handleCategoryChange}
-          />
-          <label htmlFor="name">name</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={category.name}
-            onChange={handleCategoryChange}
-          />
-          <label htmlFor="description">description</label>
-          <input
-            type="text"
-            name="description"
-            id="description"
-            value={category.description}
-            onChange={handleCategoryChange}
-          />
-          <label htmlFor="image">image</label>
-          <input
-            type="text"
-            name="image"
-            id="image"
-            value={category.image}
-            onChange={handleCategoryChange}
-          />
-        </form>
-        {msg && <p>{msg}</p>}
-        <button onClick={() => addCategory(category)}>Add Category</button>
-      </div>
-    )
-  }
-
-  const UpdateCategoryForm = ({ item }: any) => {
-    const { categoryId, name, description, image } = item
-    const [category, setCategory] = useState({
-      categoryId,
-      name,
-      description,
-      image,
-    })
-
-    const handleChange = (e: any) => {
-      setCategory({ ...category, [e.target.name]: e.target.value })
-    }
-
-    const handleSubmit = (event: any) => {
-      event.preventDefault()
-      updateCategory(category)
-    }
-
-    return (
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={category.name}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="description">Description:</label>
-        <textarea
-          name="description"
-          value={category.description}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="image">Image:</label>
-        <input type="file" name="image" onChange={handleChange} />
-
-        <button type="submit">Update Category</button>
-      </form>
-    )
   }
 
   return (
-    <>
-      <div className="flex justify-center">
-        <div className="lg:w-[1320px] mt-6">
-          <h1 className="text-5xl text-center mb-9 font-fira underline">
-            AdminPage
-          </h1>
-          <div className="flex mt-16 p-4 justify-center flex-col">
-            <h1 className="text-5xl mb-9 font-bold">Category Page</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2">
-              {data &&
-                data.map((category: any) => (
-                  <CategoryCard key={category.categoryId} data={category} />
-                ))}
+    <div className="w-full h-screen flex justify-center items-center">
+      <div className="w-full md:w-[880px]">
+        <div className="flex w-full">
+          <div className="flex justify-center w-full flex-col items-center gap-[3.25rem] lg:flex-row">
+            <div className="w-full p-2 max-w-[320px]">
+              <Image priority src={LoginImage} alt="hello" />
+            </div>
+            <div className="flex w-full flex-col items-center p-3 lg:w-[60%]">
+              <div className="mb-3 font-semibold text-2xl">Welcome 🌸</div>
+              <form
+                onSubmit={handleSubmit}
+                className="flex w-full flex-col gap-4"
+              >
+                <label
+                  className="mb-[-10px] text-sm font-semibold"
+                  htmlFor="Email"
+                >
+                  UserName
+                </label>
+
+                <input
+                  className="w-full rounded-xl border p-3 focus:outline-none"
+                  name="username"
+                  id="username"
+                  value={username}
+                  onChange={(e) => {
+                    handleEmailChange(e)
+                  }}
+                  placeholder="Enter your email address"
+                  type="email"
+                />
+                <label
+                  className="mb-[-10px] text-sm font-semibold"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
+                <input
+                  className="w-full rounded-xl border p-3 focus:outline-none"
+                  placeholder="Enter password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => handlePasswordChange(e)}
+                  id="password"
+                />
+                {msg.msg === 'Authenticated' ? (
+                  <span className="text-green-500 mt-[-10px] text-sm">
+                    {msg.msg}
+                  </span>
+                ) : (
+                  <span className="text-red-500 mt-[-10px] text-sm">
+                    {msg.msg}
+                  </span>
+                )}
+                <button
+                  onClick={handleSubmit}
+                  className="rounded-xl items-center flex gap-1 justify-center bg-gradient-to-tr from-[#FFB777] to-[#F16C6A]  p-3 text-white drop-shadow-lg"
+                >
+                  <div className="flex items-center">
+                    {spinner ? (
+                      <svg
+                        className="animate-spin mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    ) : (
+                      <span className="text-md font-medium">Login</span>
+                    )}
+                  </div>
+                </button>
+              </form>
             </div>
           </div>
-          <CategoryForm />
-          {showUpdateForm && selectedCategory && (
-            <UpdateCategoryForm item={selectedCategory} />
-          )}
         </div>
-
-        {JSON.stringify(category)}
       </div>
-    </>
+    </div>
   )
 }

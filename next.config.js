@@ -7,6 +7,7 @@ module.exports = {
       'm.media-amazon.com',
       'store.storeimages.cdn-apple.com',
       'assets.adidas.com',
+      'res.cloudinary.com',
     ],
     formats: ['image/webp', 'image/avif'],
   },

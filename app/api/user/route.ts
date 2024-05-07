@@ -33,8 +33,11 @@ export async function GET() {
     if (refreshPayload === undefined) {
       return Response.json({ message: 'Unauthorized' }, { status: 401 })
     } else {
-      if (typeof refreshPayload === 'object' && refreshPayload !== null) {
-        console.log('refresh:', refreshPayload)
+      if (
+        typeof refreshPayload === 'object' &&
+        refreshPayload !== null &&
+        'userId' in refreshPayload
+      ) {
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           await generateJWT({
             userId: refreshPayload.userId,

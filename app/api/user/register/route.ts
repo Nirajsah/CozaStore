@@ -15,8 +15,30 @@ export async function POST(request: Request) {
     const { username, password, email } = await request.json()
     const res = await userExist({ email })
     if (res === true) {
-      const user = await createUser({ username, password, email })
-      return Response.json({ data: user, message: 'success' })
+      const user: { userId: number } | any = await createUser({
+        username,
+        password,
+        email,
+      })
+      const { accessToken, refreshToken } = await generateJWT({
+        userId: user.userId,
+      })
+      const response = NextResponse.json({
+        status: 200,
+        message: 'success',
+        headers: { 'content-type': 'application/json' },
+      })
+      response.cookies.set({
+        name: 'access_token',
+        value: accessToken,
+        path: '/',
+      })
+      response.cookies.set({
+        name: 'refresh_token',
+        value: refreshToken,
+        path: '/',
+      })
+      return response
     } else {
       return Response.json({ message: 'User already exist' })
     }
@@ -36,27 +58,11 @@ const createUser = async ({ username, email, password }: User) => {
         password: hashedPassword,
       })
       .returning({ userId: users.userId })
-
-    const { accessToken, refreshToken } = await generateJWT({
-      userId: user.userId,
-    })
-    const response = NextResponse.json({
-      status: 200,
-      message: 'success',
-      headers: { 'content-type': 'application/json' },
-    })
-    response.cookies.set({
-      name: 'access_token',
-      value: accessToken,
-      path: '/',
-    })
-    response.cookies.set({
-      name: 'refresh_token',
-      value: refreshToken,
-      path: '/',
-    })
-    return response
+    return user
   } catch (error) {
-    return new Response('Error inserting user', { status: 500 })
+    return Response.json({
+      message: 'Error inserting user',
+      status: 500,
+    })
   }
 }

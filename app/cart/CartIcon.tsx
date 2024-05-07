@@ -29,13 +29,15 @@ const CartIcon = ({ setShowCart, showCart }: CartIconProps) => {
       }
     }
     getCart({ userId })
-  }, [userId])
+  }, [userId, cart])
 
   function getTotalItems(): number {
     let totalItems = 0
 
     cart.forEach((cart: any) => {
-      totalItems += cart.cart.quantity
+      if (cart.cart) {
+        totalItems++
+      }
     })
 
     return totalItems

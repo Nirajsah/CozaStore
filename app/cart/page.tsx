@@ -3,6 +3,8 @@ import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { useCart } from '../context/CartProvider'
 import { useUser } from '../context/UserProvider'
+import Navbar from '../components/Navbar'
+import Checkout from '../components/Checkout'
 
 interface ProductTypes {
   categoryId: string
@@ -254,6 +256,7 @@ const CartProduct: React.FC<Props> = ({ product, removeItem, updateCart }) => {
 export default function Page() {
   const [cart, setCart] = React.useState([])
   const { userId } = useUser()
+  const [showCheckout, setShowCheckout] = React.useState(false)
 
   const removeItem = async ({ cartId }: any) => {
     try {
@@ -316,49 +319,67 @@ export default function Page() {
     return totalPrice
   }
   return (
-    <div className="flex flex-col mt-6 items-center justify-center">
-      <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
-        <div className="text-5xl mb-9 font-bold w-full">Your Cart</div>
-        <div className="flex w-full gap-4 flex-col md:flex-row">
-          <div className="flex flex-col gap-3 w-full">
-            <div className="xl:flex hidden justify-between w-full">
-              <div className="text-sm font-semibold">Product</div>
-              <div className="text-sm font-semibold">Quantity</div>
-              <div className="text-sm font-semibold">Total</div>
+    <>
+      <Navbar />
+      <div className="flex flex-col mt-6 items-center justify-center">
+        <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
+          <div className="text-5xl mb-9 font-bold w-full">Your Cart</div>
+          <div className="flex w-full gap-4 flex-col md:flex-row">
+            <div className="flex flex-col gap-3 w-full">
+              <div className="xl:flex hidden justify-between w-full">
+                <div className="text-sm font-semibold">Product</div>
+                <div className="text-sm font-semibold">Quantity</div>
+                <div className="text-sm font-semibold">Total</div>
+              </div>
+              {cart ? (
+                <div className="w-full max-h-520px overflow-scroll">
+                  {cart.map((products: any, index: number) => (
+                    <div className="w-full py-2" key={index}>
+                      <CartProduct
+                        updateCart={updateCart}
+                        removeItem={removeItem}
+                        product={products}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-10 text-2xl font-thin font-fira">
+                  No Product in Cart
+                </div>
+              )}
             </div>
-            {cart ? (
-              <div className="w-full max-h-520px overflow-scroll">
-                {cart.map((products: any, index: number) => (
-                  <div className="w-full py-2" key={index}>
-                    <CartProduct
-                      updateCart={updateCart}
-                      removeItem={removeItem}
-                      product={products}
-                    />
-                  </div>
-                ))}
+            <div className="flex flex-col self-start bg-white p-4 rounded-xl w-full md:max-w-[400px]">
+              <div className="w-full flex justify-between">
+                <div className="text-m font-semibold">Totol</div>
+                <div className="text-m font-semibold">
+                  ₹{calculateTotalPrice(cart).toLocaleString('en-IN')} INR
+                </div>
               </div>
-            ) : (
-              <div className="mt-10 text-2xl font-thin font-fira">
-                No Product in Cart
+              <div className="flex mt-6 justify-between gap-3 w-full">
+                <button
+                  onClick={() => setShowCheckout(!showCheckout)}
+                  className="w-full bg-black text-white py-2 border rounded-[10px] uppercase font-semibold text-sm"
+                >
+                  Check Out
+                </button>
               </div>
-            )}
-          </div>
-          <div className="flex flex-col self-start bg-white p-4 rounded-xl w-full md:max-w-[400px]">
-            <div className="w-full flex justify-between">
-              <div className="text-m font-semibold">Totol</div>
-              <div className="text-m font-semibold">
-                ₹{calculateTotalPrice(cart).toLocaleString('en-IN')} INR
-              </div>
-            </div>
-            <div className="flex mt-6 justify-between gap-3 w-full">
-              <button className="w-full bg-black text-white py-2 border rounded-[10px] uppercase font-semibold text-sm">
-                Check Out
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      {showCheckout && (
+        <div className="w-full h-full">
+          <div
+            role="button"
+            onClick={() => setShowCheckout(!showCheckout)}
+            className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
+          ></div>
+          <div className="fixed top-0 right-[200px] z-[200] w-full max-w-[1024px] p-4 h-fit">
+            <Checkout cart={cart} />
+          </div>
+        </div>
+      )}
+    </>
   )
 }

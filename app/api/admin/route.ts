@@ -46,7 +46,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   const cookieStore = cookies()
   const token = cookieStore.get('accessToken')
   if (!token) {
@@ -55,7 +55,7 @@ export async function GET(request: Request) {
   return Response.json({ message: 'Authenticated' }, { status: 200 })
 }
 
-export const authToken = ({ username }: { username: string }) => {
+const authToken = ({ username }: { username: string }) => {
   const secret = process.env.ACCESS_TOKEN_KEY || ''
   const token = sign(
     {

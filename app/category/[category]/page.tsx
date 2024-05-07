@@ -26,8 +26,8 @@ type Product = {
 }
 
 const ProductCard = ({ data, userId }: { data: any; userId: any }) => {
-  const { image, productId } = data
-  const addToCartHandler = async () => {
+  const { image } = data
+  const addToCartHandler = async ({ productId }: { productId: string }) => {
     try {
       const response = await fetch('/api/cart/add', {
         method: 'POST',
@@ -78,7 +78,10 @@ const ProductCard = ({ data, userId }: { data: any; userId: any }) => {
         </div>
 
         <button
-          onClick={() => addToCartHandler}
+          onClick={(e) => {
+            e.preventDefault()
+            addToCartHandler({ productId: data.productId })
+          }}
           className="duration-100 bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
         >
           Add to Cart

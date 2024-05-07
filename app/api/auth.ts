@@ -6,7 +6,7 @@ export const verifyAuthToken = <T extends string>(accessToken: T) => {
     const payload = jwt.verify(accessToken, accessTokenKey)
     return payload
   } catch (error) {
-    console.log('error:', error)
+    return Response.json({ message: 'Unauthorized' }, { status: 401 })
   }
 }
 export const verifyAuthRefToken = <T extends string>(refreshToken: T) => {
@@ -15,6 +15,6 @@ export const verifyAuthRefToken = <T extends string>(refreshToken: T) => {
     const payload = jwt.verify(refreshToken, refreshTokenKey)
     return payload
   } catch (error) {
-    throw error
+    return Response.json({ message: 'Unauthorized' }, { status: 401 })
   }
 }

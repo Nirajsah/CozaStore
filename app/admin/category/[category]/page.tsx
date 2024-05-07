@@ -4,6 +4,7 @@ import 'react-intersection-observer'
 import Stars from 'react-stars'
 import React, { useEffect, useState } from 'react'
 import Pagination from '@/app/components/Pagination'
+import { useRouter, useParams } from 'next/navigation'
 
 type Params = {
   id: string
@@ -23,7 +24,9 @@ type Product = {
   price: string
 }
 
-const UpdateProductForm = ({ item }: any) => {
+const UpdateProductForm = ({ item, setShowUpdateProductForm }: any) => {
+  const router = useRouter()
+  const params = useParams()
   const { stars, categoryId, productId, name, price, image } = item
   const [newImage, setNewImage] = React.useState<File | null>(null)
   const [spinner, setSpinner] = React.useState<File | null>(null)
@@ -36,6 +39,32 @@ const UpdateProductForm = ({ item }: any) => {
     image,
   })
 
+  async function deleteProduct({ productId }: any) {
+    try {
+      if (productId === '') {
+        return
+      } else {
+        const response = await fetch('/api/category/product', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productId,
+          }),
+        })
+        const jsonData = await response.json()
+        console.log(jsonData)
+        if (jsonData.message === 'success') {
+          setShowUpdateProductForm(false)
+          window.location.reload()
+          router.push(`/admin/category/${params.category}`)
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting data:', error)
+    }
+  }
   async function updateProduct({
     categoryId,
     name,
@@ -69,8 +98,12 @@ const UpdateProductForm = ({ item }: any) => {
           }),
         })
         const jsonData = await response.json()
-        console.log(jsonData)
-        setProduct({ ...product, image: jsonData.url })
+        if (jsonData.message === 'success') {
+          setShowUpdateProductForm(false)
+          window.location.reload()
+          router.push(`/admin/category/${params.category}`)
+          setProduct({ ...product, image: jsonData.url })
+        }
       }
     } catch (error) {
       console.error('Error inserting data:', error)
@@ -91,7 +124,6 @@ const UpdateProductForm = ({ item }: any) => {
       if (response.ok) {
         const data = await response.json()
         setProduct({ ...product, image: data.url })
-        console.log(data.url)
       } else {
         console.error('Error uploading image:', response.statusText)
       }
@@ -118,6 +150,7 @@ const UpdateProductForm = ({ item }: any) => {
           ''
         )}
       </div>
+
       <form className="flex w-full flex-col gap-4">
         <label
           className="mb-[-10px] text-sm font-semibold"
@@ -196,6 +229,7 @@ const UpdateProductForm = ({ item }: any) => {
             type="file"
             id="image"
             onChange={(e) => {
+              e.preventDefault()
               if (e.target.files && e.target.files.length > 0) {
                 setNewImage(e.target.files[0])
               }
@@ -214,7 +248,7 @@ const UpdateProductForm = ({ item }: any) => {
         </div>
         <div className="flex w-full justify-end gap-4">
           <button
-            onClick={() => {}}
+            onClick={() => setShowUpdateProductForm(false)}
             className="rounded-xl max-w-[150px] items-center flex gap-1 border justify-center px-3 py-2 border-black"
           >
             <div className="flex items-center">
@@ -245,7 +279,8 @@ const UpdateProductForm = ({ item }: any) => {
             </div>
           </button>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault()
               updateProduct(product)
             }}
             className="rounded-xl max-w-fit items-center flex gap-1 justify-center bg-[#4CAF50] px-3 py-2 text-white drop-shadow-lg"
@@ -276,6 +311,15 @@ const UpdateProductForm = ({ item }: any) => {
                 <span className="text-md font-medium">Update Product</span>
               )}
             </div>
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              deleteProduct({ productId: product.productId })
+            }}
+            className="border w-full max-w-[150px] text-white bg-red-500 rounded-xl"
+          >
+            Delete Product
           </button>
         </div>
       </form>
@@ -324,8 +368,10 @@ const ProductForm = ({ setShowProductForm }: any) => {
           }),
         })
         const jsonData = await response.json()
-        console.log(jsonData)
-        setProduct({ ...product, image: jsonData.url })
+        if (jsonData.message === 'success') {
+          setShowProductForm(false)
+          window.location.reload()
+        }
       }
     } catch (error) {
       console.error('Error inserting data:', error)
@@ -471,6 +517,7 @@ const ProductForm = ({ setShowProductForm }: any) => {
         <div className="w-full flex gap-4 justify-end">
           <button
             onClick={(e) => {
+              e.preventDefault()
               setShowProductForm(false)
             }}
             className="rounded-xl max-w-[150px] items-center flex gap-1 border justify-center px-3 py-2 border-black"
@@ -503,7 +550,8 @@ const ProductForm = ({ setShowProductForm }: any) => {
             </div>
           </button>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault()
               addProduct(product)
             }}
             className="rounded-xl max-w-[150px] items-center flex gap-1 justify-center bg-[#4CAF50] px-3 py-2 text-white drop-shadow-lg"
@@ -575,7 +623,8 @@ const ProductCard = ({
         </div>
 
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault()
             setShowUpdateProductForm(true)
             setSelectedProduct(data)
           }}
@@ -616,6 +665,16 @@ export default function Page({ params }: { params: Params }) {
 
   return (
     <>
+      <div className="w-full items-center z-50 p-4 justify-center flex top-24 absolute">
+        {showUpdateProductForm && selectedProduct && (
+          <div className="bg-[#f2f2f2] border rounded-xl p-1 md:p-4 w-full max-w-[820px] h-full drop-shadow-md flex justify-center">
+            <UpdateProductForm
+              item={selectedProduct}
+              setShowUpdateProductForm={setShowUpdateProductForm}
+            />
+          </div>
+        )}
+      </div>
       <div className="flex justify-center">
         <div className="lg:w-[1320px] mx-4 my-8">
           <div className="flex mt-16 justify-center flex-col">
@@ -649,7 +708,7 @@ export default function Page({ params }: { params: Params }) {
                 </div>
               )}
             </div>
-            <div className="w-full z-50 p-4 justify-center flex top-24 absolute">
+            {/* <div className="w-full items-center z-50 p-4 justify-center flex top-24 absolute">
               {showUpdateProductForm && selectedProduct && (
                 <div className="bg-[#f2f2f2] border rounded-xl p-1 md:p-4 w-full max-w-[820px] h-full drop-shadow-md flex justify-center">
                   <UpdateProductForm
@@ -658,7 +717,7 @@ export default function Page({ params }: { params: Params }) {
                   />
                 </div>
               )}
-            </div>
+            </div> */}
             <div className="w-full mt-10 p-10 flex items-center justify-center">
               <Pagination
                 currentPage={currentPage}

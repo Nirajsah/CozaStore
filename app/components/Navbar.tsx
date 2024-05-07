@@ -18,6 +18,50 @@ export default function Navbar() {
   const { user } = useUser()
   const router = usePathname()
   const isHome = router === '/'
+  const { userId, setUserId, setUser } = useUser()
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        })
+        const jsonData = await response.json()
+        return jsonData
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+    getUser().then((data) => {
+      setUser(data.result)
+    })
+  }, [userId])
+
+  useEffect(() => {
+    const getUserId = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const jsonData = await response.json()
+        return jsonData
+      } catch (error) {
+        console.log('Error fetching data:', error)
+      }
+    }
+    getUserId().then((data) => {
+      if (data && data.data) {
+        setUserId(data.data.userId)
+      }
+    })
+  }, [])
   return (
     <div>
       <nav

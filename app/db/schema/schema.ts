@@ -1,4 +1,11 @@
-import { real, integer, pgTable, text, serial } from 'drizzle-orm/pg-core'
+import {
+  real,
+  integer,
+  pgTable,
+  text,
+  serial,
+  timestamp,
+} from 'drizzle-orm/pg-core'
 
 export const category = pgTable('category', {
   categoryId: text('category_id').primaryKey(),
@@ -21,7 +28,7 @@ export const users = pgTable('users', {
   username: text('user_name').notNull(),
   email: text('email').notNull(),
   password: text('password').notNull(),
-  createdAt: text('created_at').default('now()'),
+  createdAt: timestamp('created_at').defaultNow(),
 })
 
 export const cart = pgTable('cart', {
@@ -29,8 +36,16 @@ export const cart = pgTable('cart', {
   userId: integer('user_id').references(() => users.userId),
   productId: text('product_id').references(() => product.productId),
   quantity: integer('quantity'),
-  createdAt: text('created_at').default('now()'),
-  updatedAt: text('updated_at').default('now()'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+})
+export const card = pgTable('card', {
+  cardId: serial('card_id').primaryKey(),
+  cardNumber: text('card_number').notNull(),
+  cardHolder: text('card_holder').notNull(),
+  expirationDate: text('expiration_date').notNull(),
+  cvv: text('cvv').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
 })
 
 export type Category = typeof category.$inferSelect
@@ -41,3 +56,5 @@ export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert
 export type Cart = typeof cart.$inferSelect
 export type NewCart = typeof cart.$inferInsert
+export type Card = typeof card.$inferSelect
+export type NewCard = typeof card.$inferInsert

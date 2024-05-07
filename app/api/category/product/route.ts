@@ -32,3 +32,15 @@ export async function PUT(request: Request) {
     return NextResponse.json({ message: 'Error inserting product' })
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const { productId } = await request.json()
+    const result = await db
+      .delete(product)
+      .where(eq(product.productId, productId))
+    return NextResponse.json({ message: 'success' })
+  } catch (error) {
+    return NextResponse.json({ message: 'Error inserting product' })
+  }
+}

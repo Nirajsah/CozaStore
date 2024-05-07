@@ -33,7 +33,7 @@ export default function Page() {
     setPassword('')
     setTimeout(async () => {
       setSpinner(false)
-      const { message, userId } = await handleLogin({ email, password })
+      const { message } = await handleLogin({ email, password })
       setMsg({ msg: message })
       if (message === 'success') {
         router.push('/')
@@ -58,7 +58,6 @@ export default function Page() {
       })
       const jsonData = await response.json()
       if (jsonData.message === 'success') {
-        console.log(jsonData)
         return jsonData
       } else {
         return { message: 'Login Failed' }

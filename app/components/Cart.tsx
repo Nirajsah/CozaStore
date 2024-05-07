@@ -5,7 +5,7 @@ import { motion, easeIn, easeOut } from 'framer-motion'
 import { useCart } from '../context/CartProvider'
 import Link from 'next/link'
 import { useUser } from '../context/UserProvider'
-import { cart } from '../db/schema/schema'
+import Checkout from '../checkout/page'
 interface ProductTypes {
   categoryId: string
   name: string
@@ -225,8 +225,9 @@ export default function Cart({ setShowCart, showCart }: any) {
     return totalPrice
   }
 
+  const [showCheckout, setShowCheckout] = React.useState(false)
   return (
-    <div className="w-full h-full flex justify-end">
+    <div className="w-full h-full flex relative justify-end">
       <motion.div
         initial={{ width: 0, opacity: 0 }}
         animate={{ width: '100%', opacity: 1 }}
@@ -316,6 +317,21 @@ export default function Cart({ setShowCart, showCart }: any) {
           </div>
         </motion.div>
       </motion.div>
+      <div className="fixed justify-center items-center flex">
+        <Checkout />
+      </div>
+      {showCheckout && (
+        <div className="w-full h-full">
+          <div
+            role="button"
+            onClick={() => setShowCart(!showCheckout)}
+            className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
+          ></div>
+          <div className="fixed right-0 z-[200] w-full max-w-[420px] p-4 top-10 h-full">
+            <Checkout />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

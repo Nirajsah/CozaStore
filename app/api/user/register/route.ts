@@ -2,6 +2,7 @@ import { generateJWT, userExist } from '@/app/auth/auth'
 import { db } from '@/app/db/database'
 import { users } from '@/app/db/schema/schema'
 import bcrypt from 'bcryptjs'
+import { NextResponse } from 'next/server'
 
 type User = {
   username: string
@@ -39,7 +40,22 @@ const createUser = async ({ username, email, password }: User) => {
     const { accessToken, refreshToken } = await generateJWT({
       userId: user.userId,
     })
-    return { accessToken, refreshToken, userId: user.userId }
+    const response = NextResponse.json({
+      status: 200,
+      message: 'success',
+      headers: { 'content-type': 'application/json' },
+    })
+    response.cookies.set({
+      name: 'access_token',
+      value: accessToken,
+      path: '/',
+    })
+    response.cookies.set({
+      name: 'refresh_token',
+      value: refreshToken,
+      path: '/',
+    })
+    return response
   } catch (error) {
     return new Response('Error inserting user', { status: 500 })
   }

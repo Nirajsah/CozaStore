@@ -532,9 +532,7 @@ export default function Page() {
     <div className="flex w-full relative justify-center items-center">
       <div className="max-w-[1320px] w-full flex items-center flex-col">
         <div className="flex p-4 justify-center flex-col">
-          <h1 className="text-5xl text-center mb-9 font-fira underline">
-            AdminPage
-          </h1>
+          <h1 className="text-5xl text-center font-semibold mb-9">AdminPage</h1>
           <div className="w-full mb-9 flex justify-between">
             <h1 className="text-5xl font-bold">Category Page</h1>
             <button

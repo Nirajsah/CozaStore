@@ -1,20 +1,20 @@
-FROM oven/bun:latest
+FROM node:18
+
+RUN apt-get update && apt-get install -y postgresql-client
 
 WORKDIR /app
 
-COPY package.json bun.lockb ./
+COPY package.json ./
 
-RUN bun install --frozen-lockfile
-
-ENV NEXT_TELEMETRY_DISABLED 1
-
-ENV NODE_ENV=production
+RUN npm install -g bun
 
 COPY . .
+
+RUN bun install
 
 RUN bun next build
 
 # Build Docker image for Next.js app
 # ENTRYPOINT ["/wait-for-it.sh", "postgres:5432", "--", "bun", "run", "build"]
 # Set entrypoint for running the Next.js app
-CMD ["bun", "start"]
+EXPOSE 3000

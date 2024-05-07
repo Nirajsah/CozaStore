@@ -165,6 +165,7 @@ const UpdateProductForm = ({ item, setShowUpdateProductForm }: any) => {
           id="categoryId"
           value={product.categoryId}
           disabled
+          readOnly
           onChange={(e) => handleChange(e)}
           placeholder="Enter category ID"
           type="text"

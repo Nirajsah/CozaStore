@@ -6,11 +6,11 @@ import { Category } from '../db/schema/schema' // if docker is running
 import React from 'react'
 import Navbar from '../components/Navbar'
 
-type CategoryCardProps = {
-  data: Category
-}
+// type CategoryCardProps = {
+//   data: Category
+// }
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({ data }) => {
+const CategoryCard = ({ data }: any) => {
   return (
     <Link
       as={`/category/${data.categoryId}`}

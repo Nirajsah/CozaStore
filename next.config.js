@@ -8,6 +8,7 @@ module.exports = {
       'store.storeimages.cdn-apple.com',
       'assets.adidas.com',
       'res.cloudinary.com',
+      'dl.dropboxusercontent.com',
     ],
     formats: ['image/webp', 'image/avif'],
   },

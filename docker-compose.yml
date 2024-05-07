@@ -1,8 +1,13 @@
 version: '3.9'
 
+networks:
+  default:
+volumes:
+  postgres_db_data:
+
 services:
   db:
-    image: postgres:latest
+    image: postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -12,8 +17,11 @@ services:
       - '5432:5432'
     volumes:
       - postgres_db_data:/var/lib/postgresql/data
+    networks:
+      default:
 
-  nextjs:
+  cozastore-app:
+    # image: 9beb3be75328
     build:
       context: .
       dockerfile: Dockerfile
@@ -23,7 +31,21 @@ services:
     ports:
       - '3000:3000'
 
-networks:
-  default:
-volumes:
-  postgres_db_data:
+    command:
+      - /bin/sh
+      - -c
+      - |
+        until pg_isready -h db -p 5432; do
+         echo "Waiting for postgres to be ready..."
+         sleep 2
+        done
+        if [ ! -f "./app/migration_applied" ]; then
+          npm run generate
+          bun run migrate
+          bun run start
+          touch "./app/migration_applied"
+        fi
+          exit
+
+    networks:
+      default:

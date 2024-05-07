@@ -1,6 +1,6 @@
 {
-  "id": "d65695db-999a-4432-af38-19148da1f5bf",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "1b909b89-2d9f-49a2-b930-91657450e0ae",
+  "prevId": "d65695db-999a-4432-af38-19148da1f5bf",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -55,7 +55,7 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": "now()::timestamp without time zone"
         }
       },
       "indexes": {},
@@ -104,14 +104,14 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": "now()::timestamp without time zone"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": "now()::timestamp without time zone"
         }
       },
       "indexes": {},
@@ -273,7 +273,7 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": "now()::timestamp without time zone"
         }
       },
       "indexes": {},

@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm'
 import {
   real,
   integer,
@@ -28,7 +29,9 @@ export const users = pgTable('users', {
   username: text('user_name').notNull(),
   email: text('email').notNull(),
   password: text('password').notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
+  createdAt: text('created_at')
+    .notNull()
+    .default(sql`now()::timestamp without time zone`),
 })
 
 export const cart = pgTable('cart', {
@@ -36,16 +39,24 @@ export const cart = pgTable('cart', {
   userId: integer('user_id').references(() => users.userId),
   productId: text('product_id').references(() => product.productId),
   quantity: integer('quantity'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+  createdAt: text('created_at')
+    .notNull()
+    .default(sql`now()::timestamp without time zone`),
+  updatedAt: text('updated_at')
+    .notNull()
+    .default(sql`now()::timestamp without time zone`),
 })
 export const card = pgTable('card', {
   cardId: serial('card_id').primaryKey(),
-  cardNumber: text('card_number').notNull(),
+  cardNumber: text('card_number').notNull().unique(),
   cardHolder: text('card_holder').notNull(),
-  expirationDate: text('expiration_date').notNull(),
-  cvv: text('cvv').notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
+  expirationDate: integer('expiration_date').notNull(),
+  cvv: integer('cvv').notNull(),
+  type: text('type').notNull(),
+  amount: integer('amount').notNull(),
+  createdAt: text('created_at').default(
+    sql`now()::timestamp without time zone`
+  ),
 })
 
 export type Category = typeof category.$inferSelect

@@ -1,5 +1,6 @@
+'use client'
 import React from 'react'
-import Image from 'next/image'
+import { useUser } from '../context/UserProvider'
 
 const Card = ({ cart }: any) => {
   return (
@@ -23,16 +24,53 @@ const Card = ({ cart }: any) => {
     </div>
   )
 }
-export default function Checkout({ cart }: any) {
+export default function page() {
+  const [cart, setCart] = React.useState([])
+  const { userId } = useUser()
+
+  React.useEffect(() => {
+    const getCart = async ({ userId }: { userId: number }) => {
+      try {
+        const response = await fetch('/api/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        })
+        const jsonData = await response.json()
+        return jsonData
+      } catch (error) {
+        return error
+      }
+    }
+    getCart({ userId }).then((data) => {
+      console.log(data.cart)
+      setCart(data.cart)
+    })
+  }, [userId, cart])
+
+  return (
+    <div>
+      <CheckoutPage cart={cart} />
+    </div>
+  )
+}
+
+const CheckoutPage = ({ cart }: any) => {
   const [selectedCard, setSelectedCard] = React.useState('Credit Card')
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
-
   const handleCardChange = (card: any) => {
-    setSelectedCard((prevSelectedCard) => {
-      setIsDropdownOpen(false)
-      return card
-    })
+    setSelectedCard(card)
+    setIsDropdownOpen(false)
+    console.log(card)
   }
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen)
+  }
+
+  const cardOptions = ['Credit Card', 'Debit Card']
   const totalPrice = () => {
     let total = 0
     if (cart && cart.length > 0) {
@@ -50,94 +88,9 @@ export default function Checkout({ cart }: any) {
     const percentValue = value * 0.18
     return percentValue
   }
-
-  const [card, setCard] = React.useState({
-    cardNumber: '',
-    cardHolder: '',
-    expirationDate: '',
-    cvv: '',
-    amount: totalPriceAfterTax(),
-    type: selectedCard,
-  })
-
-  const handleSubmit = async () => {
-    let expirationDateInt
-    const expirationDateString = card.expirationDate.replace('/', '')
-
-    if (expirationDateString.length === 4 && expirationDateString[0] === '0') {
-      expirationDateInt = parseInt(expirationDateString.slice(1), 10)
-    } else {
-      expirationDateInt = parseInt(expirationDateString, 10)
-    }
-    const cvvInt = parseInt(card.cvv, 10)
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: card.amount,
-          cardNumber: card.cardNumber,
-          cardHolder: card.cardHolder,
-          expirationDate: expirationDateInt,
-          cvv: cvvInt,
-          type: card.type,
-        }),
-      })
-      const jsonData = await response.json()
-      console.log(jsonData)
-      return jsonData
-    } catch (error) {
-      return error
-    }
-  }
-
-  const handleCardNumberChange = (e: any) => {
-    const { name, value } = e.target
-
-    if (name === 'expirationDate') {
-      // Format the expiration date input
-      let formattedValue = value.replace(/\D/g, '') // Remove non-digit characters
-      formattedValue = formattedValue.substring(0, 4) // Limit to 4 digits
-      // Add a forward slash after the first two digits
-      if (formattedValue.length > 2) {
-        formattedValue = `${formattedValue.slice(0, 2)}/${formattedValue.slice(2, 4)}`
-      }
-      setCard({ ...card, [name]: formattedValue })
-    } else {
-      setCard({ ...card, [name]: value })
-    }
-  }
-
-  React.useEffect(() => {
-    setCard((prevCard) => ({
-      ...prevCard,
-      amount: totalPriceAfterTax(),
-      type: selectedCard,
-    }))
-  }, [selectedCard, totalPriceAfterTax()])
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen)
-  }
-
-  const formatCardNumber = (value: any) => {
-    const cleanValue = value.replace(/\s/g, '') // Remove existing spaces
-    const formattedValue = cleanValue.replace(/(.{4})/g, '$1 ').trim() // Add space after every 4 digits
-    return formattedValue
-  }
-
-  const handleNumberChange = (e: any) => {
-    let formattedValue = formatCardNumber(e.target.value)
-    setCard({ ...card, cardNumber: formattedValue })
-  }
-
-  const cardOptions = ['Credit Card', 'Debit Card']
-
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className="w-full max-w-[1024px] h-[640px] bg-white rounded-3xl shadow-lg flex">
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-[800px] h-[540px] bg-white rounded-3xl shadow-lg flex">
         <div className="w-1/2 p-6">
           <h2 className="text-center text-lg font-light mb-4">Order Summary</h2>
           <div className="border-b border-gray-300 mb-4"></div>
@@ -160,7 +113,7 @@ export default function Checkout({ cart }: any) {
             </div>
           </div>
         </div>
-        <div className="w-1/2 bg-gradient-to-l from-[#844FF3] to-[#C1A5FF] rounded-r-3xl p-6 text-white">
+        <div className="w-1/2 bg-blue-500 rounded-r-3xl p-6 text-white">
           <div className="mb-6">
             <div className="relative inline-block">
               <button
@@ -185,8 +138,8 @@ export default function Checkout({ cart }: any) {
               </button>
               {isDropdownOpen && (
                 <div className="absolute z-10 w-full bg-white/10 rounded mt-2 overflow-hidden">
-                  <ul className="divide-y divide-white/20">
-                    {cardOptions.map((option: string) => (
+                  <ul>
+                    {cardOptions.map((option) => (
                       <li
                         key={option}
                         className="px-4 py-2 hover:bg-white/20 cursor-pointer"
@@ -200,9 +153,7 @@ export default function Checkout({ cart }: any) {
               )}
             </div>
           </div>
-          <Image
-            width={150}
-            height={150}
+          <img
             src="https://dl.dropboxusercontent.com/s/ubamyu6mzov5c80/visa_logo%20%281%29.png"
             alt="Credit Card"
             className="h-20 mx-auto mb-6"
@@ -210,78 +161,59 @@ export default function Checkout({ cart }: any) {
           <div className="mb-4">
             <label
               htmlFor="cardNumber"
-              className="block text-black text-sm font-bold mb-2"
+              className="block text-sm font-bold mb-2"
             >
               Card Number
             </label>
             <input
               type="text"
               id="cardNumber"
-              name="cardNumber"
               required
-              value={card.cardNumber}
-              style={{ letterSpacing: '1px' }}
-              className="w-full bg-white/10 px-4 py-2 rounded outline outline-[#844CF3] text-white"
-              onChange={handleNumberChange}
+              className="w-full bg-white/10 px-4 py-2 rounded text-white"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="cardHolder"
-              className="block text-black text-sm font-bold mb-2"
+              className="block text-sm font-bold mb-2"
             >
               Card Holder
             </label>
             <input
               type="text"
               id="cardHolder"
-              name="cardHolder"
-              value={card.cardHolder}
-              onChange={handleCardNumberChange}
+              className="w-full bg-white/10 px-4 py-2 rounded text-white"
               required
-              className="w-full bg-white/10 px-4 py-2 rounded outline outline-[#844CF3] text-white"
             />
           </div>
           <div className="flex justify-between mb-8">
             <div className="w-1/2 mr-2">
               <label
                 htmlFor="expirationDate"
-                className="block text-black text-sm font-bold mb-2"
+                className="block text-sm font-bold mb-2"
               >
                 Expires
               </label>
               <input
                 type="text"
                 id="expirationDate"
-                name="expirationDate"
-                value={card.expirationDate}
                 required
-                onChange={handleCardNumberChange}
-                className="w-full bg-white/10 px-4 py-2 rounded outline outline-[#844CF3] text-white"
+                className="w-full bg-white/10 px-4 py-2 rounded text-white"
               />
             </div>
             <div className="w-1/2 ml-2">
-              <label htmlFor="cvc" className="block text-black text-sm mb-2">
+              <label htmlFor="cvc" className="block mb-2">
                 CVC
               </label>
               <input
                 type="text"
-                value={card.cvv}
-                id="cvv"
                 required
-                name="cvv"
-                onChange={handleCardNumberChange}
-                className="w-full bg-white/10 px-4 py-2 rounded outline outline-[#844CF3] text-white"
+                id="cvc"
+                className="w-full bg-white/10 px-4 py-2 rounded text-white"
               />
             </div>
           </div>
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              handleSubmit()
-            }}
-            className="border border-black hover:bg-black text-black rounded-xl hover:text-white font-semibold py-2 px-4 w-full"
-          >
+          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">
             Checkout
           </button>
         </div>

@@ -37,7 +37,9 @@ export default function Navbar() {
       }
     }
     getUser().then((data) => {
-      setUser(data.result)
+      if (data && data.result) {
+        setUser(data.result)
+      }
     })
   }, [userId])
 

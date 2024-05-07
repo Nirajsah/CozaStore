@@ -2,10 +2,11 @@ import { drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schema/schema'
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
 import { Pool } from 'pg'
-import { eq } from 'drizzle-orm'
+import * as dotenv from 'dotenv'
 
+dotenv.config()
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL as string,
+  connectionString: 'postgres://postgres:cozastore@localhost:5432/shop',
 })
 // const queryClient = postgres(process.env.DATABASE_URL as string)
 // const migrationClient = postgres(process.env.DATABASE_URL as string, { max: 1 })
@@ -401,46 +402,17 @@ const Products: schema.NewProduct[] = [
     categoryId: 'macbook',
   },
 ]
-
-const Cart = [
-  {
-    cartId: 2,
-    userId: 1,
-    productId: 'B0B3BMKMGP',
-    quantity: 1,
-  },
-]
 export const MigrateDB = async () => {
   try {
-    // await db.insert(schema.category).values(Category)
-    // await db.insert(schema.product).values(Products)
-    // await db.insert(schema.cart).values(Cart)
-    // await db
-    //   .update(schema.cart)
-    //   .set({ productId: 'B09BVCVTBC' })
-    //   .where(eq(schema.cart.userId, 1))
+    const [res] = await db.select().from(schema.category)
+    if (res === undefined) {
+      await db.insert(schema.category).values(Category)
+      await db.insert(schema.product).values(Products)
+    }
     await migrate(db, { migrationsFolder: 'drizzle' })
     console.log('Migrations completed successfully.')
     process.exit(0)
   } catch (error) {
     console.error('Error running migrations:', error)
-  }
-}
-
-export const UpdateQuantity = async ({
-  productId,
-  quantity,
-}: {
-  productId: string
-  quantity: number
-}) => {
-  try {
-    await db
-      .update(schema.cart)
-      .set({ quantity })
-      .where(eq(schema.cart.productId, productId))
-    console.log('called')
-  } catch (error) {
-    return error
   }
 }

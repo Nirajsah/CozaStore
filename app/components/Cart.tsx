@@ -2,10 +2,10 @@
 import Image from 'next/image'
 import React from 'react'
 import { motion, easeIn, easeOut } from 'framer-motion'
-import { useCart } from '../context/CartProvider'
 import Link from 'next/link'
 import { useUser } from '../context/UserProvider'
-import Checkout from '../checkout/page'
+import Checkout from '../components/Checkout'
+
 interface ProductTypes {
   categoryId: string
   name: string
@@ -226,109 +226,122 @@ export default function Cart({ setShowCart, showCart }: any) {
   }
 
   const [showCheckout, setShowCheckout] = React.useState(false)
-  return (
-    <div className="w-full h-full flex relative justify-end">
-      <motion.div
-        initial={{ width: 0, opacity: 0 }}
-        animate={{ width: '100%', opacity: 1 }}
-        transition={{ duration: 0.2, ease: easeIn }}
-        exit={{
-          width: 0,
-          padding: 0,
-          transition: { opacity: 0, delay: 0.2, duration: 0.2, ease: easeOut },
-        }}
-        className="max-h-[720px] my-5 drop-shadow-md flex flex-col justify-between font-sans max-w-[380px] bg-white rounded-xl h-[80vh]"
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, ease: easeIn }}
-          exit={{ opacity: 0, transition: { duration: 0.1, ease: easeOut } }}
-          className="w-full relative flex justify-between flex-col h-full"
-        >
-          <div className="flex w-full p-4 items-center justify-between">
-            <div className="font-bold text-xl">Cart</div>
-            <button onClick={() => setShowCart(!showCart)}>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M17.6569 19.0711L4.92893 6.34314L6.34315 4.92892L19.0711 17.6568L17.6569 19.0711Z"
-                ></path>
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M4.92893 17.6568L17.6569 4.92892L19.0711 6.34314L6.34315 19.0711L4.92893 17.6568Z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <div className="flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">
-            {cart ? (
-              cart.map((data: any, index: number) => (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  key={index}
-                >
-                  <Product
-                    item={data}
-                    updateCart={updateCart}
-                    removeItem={removeItem}
-                  />
-                </motion.div>
-              ))
-            ) : (
-              <div className="mt-10 text-2xl font-thin font-fira">
-                No Product in Cart
-              </div>
-            )}
-          </div>
 
-          <div className="flex bg-white rounded-b-xl p-4 flex-col justify-self-end w-full">
-            <div className="w-full flex justify-between">
-              <div className="text-m font-semibold">Totol</div>
-              <div className="text-m font-semibold">
-                INR{' '}
-                {cart && cart.length > 0 ? '₹' + calculateTotalPrice(cart) : ''}
-              </div>
-            </div>
-            <div className="flex mt-6 justify-between gap-3 w-full">
-              <Link className="w-full" href="/cart">
-                <button
-                  onClick={() => setShowCart(!showCart)}
-                  className="border py-2 font-semibold uppercase rounded-[10px] w-full text-sm"
+  return (
+    <div className="relative">
+      <div className="w-full h-full flex justify-end">
+        <motion.div
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: '100%', opacity: 1 }}
+          transition={{ duration: 0.2, ease: easeIn }}
+          exit={{
+            width: 0,
+            padding: 0,
+            transition: {
+              opacity: 0,
+              delay: 0.2,
+              duration: 0.2,
+              ease: easeOut,
+            },
+          }}
+          className="max-h-[720px] my-5 drop-shadow-md flex flex-col justify-between font-sans max-w-[380px] bg-white rounded-xl h-[80vh]"
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, ease: easeIn }}
+            exit={{ opacity: 0, transition: { duration: 0.1, ease: easeOut } }}
+            className="w-full relative flex justify-between flex-col h-full"
+          >
+            <div className="flex w-full p-4 items-center justify-between">
+              <div className="font-bold text-xl">Cart</div>
+              <button onClick={() => setShowCart(!showCart)}>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
                 >
-                  View Cart
-                </button>
-              </Link>
-              <button className="w-full bg-black text-white py-2 border rounded-[10px] uppercase font-semibold text-sm">
-                Check Out
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M17.6569 19.0711L4.92893 6.34314L6.34315 4.92892L19.0711 17.6568L17.6569 19.0711Z"
+                  ></path>
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M4.92893 17.6568L17.6569 4.92892L19.0711 6.34314L6.34315 19.0711L4.92893 17.6568Z"
+                  ></path>
+                </svg>
               </button>
             </div>
-          </div>
+            <div className="flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">
+              {cart ? (
+                cart.map((data: any, index: number) => (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    key={index}
+                  >
+                    <Product
+                      item={data}
+                      updateCart={updateCart}
+                      removeItem={removeItem}
+                    />
+                  </motion.div>
+                ))
+              ) : (
+                <div className="mt-10 text-2xl font-thin font-fira">
+                  No Product in Cart
+                </div>
+              )}
+            </div>
+
+            <div className="flex bg-white rounded-b-xl p-4 flex-col justify-self-end w-full">
+              <div className="w-full flex justify-between">
+                <div className="text-m font-semibold">Totol</div>
+                <div className="text-m font-semibold">
+                  INR{' '}
+                  {cart && cart.length > 0
+                    ? '₹' + calculateTotalPrice(cart)
+                    : ''}
+                </div>
+              </div>
+              <div className="flex mt-6 justify-between gap-3 w-full">
+                <Link className="w-full" href="/cart">
+                  <button
+                    onClick={() => setShowCart(!showCart)}
+                    className="border py-2 font-semibold uppercase rounded-[10px] w-full text-sm"
+                  >
+                    View Cart
+                  </button>
+                </Link>
+                <button
+                  onClick={() => {
+                    setShowCheckout(!showCheckout)
+                  }}
+                  className="w-full bg-black text-white py-2 border rounded-[10px] uppercase font-semibold text-sm"
+                >
+                  Check Out
+                </button>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
-      <div className="fixed justify-center items-center flex">
-        <Checkout />
       </div>
+
       {showCheckout && (
         <div className="w-full h-full">
           <div
             role="button"
-            onClick={() => setShowCart(!showCheckout)}
+            onClick={() => setShowCheckout(!showCheckout)}
             className="w-full h-full z-[100] top-0 left-0 fixed bg-black opacity-60"
           ></div>
-          <div className="fixed right-0 z-[200] w-full max-w-[420px] p-4 top-10 h-full">
-            <Checkout />
+          <div className="fixed top-0 right-[200px] z-[200] w-full max-w-[1024px] p-4 h-fit">
+            <Checkout cart={cart} />
           </div>
         </div>
       )}

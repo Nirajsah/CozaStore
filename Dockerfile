@@ -1,20 +1,24 @@
-FROM node:18
-
-RUN apt-get update && apt-get install -y postgresql-client
+FROM --platform=linux/amd64 node:latest 
 
 WORKDIR /app
 
-COPY package.json ./
-
-RUN npm install -g bun
+COPY package.json bun.lockb ./
 
 COPY . .
 
+RUN npm install -g bun
+
 RUN bun install
 
-RUN bun next build
+RUN bun generate
 
-# Build Docker image for Next.js app
-# ENTRYPOINT ["/wait-for-it.sh", "postgres:5432", "--", "bun", "run", "build"]
-# Set entrypoint for running the Next.js app
-EXPOSE 3000
+RUN bun migrate
+
+RUN bun run build
+
+EXPOSE 80/tcp
+
+CMD ["bun", "start"]
+
+
+

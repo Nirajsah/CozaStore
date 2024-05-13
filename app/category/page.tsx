@@ -44,7 +44,6 @@ export default function Page() {
       try {
         const response = await fetch('/api/category')
         const jsonData = await response.json()
-        console.log(jsonData)
         setData(jsonData)
       } catch (error) {
         console.error('Error fetching data:', error)

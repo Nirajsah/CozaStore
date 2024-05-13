@@ -1,5 +1,5 @@
 {
-  "id": "d65695db-999a-4432-af38-19148da1f5bf",
+  "id": "0c9cda84-d462-49a8-a5c4-c30bd854d71a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -52,10 +52,10 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": false,
+          "default": "now()::timestamp without time zone"
         }
       },
       "indexes": {},
@@ -101,17 +101,17 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": "now()::timestamp without time zone"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": "now()::timestamp without time zone"
         }
       },
       "indexes": {},
@@ -270,10 +270,10 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "default": "now()::timestamp without time zone"
         }
       },
       "indexes": {},

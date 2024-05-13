@@ -6,10 +6,8 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 const pool = new Pool({
-  connectionString: 'postgres://postgres:cozastore@localhost:5432/shop',
+  connectionString: process.env.DATABASE_URL as string,
 })
-// const queryClient = postgres(process.env.DATABASE_URL as string)
-// const migrationClient = postgres(process.env.DATABASE_URL as string, { max: 1 })
 export const db = drizzle(pool, { logger: false })
 
 const Category: schema.NewCategory[] = [

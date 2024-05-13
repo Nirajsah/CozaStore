@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   const { productId } = await request.json()
-  console.log('productId:', productId)
   try {
     const result = await db
       .select()

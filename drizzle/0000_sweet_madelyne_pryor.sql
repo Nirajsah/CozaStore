@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "card" (
 	"cvv" integer NOT NULL,
 	"type" text NOT NULL,
 	"amount" integer NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
+	"created_at" text DEFAULT now()::timestamp without time zone,
 	CONSTRAINT "card_card_number_unique" UNIQUE("card_number")
 );
 --> statement-breakpoint
@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS "cart" (
 	"user_id" integer,
 	"product_id" text,
 	"quantity" integer,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"created_at" text DEFAULT now()::timestamp without time zone NOT NULL,
+	"updated_at" text DEFAULT now()::timestamp without time zone NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "category" (
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"user_name" text NOT NULL,
 	"email" text NOT NULL,
 	"password" text NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" text DEFAULT now()::timestamp without time zone NOT NULL
 );
 --> statement-breakpoint
 DO $$ BEGIN

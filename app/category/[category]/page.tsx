@@ -41,7 +41,6 @@ const ProductCard = ({ data, userId }: { data: any; userId: any }) => {
         }),
       })
       const jsonData = await response.json()
-      console.log(jsonData)
     } catch (error) {
       console.error('Error fetching data:', error)
     }

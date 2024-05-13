@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useEffect, useState } from 'react'
 import ReactStars from 'react-stars'
 import Navbar from '@/app/components/Navbar'

@@ -91,3 +91,118 @@ yarn dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+Here's an instruction manual for running your e-commerce website project built with Next.js, Bun.js, and PostgreSQL running inside a Docker container:
+
+# Instruction Manual: Running the E-commerce Website
+
+## Prerequisites
+
+Before you begin, ensure that you have the following software installed on your system:
+
+- [Node.js](https://nodejs.org/en/) (version 14 or later)
+- [Bun](https://bun.sh/) (version 0.5.0 or later)
+- [Docker](https://www.docker.com/)
+
+## Step 1: Clone the Repository
+
+Open your terminal and navigate to the desired directory where you want to clone the project. Run the following command to clone the repository:
+
+```
+git clone https://github.com/Nirajsah/CozaStore.git
+```
+
+or
+
+You can directly use the zip to run the code. Follow Step 2 after you unzip the file.
+
+## Step 2: Install Dependencies
+
+Navigate to the project directory:
+
+```
+cd your-file
+```
+
+Install the required dependencies for the Next.js application using Bun:
+
+```
+bun install
+```
+
+## Step 3: Set up the PostgreSQL Database
+
+In this step, we'll set up the PostgreSQL database using Docker.
+
+1. Make sure Docker is running on your system.
+
+2. Navigate to the project directory (if not already there).
+
+3. Create a new Docker container for PostgreSQL:
+
+```
+docker run --name your-postgres-container -e POSTGRES_PASSWORD=your-password -d -p 5432:5432 postgres
+```
+
+You can update postgresql credentials,
+DEFAULT PostgreSQL CREDENTIALS
+
+HOST: localhost, if running docker compose use service name as host. eg. db
+USERNAME: postgres
+PASSWORD: postgres
+
+Replace `your-postgres-container` with a descriptive name for your PostgreSQL container, and `your-password` with a secure password of your choice.
+
+## Step 4: Configure Environment Variables
+
+Create a new file named `.env` in the project root directory and add the following environment variables:
+
+```
+DATABASE_URL=postgresql://postgres:your-password@localhost:5432/your-database
+```
+
+Replace `your-password` with the password you set for the PostgreSQL container, and `your-database` with the desired name for your database.
+
+## Step 5: Run Database Migrations
+
+Make Sure you are connected to the database.
+
+```
+bun generate
+
+bun migrate
+```
+
+## Step 6: Run the Application
+
+Start the Next.js development server with Bun:
+
+```
+bun dev
+```
+
+This command will start the development server and automatically open your application in the default web browser at `http://localhost:3000`.
+
+## Step 7: Build for Production (Optional)
+
+If you want to build the application for production, run the following command:
+
+```
+bun run build
+```
+
+After the build is complete, you can start the production server with:
+
+```
+bun start
+```
+
+Your e-commerce website should now be up and running!
+
+## Additional Notes
+
+- If you need to stop the PostgreSQL container, run `docker stop your-postgres-container`.
+- To start the PostgreSQL container again, run `docker start your-postgres-container`.
+- Refer to the project's documentation or README file for any additional configuration or customization options.
+
+If you encounter any issues or have further questions, please consult the project's documentation or reach out to the project maintainers for assistance.

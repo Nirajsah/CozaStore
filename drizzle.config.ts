@@ -9,6 +9,7 @@ export default defineConfig({
   schema: './app/db/schema/schema.ts',
   out: 'drizzle',
   dbCredentials: {
-    connectionString: 'postgres://postgres:cozastore@localhost:5432/shop',
+    connectionString:
+      'postgres://default:TZIPJgKAH75b@ep-still-breeze-a10pr96c-pooler.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require',
   },
 }) satisfies Config

@@ -75,15 +75,12 @@ export default function Navbar() {
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-<<<<<<< HEAD
               <a href="/" className="text-2xl font-bold capitalize font-fira">
                 CozaStore
               </a>
-=======
               <div className="text-2xl font-bold font-fira">
                 <Image src={Logo} width={100} height={60} alt="logo" />
               </div>
->>>>>>> origin/main
               <div className="lg:flex hidden justify-between md:w-[150px]">
                 <a type="link" href="/" className="text-md">
                   Home

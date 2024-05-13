@@ -264,42 +264,6 @@ export default function Cart({ setShowCart, showCart }: any) {
                   aria-hidden="true"
                   focusable="false"
                 >
-<<<<<<< HEAD
-                  <Product
-                    item={data}
-                    incrementQuantity={incrementQuantity}
-                    decrementQuantity={decrementQuantity}
-                    removeItem={removeItem}
-                  />
-                </motion.div>
-              ))
-            ) : (
-              <div>No Items in Cart</div>
-            )}
-          </div>
-
-          <div className="flex bg-white rounded-b-xl p-4 flex-col justify-self-end w-full">
-            <div className="w-full flex justify-between">
-              <div className="text-m font-semibold">Totol</div>
-              <div className="text-m font-semibold">
-                INR
-                {totalCartPrice()
-                  ? '₹' + totalCartPrice().toLocaleString('en-IN')
-                  : ''}
-              </div>
-            </div>
-            <div className="flex mt-6 justify-between gap-3 w-full">
-              <Link className="w-full" href="/cart">
-                <button
-                  onClick={() => setShowCart(!showCart)}
-                  className="border py-2 font-semibold uppercase rounded-[10px] w-full text-sm"
-                >
-                  View Cart
-                </button>
-              </Link>
-              <button className="w-full bg-black text-white py-2 border rounded-[10px] uppercase font-semibold text-sm">
-                Check Out
-=======
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
@@ -311,7 +275,6 @@ export default function Cart({ setShowCart, showCart }: any) {
                     d="M4.92893 17.6568L17.6569 4.92892L19.0711 6.34314L6.34315 19.0711L4.92893 17.6568Z"
                   ></path>
                 </svg>
->>>>>>> origin/main
               </button>
             </div>
             <div className="flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">

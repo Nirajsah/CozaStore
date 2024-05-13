@@ -5,7 +5,6 @@ node_modules
 .git
 
 # Ignore .env file
-.env
 drizzle
 # Ignore log files
 *.log

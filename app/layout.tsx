@@ -1,9 +1,12 @@
-import CartProvider from './context/CartProvider'
 import './globals.css'
 import type { Metadata } from 'next'
+<<<<<<< HEAD
 import Navbar from './components/Navbar'
+=======
+>>>>>>> origin/main
 import localFont from 'next/font/local'
 import React from 'react'
+import UserProvider from './context/UserProvider'
 
 export const metadata: Metadata = {
   title: 'CozaStore',
@@ -20,11 +23,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
+<<<<<<< HEAD
       <body className="bg-[#ececec5a] overscroll-none">
         <CartProvider>
           <Navbar />
           {children}
         </CartProvider>
+=======
+      <body className="webkit-font-smoothing font-ppneue bg-[#ececec5a]">
+        <UserProvider>{children}</UserProvider>
+>>>>>>> origin/main
       </body>
     </html>
   )

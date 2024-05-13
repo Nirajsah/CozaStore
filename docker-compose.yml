@@ -1,29 +1,33 @@
 version: '3.9'
 
-services:
-  db:
-    image: postgres:latest
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: shop
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres_db_data:/var/lib/postgresql/data
+networks:
+  default:
 
-  nextjs:
+volumes:
+  postgres_db_data:
+
+services:
+  # db:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.db
+  #   restart: always
+  #   ports:
+  #     - '5432:5432'
+  #   volumes:
+  #     - postgres_db_data:/var/lib/postgresql/data
+  #   networks:
+  #     default:
+
+  cozastore-app:
     build:
       context: .
       dockerfile: Dockerfile
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     restart: always
     ports:
-      - '3000:3000'
-
-networks:
-  default:
-volumes:
-  postgres_db_data:
+      - '80:3000'
+    # entrypoint: /usr/local/bin/start.sh
+    networks:
+      - default

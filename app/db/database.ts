@@ -1,11 +1,14 @@
-import { drizzle } from 'drizzle-orm/postgres-js'
-import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import postgres from 'postgres'
+import { drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schema/schema'
+import { migrate } from 'drizzle-orm/node-postgres/migrator'
+import { Pool } from 'pg'
+import * as dotenv from 'dotenv'
 
-const queryClient = postgres(process.env.DATABASE_URL as string)
-export const db = drizzle(queryClient, { schema })
-const migrationClient = postgres(process.env.DATABASE_URL as string, { max: 1 })
+dotenv.config()
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL as string,
+})
+export const db = drizzle(pool, { logger: false })
 
 const Category: schema.NewCategory[] = [
   {
@@ -397,12 +400,14 @@ const Products: schema.NewProduct[] = [
     categoryId: 'macbook',
   },
 ]
-
 export const MigrateDB = async () => {
   try {
-    await db.insert(schema.category).values(Category)
-    await db.insert(schema.product).values(Products)
-    await migrate(drizzle(migrationClient), { migrationsFolder: 'drizzle' })
+    const [res] = await db.select().from(schema.category)
+    if (res === undefined) {
+      await db.insert(schema.category).values(Category)
+      await db.insert(schema.product).values(Products)
+    }
+    await migrate(db, { migrationsFolder: 'drizzle' })
     console.log('Migrations completed successfully.')
     process.exit(0)
   } catch (error) {

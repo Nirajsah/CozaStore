@@ -3,20 +3,69 @@ import { BsSearch } from 'react-icons/bs'
 import { GoPerson } from 'react-icons/go'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 import Cart from './Cart'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Search from './Search'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import CartIcon from '../cart/CartIcon'
 import { usePathname } from 'next/navigation'
+import { useUser } from '../context/UserProvider'
+import Image from 'next/image'
+import Logo from '../assets/Logo3.png'
 
 export default function Navbar() {
   const [showCart, setShowCart] = useState<boolean>(false)
   const [showMenu, setShowMenu] = useState<boolean>(false)
   const [showSearch, setShowSearch] = useState<boolean>(false)
-
+  const { user } = useUser()
   const router = usePathname()
   const isHome = router === '/'
+  const { userId, setUserId, setUser } = useUser()
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        })
+        const jsonData = await response.json()
+        return jsonData
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+    getUser().then((data) => {
+      if (data && data.result) {
+        setUser(data.result)
+      }
+    })
+  }, [userId])
+
+  useEffect(() => {
+    const getUserId = async () => {
+      try {
+        const response = await fetch('/api/user', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const jsonData = await response.json()
+        return jsonData
+      } catch (error) {
+        console.log('Error fetching data:', error)
+      }
+    }
+    getUserId().then((data) => {
+      if (data && data.data) {
+        setUserId(data.data.userId)
+      }
+    })
+  }, [])
   return (
     <div>
       <nav
@@ -26,9 +75,15 @@ export default function Navbar() {
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
+<<<<<<< HEAD
               <a href="/" className="text-2xl font-bold capitalize font-fira">
                 CozaStore
               </a>
+=======
+              <div className="text-2xl font-bold font-fira">
+                <Image src={Logo} width={100} height={60} alt="logo" />
+              </div>
+>>>>>>> origin/main
               <div className="lg:flex hidden justify-between md:w-[150px]">
                 <a type="link" href="/" className="text-md">
                   Home
@@ -38,8 +93,7 @@ export default function Navbar() {
                 </a>
               </div>
             </div>
-
-            <div className="flex justify-between items-center md:w-[180px] content-center w-[90px]">
+            <div className="flex gap-4 justify-between items-center md:w-fit content-center w-[90px]">
               <button
                 type="button"
                 name="search"
@@ -47,9 +101,17 @@ export default function Navbar() {
               >
                 <BsSearch />
               </button>
-              <div className="hidden md:flex">
+              <Link
+                href={user && user.username ? '/' : '/login'}
+                className="hidden bg-gradient-to-tr from-[#FFB777] to-[#F16C6A] px-4 py-2 rounded-full md:flex md:items-center gap-2"
+              >
                 <GoPerson size={20} />
-              </div>
+                {user && user.username ? (
+                  <span className="text-md">{user.username}</span>
+                ) : (
+                  'Get Started'
+                )}
+              </Link>
               <button
                 type="button"
                 name="show menu"
@@ -158,6 +220,11 @@ export default function Navbar() {
                   >
                     <span className="font-medium text-2xl">Cart</span>
                   </Link>
+                  <button className="bg-gradient-to-tr w-fit from-[#FFB777] to-[#F16C6A] px-4 py-2 rounded-full flex items-center gap-2">
+                    <GoPerson size={20} />
+                    {/* <span className="text-md">Niraj Sah</span> */}
+                    <span className="text-lg">Get Started</span>
+                  </button>
                 </div>
               </motion.div>
             </motion.div>

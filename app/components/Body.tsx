@@ -103,7 +103,7 @@ const testimonials: Testimonial[] = [
   },
 ]
 
-export default function Body() {
+const Body: React.FC = () => {
   const TEXT: string = 'Shop Your Favorite Products with Ease'
 
   const [translateY, setTranslateY] = useState(0)
@@ -165,7 +165,7 @@ export default function Body() {
           }
           className="w-full max-w-[700px] p-6 max-h-[700px] flex justify-center items-center rounded-[2rem] h-[480px] mx-auto object-contain object-center drop-shadow-2xl transition-all duration-200 ease-out"
         >
-          <Image priority src={Banner} width={700} height={700} alt="" />
+          <Image loading="lazy" src={Banner} width={700} height={700} alt="" />
         </div>
       </div>
       <OurPartners />
@@ -174,7 +174,11 @@ export default function Body() {
           Testimonials
         </div>
         <div className="grid bg-[#f4f1ed] drop-shadow-sm gap-[24px] rounded-[24px] px-4 py-[64px] md:gap-[48px] md:rounded-[48px] md:py-[120px] lg:px-16">
+<<<<<<< HEAD
           <div className="relative hide-scrollbar h-[490px] flex transform-gpu snap-x snap-mandatory overflow-x-scroll scroll-smooth px-[calc(16px/2)] md:px-[calc(40px/2)] lg:-mx-16">
+=======
+          <div className="relative hide-scrollbar mx-4 h-[490px] flex transform-gpu snap-x snap-mandatory overflow-x-scroll scroll-smooth lg:px-[calc(16px/2)] md:px-[calc(40px/2)] lg:-mx-16">
+>>>>>>> origin/main
             {testimonials.map((testimonial: Testimonial, index: number) => (
               <Testimonials key={index} testimonial={testimonial} />
             ))}
@@ -187,3 +191,4 @@ export default function Body() {
     </div>
   )
 }
+export default Body

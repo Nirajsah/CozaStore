@@ -1,16 +1,11 @@
-'use client'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Category } from '../db/schema/schema' // if docker is running
+import { Category, category } from '../db/schema/schema' // if docker is running
 import React from 'react'
 import Navbar from '../components/Navbar'
+import { db } from '../db/database'
 
-// type CategoryCardProps = {
-//   data: Category
-// }
-
-const CategoryCard = ({ data }: any) => {
+const CategoryCard = ({ data }: { data: Category }) => {
   return (
     <Link
       as={`/category/${data.categoryId}`}
@@ -36,26 +31,16 @@ const CategoryCard = ({ data }: any) => {
   )
 }
 
-export default function Page() {
-  const [data, setData] = useState<Category[]>([])
+async function getData(): Promise<Category[]> {
+  const res = await db.select().from(category)
+  return res
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('/api/category')
-        const jsonData = await response.json()
-        setData(jsonData)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-
+export default async function Page() {
+  const data: Category[] = await getData()
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex justify-center">
         <div className="lg:w-[1320px] mt-6">
           <div className="flex mt-16 p-4 justify-center flex-col">

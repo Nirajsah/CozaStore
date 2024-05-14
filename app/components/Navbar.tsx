@@ -13,7 +13,7 @@ import { useUser } from '../context/UserProvider'
 import Image from 'next/image'
 import Logo from '../assets/Logo3.png'
 
-export default function Navbar() {
+export default async function Navbar() {
   const [showCart, setShowCart] = useState<boolean>(false)
   const [showMenu, setShowMenu] = useState<boolean>(false)
   const [showSearch, setShowSearch] = useState<boolean>(false)
@@ -114,7 +114,8 @@ export default function Navbar() {
               >
                 <AiOutlineMenu />
               </button>
-              <CartIcon setShowCart={setShowCart} showCart={showCart} />
+
+              {/* <CartIcon setShowCart={setShowCart} showCart={showCart} /> */}
             </div>
           </div>
         </div>

@@ -1,13 +1,16 @@
-'use client'
 import Image from 'next/image'
 import 'react-intersection-observer'
 import Stars from 'react-stars'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useCart } from '../../context/CartProvider'
 import Link from 'next/link'
 import Pagination from '@/app/components/Pagination'
 import Navbar from '@/app/components/Navbar'
 import { useUser } from '@/app/context/UserProvider'
+import { product } from '@/app/db/schema/schema'
+import { db } from '@/app/db/database'
+import { eq } from 'drizzle-orm'
+import AddToCart from '@/app/components/AddToCart'
 
 type Params = {
   id: string
@@ -27,24 +30,7 @@ type Product = {
 
 const ProductCard = ({ data, userId }: { data: any; userId: any }) => {
   const { image } = data
-  const addToCartHandler = async ({ productId }: { productId: string }) => {
-    try {
-      const response = await fetch('/api/cart/add', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          productId,
-          quantity: 1,
-          userId,
-        }),
-      })
-      const jsonData = await response.json()
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
+
   return (
     <div className="w-[320px] sm:w-[320px]">
       <div className="w-[300px] border h-[300px] rounded-xl bg-white">
@@ -62,57 +48,60 @@ const ProductCard = ({ data, userId }: { data: any; userId: any }) => {
         {/* {data.brand && (
           <div className="mb-1 text-sm uppercase font-bold">{data.brand}</div>
         )} */}
-        <div className="flex">
-          {
-            <Stars
-              count={5}
-              value={data.stars as number}
-              size={15}
-              edit={false}
-              color1="#cccccc"
-              color2="black"
-            />
-          }
-          {data.stars}
-        </div>
+        {/* <div className="flex"> */}
+        {/*   { */}
+        {/*     <Stars */}
+        {/*       count={5} */}
+        {/*       value={data.stars as number} */}
+        {/*       size={15} */}
+        {/*       edit={false} */}
+        {/*       color1="#cccccc" */}
+        {/*       color2="black" */}
+        {/*     /> */}
+        {/*   } */}
+        {/*   {data.stars} */}
+        {/* </div> */}
 
-        <button
-          onClick={(e) => {
-            e.preventDefault()
-            addToCartHandler({ productId: data.productId })
-          }}
-          className="duration-100 bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
-        >
-          Add to Cart
-        </button>
+        <AddToCart data={data} userId={userId} />
       </div>
     </div>
   )
 }
-export default function Page({ params }: { params: Params }) {
-  const [data, setData] = useState<Product[]>([])
-  const [offset, setOffSet] = useState<number>(0)
-  const [currentPage, setCurrentPage] = useState(1)
-  const { userId } = useUser()
+async function getData({ categoryId }: { categoryId: string }): Promise<any[]> {
+  const res = await db
+    .select()
+    .from(product)
+    .where(eq(product.categoryId, categoryId))
+  return res
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('/api/category/product', {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify({ categoryId: params.category, offset }),
-        })
-        const jsonData = await response.json()
-        setData(jsonData)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-    fetchData()
-  }, [params.category, offset])
+export default async function Page({ params }: { params: Params }) {
+  // const [data, setData] = useState<Product[]>([])
+  // const [offset, setOffSet] = useState<number>(0)
+  // const [currentPage, setCurrentPage] = useState(1)
+  // const { userId } = useUser()
+
+  const data: Product[] = await getData({ categoryId: params.category })
+  console.log(data)
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await fetch('/api/category/product', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ categoryId: params.category, offset }),
+  //       })
+  //       const jsonData = await response.json()
+  //       setData(jsonData)
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error)
+  //     }
+  //   }
+  //   fetchData()
+  // }, [params.category, offset])
 
   return (
     <>
@@ -131,17 +120,17 @@ export default function Page({ params }: { params: Params }) {
                     as={`/category/${params.category}/${items.productId}`}
                     key={items.productId}
                   >
-                    <ProductCard data={items} userId={userId} />
+                    <ProductCard data={items} userId={1} />
                   </Link>
                 ))}
             </div>
             <div className="w-full mt-10 p-10 flex items-center justify-center">
-              <Pagination
-                currentPage={currentPage}
-                offset={offset}
-                setOffSet={setOffSet}
-                setCurrentPage={setCurrentPage}
-              />
+              {/* <Pagination */}
+              {/*   currentPage={currentPage} */}
+              {/*   offset={offset} */}
+              {/*   setOffSet={setOffSet} */}
+              {/*   setCurrentPage={setCurrentPage} */}
+              {/* /> */}
             </div>
           </div>
         </div>

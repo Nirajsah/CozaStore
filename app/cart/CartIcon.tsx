@@ -1,36 +1,29 @@
-'use client'
 import React from 'react'
-import { PiBagSimpleLight } from 'react-icons/pi'
-import { useUser } from '../context/UserProvider'
+import { db } from '../db/database'
+import { Cart, cart, product } from '../db/schema/schema'
+import { eq } from 'drizzle-orm'
+import ShowCartButton from '../components/ShowCart'
 
 interface CartIconProps {
   setShowCart: React.Dispatch<React.SetStateAction<boolean>>
   showCart: boolean
 }
 
-const CartIcon = ({ setShowCart, showCart }: CartIconProps) => {
-  const [cart, setCart] = React.useState([])
-  const { userId } = useUser()
-  React.useEffect(() => {
-    const getCart = async ({ userId }: { userId: number }) => {
-      try {
-        const response = await fetch('/api/cart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        })
-        const jsonData = await response.json()
-        setCart(jsonData.cart)
-        return jsonData
-      } catch (error) {
-        return error
-      }
-    }
-    getCart({ userId })
-  }, [userId, cart])
+async function getCart({ userId }: { userId: number }): Promise<any[]> {
+  const result = await db
+    .select()
+    .from(cart)
+    .innerJoin(product, eq(product.productId, cart.productId))
+    .where(eq(cart.userId, userId))
 
+  console.log(result)
+  return result
+}
+
+async function CartIcon({ setShowCart, showCart }: CartIconProps) {
+  const cart: Cart[] = await getCart({ userId: 1 })
+
+  const userId = 1
   function getTotalItems(): number {
     let totalItems = 0
 
@@ -44,17 +37,13 @@ const CartIcon = ({ setShowCart, showCart }: CartIconProps) => {
   }
   return (
     <div className="relative flex items-center">
-      <button
-        type="button"
-        name="show cart"
-        onClick={() => setShowCart(!showCart)}
-        className="hover:scale-110 lg:flex ease-in-out duration-100"
-      >
-        <PiBagSimpleLight size={20} />
-        <div className="absolute top-[-2px] right-[-7px] border px-1 bg-red-400 rounded-full text-center text-[10px]">
-          {cart && cart.length > 0 ? getTotalItems() : 0}
-        </div>
-      </button>
+      <ShowCartButton
+        userId={userId}
+        showCart={showCart}
+        setShowCart={setShowCart}
+        cart={cart}
+        getTotalItems={getTotalItems}
+      />
     </div>
   )
 }

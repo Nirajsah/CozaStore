@@ -16,6 +16,7 @@ import Gojo from '../assets/gojo.png'
 import Abhisar from '../assets/Abhisar.jpeg'
 import Zoro from '../assets/zoro.png'
 import Tanjiro from '../assets/tanjiro.png'
+import { toast, Toaster } from 'sonner'
 
 interface ProductTypes {
   categoryId: string

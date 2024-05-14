@@ -228,54 +228,12 @@ export default function Cart({ setShowCart, showCart }: any) {
   const [showCheckout, setShowCheckout] = React.useState(false)
 
   return (
-    <div className="relative">
+    <div>
       <div className="w-full h-full flex justify-end">
-        <motion.div
-          initial={{ width: 0, opacity: 0 }}
-          animate={{ width: '100%', opacity: 1 }}
-          transition={{ duration: 0.2, ease: easeIn }}
-          exit={{
-            width: 0,
-            padding: 0,
-            transition: {
-              opacity: 0,
-              delay: 0.2,
-              duration: 0.2,
-              ease: easeOut,
-            },
-          }}
-          className="max-h-[720px] my-5 drop-shadow-md flex flex-col justify-between font-sans max-w-[380px] bg-white rounded-xl h-[80vh]"
-        >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, ease: easeIn }}
-            exit={{ opacity: 0, transition: { duration: 0.1, ease: easeOut } }}
-            className="w-full relative flex justify-between flex-col h-full"
-          >
+        <div className="max-h-[620px] w-full drop-shadow-md flex flex-col justify-between font-sans max-w-[350px] bg-white rounded-xl h-[80vh]">
+          <div className="w-full relative flex justify-between flex-col h-full">
             <div className="flex w-full p-4 items-center justify-between">
               <div className="font-bold text-xl">Cart</div>
-              <button onClick={() => setShowCart(!showCart)}>
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M17.6569 19.0711L4.92893 6.34314L6.34315 4.92892L19.0711 17.6568L17.6569 19.0711Z"
-                  ></path>
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M4.92893 17.6568L17.6569 4.92892L19.0711 6.34314L6.34315 19.0711L4.92893 17.6568Z"
-                  ></path>
-                </svg>
-              </button>
             </div>
             <div className="flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">
               {cart ? (
@@ -329,8 +287,8 @@ export default function Cart({ setShowCart, showCart }: any) {
                 </button>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       {showCheckout && (

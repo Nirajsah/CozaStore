@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import { CheckoutButton } from './CheckoutPageButtons'
 
 const Card = ({ cart }: any) => {
   return (
@@ -26,6 +27,7 @@ const Card = ({ cart }: any) => {
 export default function Checkout({ cart }: any) {
   const [selectedCard, setSelectedCard] = React.useState('Credit Card')
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false)
+  const [showToast, setShowToast] = React.useState<boolean>(false)
 
   const handleCardChange = (card: any) => {
     setSelectedCard((prevSelectedCard) => {
@@ -86,7 +88,9 @@ export default function Checkout({ cart }: any) {
         }),
       })
       const jsonData = await response.json()
-      console.log(jsonData)
+      if (jsonData.message === 'success') {
+        setShowToast(true)
+      }
       return jsonData
     } catch (error) {
       return error
@@ -102,7 +106,10 @@ export default function Checkout({ cart }: any) {
       formattedValue = formattedValue.substring(0, 4) // Limit to 4 digits
       // Add a forward slash after the first two digits
       if (formattedValue.length > 2) {
-        formattedValue = `${formattedValue.slice(0, 2)}/${formattedValue.slice(2, 4)}`
+        formattedValue = `${formattedValue.slice(0, 2)}/${formattedValue.slice(
+          2,
+          4
+        )}`
       }
       setCard({ ...card, [name]: formattedValue })
     } else {
@@ -137,6 +144,26 @@ export default function Checkout({ cart }: any) {
 
   return (
     <div className="flex justify-center items-center h-full">
+      {showToast && (
+        <div className="toast toast-end z-50">
+          <div role="alert" className="alert alert-success">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Your purchase has been confirmed!</span>
+          </div>
+        </div>
+      )}
       <div className="w-full max-w-[1024px] h-[640px] bg-white rounded-3xl shadow-lg flex">
         <div className="w-1/2 p-6">
           <h2 className="text-center text-lg font-light mb-4">Order Summary</h2>
@@ -275,15 +302,7 @@ export default function Checkout({ cart }: any) {
               />
             </div>
           </div>
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              handleSubmit()
-            }}
-            className="border border-black hover:bg-black text-black rounded-xl hover:text-white font-semibold py-2 px-4 w-full"
-          >
-            Checkout
-          </button>
+          <CheckoutButton handleSubmit={handleSubmit} />
         </div>
       </div>
     </div>

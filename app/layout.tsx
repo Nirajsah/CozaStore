@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
-      <body className="webkit-font-smoothing font-ppneue bg-[#ececec5a]">
+      <body className="webkit-font-smoothing font-ppneue">
         <UserProvider>{children}</UserProvider>
       </body>
     </html>

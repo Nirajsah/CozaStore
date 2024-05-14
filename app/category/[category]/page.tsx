@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import 'react-intersection-observer'
-import Stars from 'react-stars'
+import Stars from '@/app/components/Stars'
 import React from 'react'
 import { useCart } from '../../context/CartProvider'
 import Link from 'next/link'
@@ -48,20 +48,7 @@ const ProductCard = ({ data, userId }: { data: any; userId: any }) => {
         {/* {data.brand && (
           <div className="mb-1 text-sm uppercase font-bold">{data.brand}</div>
         )} */}
-        {/* <div className="flex"> */}
-        {/*   { */}
-        {/*     <Stars */}
-        {/*       count={5} */}
-        {/*       value={data.stars as number} */}
-        {/*       size={15} */}
-        {/*       edit={false} */}
-        {/*       color1="#cccccc" */}
-        {/*       color2="black" */}
-        {/*     /> */}
-        {/*   } */}
-        {/*   {data.stars} */}
-        {/* </div> */}
-
+        {/* <Stars count={data.stars} /> */}
         <AddToCart data={data} userId={userId} />
       </div>
     </div>

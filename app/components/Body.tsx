@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import React from 'react'
 import Testimonials from './Testimonials'
-import Banner from '../assets/Designer.png'
-import Image from 'next/image'
 import OurPartners from './OurPartners'
 import Footer from './Footer'
 import Luffy from '../assets/luffy.png'
@@ -16,19 +13,8 @@ import Gojo from '../assets/gojo.png'
 import Abhisar from '../assets/Abhisar.jpeg'
 import Zoro from '../assets/zoro.png'
 import Tanjiro from '../assets/tanjiro.png'
-import { toast, Toaster } from 'sonner'
+import Banner, { BannerText } from './Banner'
 
-interface ProductTypes {
-  categoryId: string
-  name: string
-  image: string
-  stars: number
-  productId: string
-  price_string: string
-  price_symbol: string
-  price: number
-  quantity?: number
-}
 interface Testimonial {
   name: string
   quote: string
@@ -107,68 +93,14 @@ const testimonials: Testimonial[] = [
 const Body: React.FC = () => {
   const TEXT: string = 'Shop Your Favorite Products with Ease'
 
-  const [translateY, setTranslateY] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setTranslateY(window.scrollY)
-    }
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', handleScroll)
-    }
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
-  const translate = -translateY * 0.5
-
   return (
     <div className="flex flex-col items-center justify-center ">
       <div className="md:mt-[30px] h-[400px]">
         <div className="flex justify-center items-center text-wrap h-full">
-          <div className="text-[45px] leading-[60px] transition-all duration-300 ease-out md:text-[65px] md:leading-[80px] lg:text-[85px] lg:leading-[120px] flex font-bold w-full items-center md:font-[550px] flex-wrap justify-center font-ppneue">
-            {TEXT.split(' ').map((character: string, index: number) => (
-              <motion.span
-                className={`mx-2 ${
-                  character === 'Ease'
-                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#FFB777] to-[#F16C6A]'
-                    : ''
-                } ${
-                  character === 'Products'
-                    ? 'bg-gradient-to-l from-[#844FF3] to-[#C1A5FF] bg-clip-text text-transparent'
-                    : ''
-                }`}
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 300,
-                  damping: 10,
-                  delay: index * 0.2,
-                }}
-              >
-                {character}
-              </motion.span>
-            ))}
-          </div>
+          <BannerText TEXT={TEXT} />
         </div>
       </div>
-      <div className="flex justify-center w-full h-full mt-[-120px] md:mt-0 p-4">
-        <div
-          style={
-            {
-              '--translate-y': `${translate}px`, // Custom property for translation along Y-axis
-              transform: 'translateY(var(--translate-y))', // Applying the translation using the custom property
-            } as React.CSSProperties
-          }
-          className="w-full max-w-[700px] p-6 max-h-[700px] flex justify-center items-center rounded-[2rem] h-[480px] mx-auto object-contain object-center drop-shadow-2xl transition-all duration-200 ease-out"
-        >
-          <Image loading="lazy" src={Banner} width={700} height={700} alt="" />
-        </div>
-      </div>
+      <Banner />
       <OurPartners />
       <div className="flex mt-12 p-3 flex-col items-center w-full space-y-5 justify-center">
         <div className="font-ppneue mb-8 mx-auto max-w-[937px] text-center text-[40px] font-medium leading-[48px] tracking-[0.8px] text-black text-darkscale-500 md:mt-[60px] md:text-[92px] md:leading-[100px] md:tracking-[-0.25px]">

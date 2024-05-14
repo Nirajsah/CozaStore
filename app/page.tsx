@@ -1,5 +1,4 @@
-'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Body from './components/Body'
 import Navbar from './components/Navbar'
 

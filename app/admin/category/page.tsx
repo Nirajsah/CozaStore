@@ -17,7 +17,6 @@ export default function Page() {
     null
   )
   const [showAddForm, setShowAddForm] = useState(false)
-
   const CategoryCard = ({ data }: any) => {
     return (
       <>
@@ -61,7 +60,7 @@ export default function Page() {
       try {
         const response = await fetch('/api/category')
         const jsonData = await response.json()
-        setData(jsonData)
+        setData(jsonData.data)
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -543,7 +542,7 @@ export default function Page() {
             </button>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2">
-            {data &&
+            {data.length > 0 &&
               data.map((category: any) => (
                 <CategoryCard key={category.categoryId} data={category} />
               ))}

@@ -1,49 +1,41 @@
-'use client'
-import { BsSearch } from 'react-icons/bs'
 import { GoPerson } from 'react-icons/go'
-import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
-import Cart from './Cart'
-import { useEffect, useState } from 'react'
-import Search from './Search'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AiOutlineMenu } from 'react-icons/ai'
 import Link from 'next/link'
-import CartIcon from '../cart/CartIcon'
-import { usePathname } from 'next/navigation'
-import { useUser } from '../context/UserProvider'
 import Image from 'next/image'
 import Logo from '../assets/Logo3.png'
+import CartPage from './Cart'
+import CartIcon from '../cart/CartIcon'
+import ShowCartButton from './ShowCart'
 
 export default async function Navbar() {
-  const [showCart, setShowCart] = useState<boolean>(false)
-  const [showSearch, setShowSearch] = useState<boolean>(false)
-  const { user } = useUser()
-
+  const user = {
+    userId: 1,
+    username: 'John Doe',
+  }
   return (
     <div>
-      <nav className="flex top-0 left-0 z-20 w-full justify-center">
+      <nav className="flex fixed navbar bg-base-100 top-0 left-0 z-20 w-full justify-center">
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-2xl font-bold font-fira">
-                <Image src={Logo} width={100} height={60} alt="logo" />
-              </div>
-              <div className="lg:flex hidden justify-between md:w-[150px]">
+              <div className="text-2xl">CozaStore</div>
+              <div className="lg:flex hidden gap-3 justify-between md:w-[150px]">
                 <Link type="link" href="/">
-                  <span className="text-md">Home</span>
+                  <span className="text-md btn btn-ghost">Home</span>
                 </Link>
                 <Link type="link" href="/category">
-                  <span className="text-md">Category</span>
+                  <span className="text-md btn btn-ghost">Category</span>
                 </Link>
               </div>
             </div>
             <div className="flex gap-4 justify-between items-center md:w-fit content-center w-fit">
-              <button
+              {/* <button
                 type="button"
                 name="search"
                 onClick={() => setShowSearch(!showSearch)}
               >
                 <BsSearch />
-              </button>
+              </button> */}
               <Link
                 href={user && user.username ? '/' : '/login'}
                 className="hidden bg-gradient-to-tr from-[#FFB777] to-[#F16C6A] px-4 py-2 rounded-full md:flex md:items-center gap-2"
@@ -86,12 +78,12 @@ export default async function Navbar() {
                   type="checkbox"
                   className="drawer-toggle"
                 />
-                <div className="drawer-content">
+                <div className="drawer-content relative">
                   <label
                     htmlFor="my-drawer-4"
-                    className="drawer-button btn btn-square btn-ghost"
+                    className="drawer-button btn btn-square"
                   >
-                    <AiOutlineMenu />
+                    <CartIcon />
                   </label>
                 </div>
                 <div className="drawer-side">
@@ -100,8 +92,8 @@ export default async function Navbar() {
                     aria-label="close sidebar"
                     className="drawer-overlay"
                   ></label>
-                  <div className="menu w-full max-w-[350px] p-4 min-h-full text-base-content">
-                    <CartMenu setShowCart={setShowCart} showCart={showCart} />
+                  <div className="menu w-full max-w-[400px] min-h-full text-base-content">
+                    <CartMenu />
                   </div>
                 </div>
               </div>
@@ -111,7 +103,7 @@ export default async function Navbar() {
         </div>
       </nav>
 
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {showCart && (
           <div className="w-full h-full">
             <div
@@ -134,15 +126,15 @@ export default async function Navbar() {
             <Search />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
 
-const CartMenu = ({ setShowCart, showCart }: any) => {
+const CartMenu = () => {
   return (
-    <div className="fixed right-0 z-[200] w-full max-w-[420px] p-4 top-10 h-full">
-      <Cart setShowCart={setShowCart} showCart={showCart} />
+    <div className="fixed right-0 z-[200] w-full max-w-[400px] top-10 h-full">
+      <CartPage />
     </div>
   )
 }

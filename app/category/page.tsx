@@ -40,7 +40,7 @@ export default async function Page() {
   const data: Category[] = await getData()
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="flex justify-center">
         <div className="lg:w-[1320px] mt-6">
           <div className="flex mt-16 p-4 justify-center flex-col">

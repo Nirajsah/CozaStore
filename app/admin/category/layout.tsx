@@ -23,8 +23,6 @@ export default function AdminLayout({
         } else if (jsonData.message === 'Authenticated') {
           console.log('Authenticated')
         }
-
-        console.log(jsonData)
       } catch (error) {
         console.log(error)
       }

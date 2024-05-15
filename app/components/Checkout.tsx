@@ -143,7 +143,7 @@ export default function Checkout({ cart }: any) {
   const cardOptions = ['Credit Card', 'Debit Card']
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center w-full items-center h-full">
       {showToast && (
         <div className="toast toast-end z-50">
           <div role="alert" className="alert alert-success">
@@ -164,7 +164,7 @@ export default function Checkout({ cart }: any) {
           </div>
         </div>
       )}
-      <div className="w-full max-w-[1024px] h-[640px] bg-white rounded-3xl shadow-lg flex">
+      <div className="w-full max-w-[1024px] h-[640px] rounded-3xl shadow-lg flex">
         <div className="w-1/2 p-6">
           <h2 className="text-center text-lg font-light mb-4">Order Summary</h2>
           <div className="border-b border-gray-300 mb-4"></div>

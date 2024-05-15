@@ -14,7 +14,7 @@ export default async function Navbar() {
   }
   return (
     <div>
-      <nav className="flex fixed navbar bg-base-100 top-0 left-0 z-20 w-full justify-center">
+      <nav className="flex fixed top-0 z-20 w-full justify-center">
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
@@ -47,7 +47,7 @@ export default async function Navbar() {
                   'Get Started'
                 )}
               </Link>
-              {/* <div className="drawer drawer-end z-50 w-fit">
+              <div className="lg:hidden flex drawer drawer-end w-fit">
                 <input
                   id="my-drawer-4"
                   type="checkbox"
@@ -58,7 +58,20 @@ export default async function Navbar() {
                     htmlFor="my-drawer-4"
                     className="drawer-button btn btn-square btn-ghost"
                   >
-                    <AiOutlineMenu />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4 6h16M4 12h16M4 18h7"
+                      />
+                    </svg>
                   </label>
                 </div>
                 <div className="drawer-side">
@@ -71,33 +84,34 @@ export default async function Navbar() {
                     <NavMenu />
                   </div>
                 </div>
-              </div> */}
-              <div className="drawer drawer-end z-50 w-fit">
+              </div>
+
+              {/* another drawer */}
+              <div className="drawer drawer-end h-fit w-fit">
                 <input
-                  id="my-drawer-4"
+                  id="my-drawer"
                   type="checkbox"
                   className="drawer-toggle"
                 />
-                <div className="drawer-content relative">
+                <div className="drawer-content">
                   <label
-                    htmlFor="my-drawer-4"
-                    className="drawer-button btn btn-square"
+                    htmlFor="my-drawer"
+                    className="drawer-button btn px-6 rounded-full"
                   >
                     <CartIcon />
                   </label>
                 </div>
                 <div className="drawer-side">
                   <label
-                    htmlFor="my-drawer-4"
+                    htmlFor="my-drawer"
                     aria-label="close sidebar"
                     className="drawer-overlay"
                   ></label>
-                  <div className="menu w-full max-w-[400px] min-h-full text-base-content">
-                    <CartMenu />
+                  <div className="menu p-4 w-full max-w-[380px] h-fit text-base-content">
+                    <CartPage />
                   </div>
                 </div>
               </div>
-              {/* <CartIcon setShowCart={setShowCart} showCart={showCart} /> */}
             </div>
           </div>
         </div>
@@ -131,13 +145,6 @@ export default async function Navbar() {
   )
 }
 
-const CartMenu = () => {
-  return (
-    <div className="fixed right-0 z-[200] w-full max-w-[400px] top-10 h-full">
-      <CartPage />
-    </div>
-  )
-}
 const NavMenu = () => {
   return (
     <div className="mt-[3rem] gap-3 flex h-full flex-col">

@@ -21,7 +21,7 @@ export const CartProduct = ({ item }: any): any => {
   return (
     <div className="flex mt-4 flex-col">
       <div className="flex self-start items-center w-full">
-        <div className="w-20 rounded-lg h-20">
+        <div className="min-w-20 rounded-lg h-20">
           <Image
             width={80}
             height={80}
@@ -32,7 +32,7 @@ export const CartProduct = ({ item }: any): any => {
         </div>
         <div className="w-full justify-between flex">
           <div className="ml-4 justify-between">
-            <div className="truncate w-[170px] font-semibold text-sm capitalize">
+            <div className="text-ellipsis overflow-hidden w-[160px] h-[30px] md:h-[40px] font-semibold md:text-sm text-xs capitalize">
               {item.product.name}
             </div>
             {/* <Stars
@@ -57,7 +57,7 @@ export const CartProduct = ({ item }: any): any => {
               <RemoveItem item={item} />
             </div>
           </div>
-          <div className="self-start font-semibold text-sm">
+          <div className="self-start font-semibold text-xs md:text-sm">
             ₹ {item.product.price} INR
           </div>
         </div>

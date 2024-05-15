@@ -94,7 +94,7 @@ const Body: React.FC = () => {
   const TEXT: string = 'Shop Your Favorite Products with Ease'
 
   return (
-    <div className="flex flex-col items-center justify-center ">
+    <div className="flex flex-col items-center justify-center mt-16">
       <div className="md:mt-[30px] h-[400px]">
         <div className="flex justify-center items-center text-wrap h-full">
           <BannerText TEXT={TEXT} />

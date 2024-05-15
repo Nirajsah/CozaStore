@@ -14,7 +14,7 @@ export default async function Navbar() {
   }
   return (
     <div>
-      <nav className="flex fixed top-0 z-20 w-full justify-center">
+      <nav className="flex fixed top-0 left-0 right-0 z-40 w-full justify-center">
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">

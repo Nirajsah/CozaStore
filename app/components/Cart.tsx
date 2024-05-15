@@ -87,7 +87,7 @@ export default function CartPage() {
                 Checkout
               </button>
               <dialog id="my_modal_2" className="modal">
-                <div className="modal-box w-11/12 max-w-5xl">
+                <div className="modal-box w-11/12 p-2 md:p-6 max-w-5xl">
                   <Checkout cart={cart} />
                 </div>
                 <form method="dialog" className="modal-backdrop">

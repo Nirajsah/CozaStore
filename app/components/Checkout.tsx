@@ -53,6 +53,7 @@ export default function Checkout({ cart }: any) {
     return percentValue
   }
 
+  const [error, setError] = React.useState(false)
   const [card, setCard] = React.useState({
     cardNumber: '',
     cardHolder: '',
@@ -61,6 +62,12 @@ export default function Checkout({ cart }: any) {
     amount: totalPriceAfterTax(),
     type: selectedCard,
   })
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setError(false)
+    }, 5000)
+  }, [error])
 
   const handleSubmit = async () => {
     let expirationDateInt
@@ -73,6 +80,10 @@ export default function Checkout({ cart }: any) {
     }
     const cvvInt = parseInt(card.cvv, 10)
     try {
+      if (card.cvv === '' || card.cardNumber === '' || card.cardHolder) {
+        setError(true)
+        return
+      }
       const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
@@ -164,11 +175,18 @@ export default function Checkout({ cart }: any) {
           </div>
         </div>
       )}
-      <div className="w-full max-w-[1024px] h-[640px] rounded-3xl shadow-lg flex">
+      {error && (
+        <div className="toast toast-end">
+          <div className="alert alert-error">
+            <span>Correct details are required.</span>
+          </div>
+        </div>
+      )}
+      <div className="w-full max-w-[1024px] flex-col md:flex-row h-full md:max-h-[640px] rounded-3xl shadow-lg flex">
         <div className="w-1/2 p-6">
           <h2 className="text-center text-lg font-light mb-4">Order Summary</h2>
           <div className="border-b border-gray-300 mb-4"></div>
-          <div className="space-y-4">
+          <div className="space-y-4 w-fit">
             {cart && cart.map((item: any) => <Card cart={item} />)}
           </div>
           <div className="border-b border-gray-300 my-4"></div>
@@ -187,7 +205,7 @@ export default function Checkout({ cart }: any) {
             </div>
           </div>
         </div>
-        <div className="w-1/2 bg-gradient-to-l from-[#844FF3] to-[#C1A5FF] rounded-r-3xl p-6 text-white">
+        <div className="md:w-1/2 w-full bg-gradient-to-l from-[#844FF3] to-[#C1A5FF] md:rounded-r-3xl md:rounded-l-none rounded-xl p-3 md:p-6 text-white">
           <div className="mb-6">
             <div className="relative inline-block">
               <button

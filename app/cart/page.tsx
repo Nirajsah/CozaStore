@@ -253,58 +253,61 @@ const CartProduct: React.FC<Props> = ({ product, removeItem, updateCart }) => {
   )
 }
 
+const removeItem = async ({ cartId }: any) => {
+  try {
+    const response = await fetch('/api/cart', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cartId }),
+    })
+    const jsonData = await response.json()
+    return jsonData
+  } catch (error) {
+    return error
+  }
+}
+
+const updateCart = async ({ quantity, productId }: any) => {
+  try {
+    const response = await fetch('/api/cart', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ quantity, productId }),
+    })
+    const jsonData = await response.json()
+    return jsonData
+  } catch (error) {
+    return error
+  }
+}
+
+const getCart = async ({ userId }: { userId: number }) => {
+  try {
+    const response = await fetch('/api/cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId }),
+    })
+    const jsonData = await response.json()
+    setCart(jsonData.cart)
+    return jsonData
+  } catch (error) {
+    return error
+  }
+}
+
 export default function Page() {
   const [cart, setCart] = React.useState([])
   const { userId } = useUser()
   const [showCheckout, setShowCheckout] = React.useState(false)
 
-  const removeItem = async ({ cartId }: any) => {
-    try {
-      const response = await fetch('/api/cart', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cartId }),
-      })
-      const jsonData = await response.json()
-      return jsonData
-    } catch (error) {
-      return error
-    }
-  }
-  const updateCart = async ({ quantity, productId }: any) => {
-    try {
-      const response = await fetch('/api/cart', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ quantity, productId }),
-      })
-      const jsonData = await response.json()
-      return jsonData
-    } catch (error) {
-      return error
-    }
-  }
   useEffect(() => {
-    const getCart = async ({ userId }: { userId: number }) => {
-      try {
-        const response = await fetch('/api/cart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        })
-        const jsonData = await response.json()
-        setCart(jsonData.cart)
-        return jsonData
-      } catch (error) {
-        return error
-      }
-    }
     getCart({ userId })
   }, [userId])
 
@@ -320,7 +323,7 @@ export default function Page() {
   }
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex flex-col mt-6 items-center justify-center">
         <div className="w-full mt-16 p-4 flex justify-center items-center flex-col max-w-[1320px]">
           <div className="text-5xl mb-9 font-bold w-full">Your Cart</div>

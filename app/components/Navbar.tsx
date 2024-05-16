@@ -1,17 +1,10 @@
 import { GoPerson } from 'react-icons/go'
-import { AiOutlineMenu } from 'react-icons/ai'
 import Link from 'next/link'
-import Image from 'next/image'
-import Logo from '../assets/Logo3.png'
 import CartPage from './Cart'
 import CartIcon from '../cart/CartIcon'
-import ShowCartButton from './ShowCart'
 
 export default async function Navbar() {
-  const user = {
-    userId: 1,
-    username: 'John Doe',
-  }
+  const user = { username: 'John Doe' }
   return (
     <div>
       <nav className="flex fixed top-0 left-0 right-0 z-40 w-full justify-center">

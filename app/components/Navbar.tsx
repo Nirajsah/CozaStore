@@ -11,8 +11,11 @@ export default async function Navbar() {
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-2xl">CozaStore</div>
-              <div className="lg:flex hidden gap-3 justify-between md:w-[150px]">
+              <div className="text-2xl font-bold font-fira">
+                CozaStore
+                {/* <Image src={Logo} width={100} height={60} alt="logo" /> */}
+              </div>
+              <div className="lg:flex hidden justify-between md:w-[150px]">
                 <Link type="link" href="/">
                   <span className="text-md btn btn-ghost">Home</span>
                 </Link>

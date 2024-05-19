@@ -76,7 +76,8 @@ export default function Navbar() {
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
               <div className="text-2xl font-bold font-fira">
-                <Image src={Logo} width={100} height={60} alt="logo" />
+                CozaStore
+                {/* <Image src={Logo} width={100} height={60} alt="logo" /> */}
               </div>
               <div className="lg:flex hidden justify-between md:w-[150px]">
                 <Link type="link" href="/">

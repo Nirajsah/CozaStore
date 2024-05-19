@@ -43,8 +43,8 @@ export async function POST(request: Request) {
       return Response.json({ msg: 'User not found!' }, { status: 404 })
     }
   } catch (error) {
-    console.error('Error inserting user:', error)
-    return new Response('Error inserting user', { status: 500 })
+    console.error('Error:', error)
+    return new Response('Error user', { status: 500 })
   }
 }
 
@@ -68,7 +68,7 @@ const passwordCheck = async ({
       return false
     }
   } catch (error) {
-    console.error('Error inserting user:', error)
-    throw new Error('Error inserting user')
+    console.error('Error validating:', error)
+    throw new Error('Error validating user')
   }
 }

@@ -2,19 +2,19 @@ import { GoPerson } from 'react-icons/go'
 import Link from 'next/link'
 import CartPage from './Cart'
 import CartIcon from '../cart/CartIcon'
+import { getSession } from '../actions'
+import { SessionData } from '../lib'
 
 export default async function Navbar() {
-  const user = { username: 'John Doe' }
+  const session: SessionData = await getSession()
+
   return (
     <div>
       <nav className="flex fixed top-0 left-0 right-0 z-40 w-full justify-center">
         <div className="w-full rounded-lg m-5 mx-6 md:w-[1320px]">
           <div className="flex w-full h-full justify-between items-center flex-wrap content-center">
             <div className="flex items-center justify-between lg:w-[320px]">
-              <div className="text-2xl font-bold font-fira">
-                CozaStore
-                {/* <Image src={Logo} width={100} height={60} alt="logo" /> */}
-              </div>
+              <div className="text-2xl font-bold font-fira">CozaStore</div>
               <div className="lg:flex hidden justify-between md:w-[150px]">
                 <Link type="link" href="/">
                   <span className="text-md btn btn-ghost">Home</span>
@@ -33,12 +33,12 @@ export default async function Navbar() {
                 <BsSearch />
               </button> */}
               <Link
-                href={user && user.username ? '/' : '/login'}
+                href={session.isLoggedIn && session.username ? '/' : '/login'}
                 className="hidden bg-gradient-to-tr from-[#FFB777] to-[#F16C6A] px-4 py-2 rounded-full md:flex md:items-center gap-2"
               >
                 <GoPerson size={20} />
-                {user && user.username ? (
-                  <span className="text-md">{user.username}</span>
+                {session.isLoggedIn && session.username ? (
+                  <span className="text-md">{session.username}</span>
                 ) : (
                   'Get Started'
                 )}
@@ -94,7 +94,7 @@ export default async function Navbar() {
                     htmlFor="my-drawer"
                     className="drawer-button btn px-6 rounded-full"
                   >
-                    <CartIcon />
+                    <CartIcon userId={session.userId} />
                   </label>
                 </div>
                 <div className="drawer-side">

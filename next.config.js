@@ -2,6 +2,11 @@
 
 module.exports = {
   staticPageGenerationTimeout: 120,
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['my-proxy.com', '*.my-proxy.com'],
+    },
+  },
   images: {
     domains: [
       'm.media-amazon.com',

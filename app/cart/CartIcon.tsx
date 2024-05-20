@@ -14,9 +14,11 @@ async function getCart({ userId }: { userId: number }): Promise<any[]> {
   return result
 }
 
-async function CartIcon() {
-  const userId = 1
-  const cartData: Cart[] = await getCart({ userId })
+async function CartIcon({ userId }: { userId: number }) {
+  let cartData: any = []
+  if (userId !== undefined) {
+    cartData = await getCart({ userId })
+  }
 
   return (
     <div className="absolute flex items-center">

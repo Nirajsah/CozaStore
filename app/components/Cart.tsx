@@ -1,35 +1,28 @@
-'use client'
 import React from 'react'
-import Link from 'next/link'
-import { Cart } from '../db/schema/schema'
+import { cart, Cart, product } from '../db/schema/schema'
 import { CartProduct } from './CartProduct'
 import Checkout from './Checkout'
+import { db } from '../db/database'
+import { eq } from 'drizzle-orm'
+import CheckoutModal, { ViewCart } from './CheckoutModal'
+import { SessionData } from '../lib'
+import { getSession } from '../actions'
 
-export default function CartPage() {
-  const [cart, setCart] = React.useState<Cart[] | any>([])
-  const [showCheckout, setShowCheckout] = React.useState(false)
+async function getData({ userId }: { userId: number }): Promise<any[]> {
+  if (userId === undefined) return Promise.resolve([])
+  const result = await db
+    .select()
+    .from(cart)
+    .innerJoin(product, eq(product.productId, cart.productId))
+    .where(eq(cart.userId, userId))
 
-  const userId = 1
+  return result
+}
 
-  React.useEffect(() => {
-    const getCart = async ({ userId }: { userId: number }) => {
-      try {
-        const response = await fetch('/api/cart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId }),
-        })
-        const jsonData = await response.json()
-        setCart(jsonData.cart)
-        return jsonData
-      } catch (error) {
-        return error
-      }
-    }
-    getCart({ userId })
-  }, [userId, cart])
+export default async function CartPage() {
+  const session: SessionData = await getSession()
+  const { userId } = session
+  const cart: Cart[] = await getData({ userId })
 
   function calculateTotalPrice(cart: any) {
     let totalPrice = 0
@@ -50,7 +43,7 @@ export default function CartPage() {
             <div className="font-bold text-xl">Cart</div>
           </div>
           <div className="flex-1 p-4 h-full overflow-x-hidden overflow-y-auto">
-            {cart ? (
+            {userId ? (
               cart.map((data: any, index: number) => (
                 <div>
                   <CartProduct item={data} />
@@ -72,20 +65,8 @@ export default function CartPage() {
               </div>
             </div>
             <div className="flex mt-6 justify-between gap-3 w-full">
-              <Link
-                className="btn w-1/2 py-2 border rounded-[10px] uppercase font-semibold text-sm"
-                href="/cart"
-              >
-                View Cart
-              </Link>
-              <button
-                className="w-1/2 py-2 bg-black text-white border rounded-[10px] uppercase font-semibold text-sm"
-                onClick={() =>
-                  document.getElementById('my_modal_2').showModal()
-                }
-              >
-                Checkout
-              </button>
+              <ViewCart isLoggedIn={session.isLoggedIn} />
+              <CheckoutModal />
               <dialog id="my_modal_2" className="modal">
                 <div className="modal-box w-11/12 p-2 md:p-6 max-w-5xl">
                   <Checkout cart={cart} />

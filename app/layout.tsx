@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import React from 'react'
 import UserProvider from './context/UserProvider'
+import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: 'CozaStore',
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" style={{ scrollBehavior: 'smooth' }}>
       <body className="webkit-font-smoothing font-ppneue">
         <UserProvider>{children}</UserProvider>
+        <Toaster />
       </body>
     </html>
   )

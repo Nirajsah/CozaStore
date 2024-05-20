@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server'
 
-export default function middleware(
-  req: { cookies: any; url: string },
-  res: Response
-) {
+export default function middleware(req: { cookies: any; url: string }) {
   const verifyAdmin = req.cookies.get('accessToken')
-  const verifyUser = req.cookies.get('access_token')
+  const verifyUser = req.cookies.get('coza-session')
 
   const url = req.url
 

@@ -1,21 +1,21 @@
 import { eq } from 'drizzle-orm'
 import jwt, { Secret } from 'jsonwebtoken'
 import { db } from '../db/database'
-import { users } from '../db/schema/schema'
+import { users, User } from '../db/schema/schema'
 
 type TokenResponse = {
   accessToken: string
   refreshToken: string
-  userId: number
 }
 export const generateJWT = ({
-  userId,
+  user,
 }: {
-  userId: number
+  user: User
 }): Promise<TokenResponse> => {
   try {
     const payload = {
-      userId,
+      userId: user.userId,
+      username: user.username,
     }
     const accessTokenKey: Secret = process.env.ACCESS_TOKEN_KEY as Secret
     const refreshTokenKey: Secret = process.env.REFRESH_TOKEN_KEY as Secret
@@ -26,7 +26,6 @@ export const generateJWT = ({
     return Promise.resolve({
       accessToken,
       refreshToken,
-      userId: payload.userId,
     })
   } catch (error) {
     throw new Error('Error inserting user')
@@ -36,8 +35,8 @@ export const generateJWT = ({
 export const verifyRefreshToken = <T extends string>(refreshToken: T) => {
   const refreshTokenKey: Secret = process.env.REFRESH_TOKEN_KEY as Secret
   try {
-    const user = jwt.verify(refreshToken, refreshTokenKey)
-    const token = generateJWT(user as { userId: number })
+    const user: any = jwt.verify(refreshToken, refreshTokenKey)
+    const token = generateJWT(user)
     return token
   } catch (error) {
     throw error

@@ -1,6 +1,6 @@
 import React from 'react'
 import { db } from '../db/database'
-import { Cart, cart, product } from '../db/schema/schema'
+import { cart, product } from '../db/schema/schema'
 import { eq } from 'drizzle-orm'
 import ShowCartButton from '../components/ShowCart'
 
@@ -14,7 +14,7 @@ async function getCart({ userId }: { userId: number }): Promise<any[]> {
   return result
 }
 
-async function CartIcon({ userId }: { userId: number }) {
+async function CartIcon({ userId }: { userId: number | undefined }) {
   let cartData: any = []
   if (userId !== undefined) {
     cartData = await getCart({ userId })

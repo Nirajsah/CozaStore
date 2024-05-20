@@ -1,9 +1,9 @@
 import { SessionOptions } from 'iron-session'
+import { jwtDecode, JwtPayload } from 'jwt-decode'
 
 export interface SessionData {
-  userId: number
+  userId: number | undefined
   username?: string
-  email?: string
   isLoggedIn: boolean
 }
 
@@ -15,3 +15,5 @@ export const sessionOptions: SessionOptions = {
     secure: process.env.NODE_ENV === 'production',
   },
 }
+
+// const decoded = jwtDecode<JwtPayload>(token)

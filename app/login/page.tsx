@@ -4,6 +4,7 @@ import Link from 'next/link'
 import LoginImage from '@/app/assets/login.webp'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import LoginForm from '../components/LoginForm'
 
 export default function Page() {
   const [email, setEmail] = React.useState('')
@@ -77,7 +78,9 @@ export default function Page() {
             </div>
             <div className="flex w-full flex-col items-center p-3 lg:w-[60%]">
               <div className="mb-3 font-semibold text-2xl">Welcome 🌸</div>
-              <form
+
+              <LoginForm />
+              {/* <form
                 onSubmit={handleSubmit}
                 className="flex w-full flex-col gap-4"
               >
@@ -154,7 +157,7 @@ export default function Page() {
                     )}
                   </div>
                 </button>
-              </form>
+              </form> */}
               <span className="mt-3">
                 Need and account?{' '}
                 <Link href={'/register'} className="underline">

@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   }
 }
 
-const passwordCheck = async ({
+export const passwordCheck = async ({
   email,
   password,
 }: {

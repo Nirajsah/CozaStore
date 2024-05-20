@@ -8,7 +8,11 @@ import CheckoutModal, { ViewCart } from './CheckoutModal'
 import { SessionData } from '../lib'
 import { getSession } from '../actions'
 
-async function getData({ userId }: { userId: number }): Promise<any[]> {
+async function getData({
+  userId,
+}: {
+  userId: number | undefined
+}): Promise<any[]> {
   if (userId === undefined) return Promise.resolve([])
   const result = await db
     .select()

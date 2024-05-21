@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { useUser } from '../context/UserProvider'
 import { Product } from '../db/schema/schema'
 import Link from 'next/link'
 import Pagination from './Pagination'
@@ -12,24 +11,41 @@ type Params = {
   category: string
 }
 
-const Products = ({ data, userId }: { data: any; userId: any }) => {
+const Products = ({
+  data,
+  userId,
+  params,
+}: {
+  data: any
+  userId: any
+  params: any
+}) => {
   const { image } = data
   return (
-    <div className="w-[320px] sm:w-[320px]">
-      <div className="w-[300px] border h-[300px] rounded-xl bg-white">
-        <Image
-          width={300}
-          height={300}
-          src={image as string}
-          className="w-full rounded-xl h-full object-contain"
-          alt={data.name}
-        />
-      </div>
-      <div className="mt-3">
-        <h5 className="truncate w-[300px] mb-1 font-semibold">{data.name}</h5>
-        <div className="mb-1 text-xl font-bold">₹{data.price}</div>
-        <AddToCart data={data} userId={userId} />
-      </div>
+    <div>
+      <Link
+        href={`/category/${params.category}/${data.productId}`}
+        as={`/category/${params.category}/${data.productId}`}
+      >
+        <div className="w-[320px] sm:w-[320px]">
+          <div className="w-[300px] border h-[300px] rounded-xl bg-white">
+            <Image
+              width={300}
+              height={300}
+              src={image as string}
+              className="w-full rounded-xl h-full object-contain"
+              alt={data.name}
+            />
+          </div>
+          <div className="mt-3">
+            <h5 className="truncate w-[300px] mb-1 font-semibold">
+              {data.name}
+            </h5>
+            <div className="mb-1 text-xl font-bold">₹{data.price}</div>
+          </div>
+        </div>
+      </Link>
+      <AddToCart data={data} userId={userId} />
     </div>
   )
 }
@@ -73,13 +89,7 @@ export default function ProductCard({ params }: { params: Params }) {
       <div className="grid grid-cols-1 justify-center lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2">
         {data &&
           data?.map((items: Product) => (
-            <Link
-              href={`/category/${params.category}/${items.productId}`}
-              as={`/category/${params.category}/${items.productId}`}
-              key={items.productId}
-            >
-              <Products data={items} userId={1} />
-            </Link>
+            <Products data={items} userId={1} params={params} />
           ))}
       </div>
       <div className="w-full mt-10 p-10 flex items-center justify-center">

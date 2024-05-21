@@ -104,7 +104,7 @@ export default async function Navbar() {
                     className="drawer-overlay"
                   ></label>
                   <div className="menu p-4 w-full max-w-[380px] h-fit text-base-content">
-                    <CartPage />
+                    <CartPage userId={session.userId} />
                   </div>
                 </div>
               </div>

@@ -6,7 +6,12 @@ export const CheckoutModal = () => {
   return (
     <button
       className="w-1/2 py-2 bg-black text-white border rounded-[10px] uppercase font-semibold text-sm"
-      onClick={() => document.getElementById('my_modal_2').showModal()}
+      onClick={() => {
+        const modal = document.getElementById('my_modal_2') as HTMLDialogElement
+        if (modal) {
+          modal.showModal()
+        }
+      }}
     >
       Checkout
     </button>

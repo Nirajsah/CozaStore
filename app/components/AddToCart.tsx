@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import { toast } from 'sonner'
 
 const addToCartHandler = async ({
   productId,
@@ -30,11 +31,12 @@ const addToCartHandler = async ({
 export default function AddToCart({ data, userId }: any) {
   return (
     <button
-      onClick={(e) => {
-        e.preventDefault()
+      type="button"
+      onClick={() => {
         addToCartHandler({ productId: data.productId, userId })
+        toast.success(`${data.name} Added to cart`)
       }}
-      className="duration-100 bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3 hover:scale-105"
+      className="bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3"
     >
       Add to Cart
     </button>
@@ -77,7 +79,7 @@ export function IncreaseQuantity({ data }: any) {
   return (
     <button
       onClick={() => {
-        console.log(data)
+        toast.success('Quantity Increased')
         updateCart({
           quantity: data.cart.quantity + 1,
           productId: data.product.productId,
@@ -106,10 +108,12 @@ export function DecreaseQuantity({ data }: any) {
   return (
     <button
       onClick={() => {
-        console.log(data)
         if (data.cart.quantity === 1) {
+          removeItem({ cartId: data.cart.cartId })
+          toast.success('Item Removed')
           return
         }
+        toast.success('Quantity Decreased')
         updateCart({
           quantity: data.cart.quantity - 1,
           productId: data.product.productId,
@@ -135,11 +139,12 @@ export function DecreaseQuantity({ data }: any) {
   )
 }
 
-export function RemoveItem({ item }: any) {
+export function RemoveItem({ cartId }: any) {
   return (
     <button
       onClick={() => {
-        removeItem({ cartId: item.cart.cartId })
+        removeItem({ cartId })
+        toast.success('Item Removed')
       }}
     >
       <svg

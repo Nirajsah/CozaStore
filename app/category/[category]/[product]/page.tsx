@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactStars from 'react-stars'
 import Navbar from '@/app/components/Navbar'
-import { useUser } from '@/app/context/UserProvider'
 import Image from 'next/image'
 
 type Params = {
@@ -12,7 +11,7 @@ type Params = {
 export default function page({ params }: { params: Params }) {
   const { product: productId } = params
   const [data, setData] = useState()
-  const { userId } = useUser()
+  const userId = 1
 
   const addToCartHandler = async ({ productId }: { productId: string }) => {
     try {
@@ -63,7 +62,7 @@ export default function page({ params }: { params: Params }) {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex justify-center p-3 mx-3 h-[800px] relative items-center flex-wrap">
         <div className="w-full max-w-[1320px] md:p-12 h-full absolute top-[100px] bg-white rounded-xl">
           {data && (

@@ -1,7 +1,7 @@
 export default function ShowCartButton({ cartData }: any) {
   function getTotalItems(): number {
     let totalItems = 0
-    if (cartData.length <= 0) return totalItems
+    if (cartData && cartData.length <= 0) return totalItems
     cartData?.forEach((cart: any) => {
       if (cart) {
         totalItems++

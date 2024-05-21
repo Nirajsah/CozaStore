@@ -54,7 +54,7 @@ export const CartProduct = ({ item }: any): any => {
                 />
                 <IncreaseQuantity data={item} />
               </div>
-              <RemoveItem item={item} />
+              <RemoveItem cartId={item.cart.cartId} />
             </div>
           </div>
           <div className="self-start font-semibold text-xs md:text-sm">

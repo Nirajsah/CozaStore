@@ -21,7 +21,7 @@ export async function POST(request: Request) {
         email,
       })
       const { accessToken, refreshToken } = await generateJWT({
-        userId: user.userId,
+        user,
       })
       const response = NextResponse.json({
         status: 200,

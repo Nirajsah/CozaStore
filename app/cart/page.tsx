@@ -1,21 +1,8 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-import Checkout from '../components/Checkout'
 import { getSession } from '../actions'
 import { SessionData } from '../lib'
 import CartProduct from './CartProduct'
-
-interface ProductTypes {
-  categoryId: string
-  name: string
-  image: string
-  stars: number
-  productId: string
-  price_string: string
-  price_symbol: string
-  price: number
-  quantity: number
-}
 
 export default async function Page() {
   const session: SessionData = await getSession()

@@ -32,7 +32,8 @@ export default function AddToCart({ data, userId }: any) {
   return (
     <button
       type="button"
-      onClick={() => {
+      onClick={(e) => {
+        e.preventDefault()
         addToCartHandler({ productId: data.productId, userId })
         toast.success(`${data.name} Added to cart`)
       }}

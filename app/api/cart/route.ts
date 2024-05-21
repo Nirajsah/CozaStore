@@ -37,7 +37,6 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const { cartId } = await request.json()
-    console.log(cartId)
     const result = await db.delete(cart).where(eq(cart.cartId, cartId))
     return NextResponse.json({ result, message: 'success' })
   } catch (error) {

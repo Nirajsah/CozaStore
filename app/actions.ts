@@ -10,6 +10,8 @@ import { users } from './db/schema/schema'
 import { eq } from 'drizzle-orm'
 import { db } from './db/database'
 import { jwtDecode, JwtPayload } from 'jwt-decode'
+import { Secret } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 export const getSession = async () => {
   const session: SessionData = {
@@ -43,5 +45,22 @@ export const login = async (formData: FormData) => {
       cookies().set('coza-session', accessToken, { httpOnly: true })
       redirect('/')
     }
+  }
+}
+
+export const adminLogin = async (formData: FormData) => {
+  const email = formData.get('username') as string
+  const password = formData.get('password') as string
+  if (email === 'admin' && password === 'admin') {
+    const payload = {
+      email,
+      password,
+    }
+    const accessTokenKey: Secret = process.env.ACCESS_TOKEN_KEY as Secret
+    const accessToken = jwt.sign(payload, accessTokenKey, { expiresIn: '15m' })
+    cookies().set('admin-session', accessToken, { httpOnly: true })
+    redirect('/admin/category')
+  } else {
+    redirect('/admin')
   }
 }

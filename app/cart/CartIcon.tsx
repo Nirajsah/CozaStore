@@ -1,28 +1,33 @@
+'use client'
 import React from 'react'
-import { db } from '../db/database'
-import { cart, product } from '../db/schema/schema'
-import { eq } from 'drizzle-orm'
 import ShowCartButton from '../components/ShowCart'
 
-async function getCart({ userId }: { userId: number }): Promise<any[]> {
-  const result = await db
-    .select()
-    .from(cart)
-    .innerJoin(product, eq(product.productId, cart.productId))
-    .where(eq(cart.userId, userId))
+export function CartIcon({ userId }: { userId: number | undefined }) {
+  const [cart, setCart] = React.useState<any[]>([])
 
-  return result
-}
-
-async function CartIcon({ userId }: { userId: number | undefined }) {
-  let cartData: any = []
-  if (userId !== undefined) {
-    cartData = await getCart({ userId })
-  }
+  React.useEffect(() => {
+    const getCart = async ({ userId }: { userId: number | undefined }) => {
+      try {
+        const response = await fetch('/api/cart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId }),
+        })
+        const jsonData = await response.json()
+        setCart(jsonData.cart)
+        return jsonData
+      } catch (error) {
+        return error
+      }
+    }
+    getCart({ userId })
+  }, [userId, cart])
 
   return (
     <div className="absolute flex items-center">
-      <ShowCartButton cartData={cartData} />
+      <ShowCartButton cartData={cart} />
     </div>
   )
 }

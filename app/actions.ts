@@ -38,7 +38,7 @@ export const login = async (formData: FormData) => {
     const user = await passwordCheck({ email, password })
     if (user === true) {
       const [user] = await db.select().from(users).where(eq(users.email, email))
-      const { accessToken, refreshToken } = await generateJWT({
+      const { accessToken } = await generateJWT({
         user,
       })
 

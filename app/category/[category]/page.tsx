@@ -1,6 +1,8 @@
 import React from 'react'
 import Navbar from '@/app/components/Navbar'
 import ProductCard from '@/app/components/ProductCard'
+import { SessionData } from '@/app/lib'
+import { getSession } from '@/app/actions'
 
 type Params = {
   id: string
@@ -8,6 +10,7 @@ type Params = {
 }
 
 export default async function Page({ params }: { params: Params }) {
+  const session: SessionData = await getSession()
   return (
     <>
       <Navbar />
@@ -17,7 +20,7 @@ export default async function Page({ params }: { params: Params }) {
             <h1 className="text-5xl mb-9 capitalize font-bold">
               {params.category}
             </h1>
-            <ProductCard params={params} />
+            <ProductCard params={params} userId={session.userId} />
           </div>
         </div>
       </div>

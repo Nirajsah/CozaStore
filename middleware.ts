@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 export default function middleware(req: { cookies: any; url: string }) {
-  const URL = 'https://coza-store-rose.vercel.app/'
+  const URL = 'http://localhost:3000'
   const verifyAdmin = req.cookies.get('admin-session')
   const verifyUser = req.cookies.get('coza-session')
 

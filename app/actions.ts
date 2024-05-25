@@ -1,17 +1,17 @@
 'use server'
 
-import { getIronSession } from 'iron-session'
 import { cookies } from 'next/headers'
 import { SessionData, sessionOptions } from './lib'
 import { redirect } from 'next/navigation'
 import { generateJWT, userExist, verifyRefreshToken } from './auth/auth'
 import { passwordCheck } from './api/user/login/route'
-import { users } from './db/schema/schema'
+import { User, users } from './db/schema/schema'
 import { eq } from 'drizzle-orm'
 import { db } from './db/database'
 import { jwtDecode, JwtPayload } from 'jwt-decode'
 import { Secret } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
+import { createUser } from './api/user/register/route'
 
 export const getSession = async () => {
   const session: SessionData = {
@@ -45,6 +45,30 @@ export const login = async (formData: FormData) => {
       cookies().set('coza-session', accessToken, { httpOnly: true })
       redirect('/')
     }
+  }
+}
+
+export const register = async (formData: FormData) => {
+  const username = formData.get('username') as string
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+  const res = await userExist({ email })
+  if (res === true) {
+    const user: User | Error = await createUser({
+      username,
+      password,
+      email,
+    })
+    if (user instanceof Error) {
+      return Response.json({ message: 'Error inserting user' }, { status: 400 })
+    }
+
+    const { accessToken } = await generateJWT({
+      user,
+    })
+
+    cookies().set('coza-session', accessToken, { httpOnly: true })
+    redirect('/')
   }
 }
 

@@ -22,6 +22,7 @@ const addToCartHandler = async ({
       }),
     })
     const jsonData = await response.json()
+    toast.success('Added to cart')
     return jsonData
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -35,7 +36,6 @@ export default function AddToCart({ data, userId }: any) {
       onClick={(e) => {
         e.preventDefault()
         addToCartHandler({ productId: data.productId, userId })
-        toast.success(`${data.name} Added to cart`)
       }}
       className="bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3"
     >

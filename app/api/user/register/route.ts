@@ -1,25 +1,26 @@
 import { generateJWT, userExist } from '@/app/auth/auth'
 import { db } from '@/app/db/database'
-import { users } from '@/app/db/schema/schema'
+import { users, User } from '@/app/db/schema/schema'
 import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
-
-type User = {
-  username: string
-  email: string
-  password: string
-}
 
 export async function POST(request: Request) {
   try {
     const { username, password, email } = await request.json()
     const res = await userExist({ email })
     if (res === true) {
-      const user: { userId: number } | any = await createUser({
+      const user: User | Error = await createUser({
         username,
         password,
         email,
       })
+      if (user instanceof Error) {
+        return Response.json(
+          { message: 'Error inserting user' },
+          { status: 500 }
+        )
+      }
+
       const { accessToken, refreshToken } = await generateJWT({
         user,
       })
@@ -47,7 +48,11 @@ export async function POST(request: Request) {
   }
 }
 
-const createUser = async ({ username, email, password }: User) => {
+export const createUser = async ({
+  username,
+  email,
+  password,
+}: any): Promise<User | Error> => {
   try {
     const hashedPassword: string = await bcrypt.hash(password, 10)
     const [user] = await db
@@ -57,12 +62,9 @@ const createUser = async ({ username, email, password }: User) => {
         email,
         password: hashedPassword,
       })
-      .returning({ userId: users.userId })
+      .returning()
     return user
   } catch (error) {
-    return Response.json({
-      message: 'Error inserting user',
-      status: 500,
-    })
+    return error as Error
   }
 }

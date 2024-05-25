@@ -28,7 +28,7 @@ const Products = ({
         as={`/category/${params.category}/${data.productId}`}
       >
         <div className="w-[320px] sm:w-[320px]">
-          <div className="w-[300px] border h-[300px] rounded-xl bg-white">
+          <div className="w-[300px] drop-shadow-md h-[300px] rounded-xl bg-white">
             <Image
               width={300}
               height={300}
@@ -50,7 +50,13 @@ const Products = ({
   )
 }
 
-export default function ProductCard({ params }: { params: Params }) {
+export default function ProductCard({
+  params,
+  userId,
+}: {
+  params: Params
+  userId: number | undefined
+}) {
   const [data, setData] = React.useState<Product[]>([])
   const [offset, setOffSet] = React.useState<number>(0)
   const [currentPage, setCurrentPage] = React.useState(1)
@@ -89,7 +95,7 @@ export default function ProductCard({ params }: { params: Params }) {
       <div className="grid grid-cols-1 justify-center lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:grid-cols-2">
         {data &&
           data?.map((items: Product) => (
-            <Products data={items} userId={1} params={params} />
+            <Products data={items} userId={userId} params={params} />
           ))}
       </div>
       <div className="w-full mt-10 p-10 flex items-center justify-center">

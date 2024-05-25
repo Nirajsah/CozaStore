@@ -12,7 +12,7 @@ const CategoryCard = ({ data }: { data: Category }) => {
       href={`/category/${data.categoryId}`}
     >
       <div className="w-full sm:w-[280px] duration-100 hover:scale-105 transition-all">
-        <div className="w-[280px] border rounded-lg h-[280px]">
+        <div className="w-[280px] drop-shadow-md rounded-lg h-[280px]">
           <Image
             width={280}
             height={280}

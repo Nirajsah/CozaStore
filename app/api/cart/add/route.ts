@@ -10,22 +10,21 @@ export async function POST(request: Request) {
       .select()
       .from(cart)
       .where(eq(cart.productId, productId))
+    if (res === undefined) {
+      const result: Cart[] = await db
+        .insert(cart)
+        .values({ productId, quantity, userId })
+        .returning()
 
-    if (res.userId === userId) {
+      return NextResponse.json({ result, message: 'success' })
+    } else {
       const result: Cart[] = await db
         .update(cart)
         .set({ quantity: res.quantity + quantity })
         .where(eq(cart.productId, productId))
         .returning()
+
       return NextResponse.json({ result, message: 'success' })
-    } else if (res === undefined) {
-      const result: Cart[] = await db
-        .insert(cart)
-        .values({ productId, quantity, userId })
-        .returning()
-      return NextResponse.json({ result, message: 'success' })
-    } else {
-      return NextResponse.json({ message: 'Error inserting item in cart' })
     }
   } catch (error) {
     return NextResponse.json({ message: 'Error inserting item in cart' })

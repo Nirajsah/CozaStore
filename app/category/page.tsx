@@ -38,6 +38,7 @@ async function getData(): Promise<Category[]> {
 
 export default async function Page() {
   const data: Category[] = await getData()
+
   return (
     <>
       <Navbar />

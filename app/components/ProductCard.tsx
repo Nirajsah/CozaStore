@@ -4,7 +4,7 @@ import { Product } from '../db/schema/schema'
 import Link from 'next/link'
 import Pagination from './Pagination'
 import Image from 'next/image'
-import AddToCart from './AddToCart'
+import { addToCartHandler } from './AddToCart'
 
 type Params = {
   id: string
@@ -41,11 +41,21 @@ const Products = ({
             <h5 className="truncate w-[300px] mb-1 font-semibold">
               {data.name}
             </h5>
+
             <div className="mb-1 text-xl font-bold">₹{data.price}</div>
           </div>
         </div>
       </Link>
-      <AddToCart data={data} userId={userId} />
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault()
+          addToCartHandler({ productId: data.productId, userId })
+        }}
+        className="bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3"
+      >
+        Add to Cart
+      </button>
     </div>
   )
 }

@@ -2,12 +2,12 @@
 import React from 'react'
 import { toast } from 'sonner'
 
-const addToCartHandler = async ({
+export const addToCartHandler = async ({
   productId,
   userId,
 }: {
   productId: string
-  userId: string
+  userId: number | string
 }) => {
   try {
     const response = await fetch('/api/cart/add', {
@@ -33,11 +33,10 @@ export default function AddToCart({ data, userId }: any) {
   return (
     <button
       type="button"
-      onClick={(e) => {
-        e.preventDefault()
+      onClick={() => {
         addToCartHandler({ productId: data.productId, userId })
       }}
-      className="bg-black text-white w-[300px] rounded-xl p-4 uppercase font-semibold text-xs mt-3"
+      className="border border-black w-[200px] p-4 uppercase font-semibold text-xs"
     >
       Add to Cart
     </button>

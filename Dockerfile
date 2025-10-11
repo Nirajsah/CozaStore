@@ -1,24 +1,28 @@
-FROM --platform=linux/amd64 node:latest 
 
+# Use official Node.js 20 LTS Alpine image
+FROM --platform=linux/amd64 node:20-alpine
+
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Set working directory
 WORKDIR /app
 
-COPY package.json bun.lockb ./
+# Copy package files first for caching
+COPY package.json pnpm-lock.yaml ./
 
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy the rest of your app
 COPY . .
 
-RUN npm install -g bun
+# Build the Next.js app
+RUN pnpm build
 
-RUN bun install
+# Expose port
+EXPOSE 3000
 
-RUN bun generate
-
-RUN bun migrate
-
-RUN bun run build
-
-EXPOSE 80/tcp
-
-CMD ["bun", "start"]
-
-
+# Start the Next.js app in production
+CMD ["pnpm", "start"]
 
